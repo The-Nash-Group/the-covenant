@@ -1,0 +1,35 @@
+# the-covenant/.github/workflows/enforce-covenant.yml
+name: "Enforce the Great Covenant"
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+  schedule:
+    - cron: "33 03 * * *"  # Nightly Vigil (UTC)
+
+permissions:
+  contents: read
+  checks: write
+
+jobs:
+  arbiters-judgement:
+    runs-on: ubuntu-latest
+    steps:
+      # 1) Get a short-lived installation token for your org via a GitHub App
+      - name: "Summon The Arbiter's Seal (App Token)"
+        id: app-token
+        uses: actions/create-github-app-token@v2
+        with:
+          app-id: ${{ vars.SAFE_SETTINGS_APP_ID }}
+          private-key: ${{ secrets.SAFE_SETTINGS_PRIVATE_KEY }}
+          owner: ${{ github.repository_owner }}
+
+      # 2) Run Safe-Settings container (dry-run on PRs)
+      - name: "The Arbiter Speaks"
+        uses: docker://ghcr.io/github/safe-settings:2.1.17
+        env:
+          GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
+          # Optional envs (documented in repo): ADMIN_REPO, SETTINGS_FILE_PATH, CONFIG_PATH, etc.
+          ADMIN_REPO: "the-covenant"
+          DRY_RUN: ${{ github.event_name == 'pull_request' && 'true' || 'false' }}

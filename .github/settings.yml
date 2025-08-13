@@ -1,0 +1,49 @@
+# the-covenant/.github/settings.yml
+# Org-targeted settings support: rulesets (applies to all repos unless overridden)
+# Safe-Settings merges: org → suborg → repo
+
+rulesets:
+  - name: "The Great Charter: Protect the Sacred Timeline"
+    target: branch
+    enforcement: active
+    # Allow org admins to bypass in emergencies
+    bypass_actors:
+      - actor_id: 1
+        actor_type: OrganizationAdmin
+        bypass_mode: pull_request
+    conditions:
+      ref_name:
+        include:
+          - "main"   # Branch name; Rulesets API accepts branch names here
+    rules:
+      - type: commit_message_pattern
+        parameters:
+          name: "Conventional format"
+          operator: starts_with
+          pattern: "feat:|fix:|docs:|chore:|refactor:|perf:|test:|build:|ci:|revert:"
+      - type: required_status_checks
+        parameters:
+          strict_required_status_checks_policy: true
+          required_status_checks:
+            - context: "ci"
+            - context: "lint"
+      - type: pull_request
+        parameters:
+          required_approving_review_count: 1
+          dismiss_stale_reviews_on_push: true
+          require_code_owner_review: true
+
+# Optional: organization-wide default labels
+labels:
+  - name: "type/feat"
+    color: "2ea043"
+    description: "Feature work"
+  - name: "type/bug"
+    color: "d73a4a"
+    description: "Bug report"
+  - name: "area/docs"
+    color: "0366d6"
+    description: "Documentation"
+  - name: "P1"
+    color: "b60205"
+    description: "Highest priority"

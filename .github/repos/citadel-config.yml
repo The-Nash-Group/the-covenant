@@ -1,0 +1,10 @@
+# the-covenant/.github/repos/citadel-config.yml
+repository:
+  description: "📜 The Master Blueprints for The Nash Group's Cloudflare Citadel."
+  homepage: "https://thenash.group"
+  topics: ["terraform", "cloudflare", "iac", "citadel", "covenant"]
+  default_branch: "main"
+  allow_squash_merge: true
+  allow_merge_commit: false
+  allow_rebase_merge: false
+  delete_branch_on_merge: true
