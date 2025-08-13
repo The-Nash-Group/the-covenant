@@ -4,7 +4,6 @@ name: "Enforce the Great Covenant"
 on:
   push:
     branches: ["main"]
-  pull_request:
   schedule:
     - cron: "33 03 * * *"  # Nightly Vigil (UTC)
 
@@ -13,23 +12,32 @@ permissions:
   checks: write
 
 jobs:
-  arbiters-judgement:
+  enforce:
+    # Only apply changes on push and schedule, not on PRs
+    if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     steps:
-      # 1) Get a short-lived installation token for your org via a GitHub App
+      - name: "Checkout Repository"
+        uses: actions/checkout@v4
+
       - name: "Summon The Arbiter's Seal (App Token)"
-        id: app-token
+        id: app
         uses: actions/create-github-app-token@v2
         with:
           app-id: ${{ vars.SAFE_SETTINGS_APP_ID }}
           private-key: ${{ secrets.SAFE_SETTINGS_PRIVATE_KEY }}
           owner: ${{ github.repository_owner }}
 
-      # 2) Run Safe-Settings container (dry-run on PRs)
-      - name: "The Arbiter Speaks"
-        uses: docker://ghcr.io/github/safe-settings:2.1.17
+      - name: "The Arbiter's Full Sync"
         env:
-          GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
-          # Optional envs (documented in repo): ADMIN_REPO, SETTINGS_FILE_PATH, CONFIG_PATH, etc.
-          ADMIN_REPO: "the-covenant"
-          DRY_RUN: ${{ github.event_name == 'pull_request' && 'true' || 'false' }}
+          GITHUB_TOKEN: ${{ steps.app.outputs.token }}
+          ADMIN_REPO: the-covenant
+          CONFIG_PATH: .github
+          SETTINGS_FILE_PATH: settings.yml
+        run: |
+          echo "🔮 Initiating Safe-Settings full sync..."
+          git clone https://github.com/github/safe-settings.git
+          cd safe-settings
+          npm ci
+          echo "⚔️ Enforcing The Great Covenant across the realm..."
+          node full-sync.js
