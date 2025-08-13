@@ -31,6 +31,8 @@ jobs:
       - name: "The Arbiter's Full Sync"
         env:
           GITHUB_TOKEN: ${{ steps.app.outputs.token }}
+          APP_ID: ${{ vars.SAFE_SETTINGS_APP_ID }}
+          PRIVATE_KEY: ${{ secrets.SAFE_SETTINGS_PRIVATE_KEY }}
           ADMIN_REPO: the-covenant
           CONFIG_PATH: .github
           SETTINGS_FILE_PATH: settings.yml
