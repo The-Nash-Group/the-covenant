@@ -3,6 +3,10 @@
 
 > "Power shared wisely is power multiplied. Power hoarded foolishly is power lost."
 
+## The Foundation: The Human Mandate
+
+This governance structure operates within the framework of [The Human Mandate](./HUMAN_MANDATE.md), which defines the five archetypal roles that Guardians fulfill: The Philosopher, The Architect, The Judge, The Gardener, and The Explorer. While the roles below define formal authority, the Mandate defines functional responsibility.
+
 ## The Hierarchy of the Realm
 
 ### The Clans and Their Powers
@@ -21,6 +25,7 @@
 
 #### The Mentors (Maintainers/CODEOWNERS)
 - **Who They Are**: Senior engineers designated as code owners for specific domains
+- **Primary Mandate Roles**: The Judge, The Architect, The Gardener (see [Human Mandate](./HUMAN_MANDATE.md#from-mandate-to-mission-how-roles-map-to-teams))
 - **Their Power**:
   - Approve changes within their designated territories (as defined in CODEOWNERS)
   - Block merges that violate our principles
@@ -34,6 +39,7 @@
 
 #### The Watchers (Administrators)
 - **Who They Are**: The guardians of infrastructure and organization-wide concerns
+- **Primary Mandate Roles**: The Judge (Security), The Philosopher (Security), Emergency Responder (see [Human Mandate](./HUMAN_MANDATE.md#from-mandate-to-mission-how-roles-map-to-teams))
 - **Their Power**:
   - Modify organization settings and team structures
   - Access billing and security configurations

@@ -3,20 +3,27 @@
 
 > "In the beginning was the Word, and the Word was Code, and the Code was Law."
 
-## The Sacred Separation
+## The Three Pillars of Governance
 
-The Nash Group's governance follows an ancient pattern: the separation of **philosophy** from **implementation**, of **why** from **how**. Two repositories hold dominion over our realm:
+Welcome to the philosophical heart of The Nash Group. Our governance is built on three interconnected pillars that answer the fundamental questions of our organization:
 
-- **`the-covenant`** (this repository): The philosophical source of truth. Our constitution, our principles, our sacred laws. It answers: "**Why** do we operate this way?"
-- **`citadel-config`**: The technical engine of enforcement. The Infrastructure as Code that translates our principles into reality. It answers: "**How** are our principles enforced?"
+### 1. **[The Covenant](./PRINCIPLES.md)** - The "Why"
+Our core values, principles, and sacred laws. The philosophical foundation that defines why we operate as we do.
 
-This is `the-covenant` - the Book of Laws, not the sword that enforces them.
+### 2. **[The Human Mandate](./HUMAN_MANDATE.md)** - The "Who"
+The responsibilities and roles of the Guardians who interpret our principles and operate our systems. The bridge between philosophy and implementation.
+
+### 3. **[The Citadel](https://github.com/the-nash-group/citadel-config)** - The "How"
+The technical engine of enforcement. The Infrastructure as Code that translates our principles into reality through Terraform.
+
+This is `the-covenant` - the philosophical foundation, where human wisdom guides machine execution.
 
 ## Repository Structure
 
 ```
 the-covenant/
 ├── README.md                    # This scroll - The gate inscription
+├── HUMAN_MANDATE.md              # The Bridge - Guardian roles and responsibilities
 ├── GOVERNANCE.md                 # The Laws of the Clans
 ├── PRINCIPLES.md                 # The Art of the Duel (technical standards)
 ├── REFERENCE/                    # The Archives

@@ -20,8 +20,21 @@
 - [ ] Principle Amendment - Modifying an existing principle
 - [ ] Principle Deprecation - Removing or replacing an outdated principle
 - [ ] Governance Change - Modifying team structures, permissions, or decision processes
+- [ ] Human Mandate Update - Modifying Guardian roles or responsibilities
 - [ ] Documentation - Improving clarity without changing meaning
 - [ ] Archive - Moving deprecated content to REFERENCE/
+
+## Guardian's Affirmation
+
+*As the author of this change, I affirm I am acting in the capacity of:*
+
+- [ ] **The Philosopher:** Proposing or refining principles that guide our organization
+- [ ] **The Architect:** Defining how principles will be translated into technical implementation
+- [ ] **The Judge:** Codifying a decision made in response to operational experience
+- [ ] **The Gardener:** Improving the health, clarity, or efficiency of our governance
+- [ ] **The Explorer:** Documenting discoveries that warrant new principles or amendments
+
+I understand my role as defined in [The Human Mandate](../HUMAN_MANDATE.md) and commit to fulfilling it with wisdom and deliberation.
 
 ## Checklist
 

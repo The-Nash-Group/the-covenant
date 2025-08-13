@@ -3,12 +3,17 @@
 
 > "Excellence is not an act, but a habit. Our code is not a project, but a practice."
 
+## The Human Element
+
+These principles are not self-enforcing. They require human judgment, as defined in [The Human Mandate](./HUMAN_MANDATE.md). The Architect translates these principles into code, the Judge ensures compliance, and the Gardener maintains their health over time.
+
 ## Core Technical Principles
 
 Each principle follows the sacred format:
 - **The Law**: The rule we follow
 - **The Lesson**: The hard-fought wisdom behind it
 - **The Implementation**: How it's enforced in `citadel-config`
+- **The Guardian**: Which role from the Human Mandate owns this principle
 
 ---
 
