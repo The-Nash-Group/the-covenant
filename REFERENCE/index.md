@@ -9,7 +9,7 @@ This directory is not a graveyard but a museum. Here lie the artifacts of our jo
 
 ## The Great Migration: From Safe-Settings to Terraform
 
-**Date of Transition**: August 2025  
+**Date of Transition**: August 2025
 **Rationale**: Architecture Decision Record [`001-terraform-migration.md`](./decisions/001-terraform-migration.md)
 
 We began with Safe-Settings, a YAML-based GitHub configuration system. It served us well, teaching us the value of configuration as code. But as our needs grew, we required something more powerful—a true infrastructure as code solution that could manage not just GitHub, but our entire platform.
@@ -19,38 +19,35 @@ We began with Safe-Settings, a YAML-based GitHub configuration system. It served
 ```
 REFERENCE/
 ├── index.md                          # You are here
-├── legacy-safe-settings/              # The Old Ways
-│   ├── README.md                      # Original Safe-Settings documentation
-│   ├── org-settings.yml               # Organization-wide settings (archived 2025-08-13)
+├── legacy-safe-settings/             # The Old Ways
+│   ├── README.md                     # Original Safe-Settings documentation
+│   ├── org-settings.yml              # Organization-wide settings (archived 2025-08-13)
 │   ├── suborg-platform-clan.yml      # Platform team configuration (archived 2025-08-13)
-│   ├── repo-citadel-config.yml       # Citadel repository settings (archived 2025-08-13)
-│   └── migration-notes.md            # Lessons from the transition
-├── decisions/                         # Architecture Decision Records
-│   ├── 000-template.md               # ADR template
+│   └── repo-citadel-config.yml       # Citadel repository settings (archived 2025-08-13)
+├── decisions/                        # Legacy decision records (ARCHIVED)
 │   ├── 001-terraform-migration.md    # Why we moved to Terraform
-│   ├── 002-covenant-citadel-split.md # Separating philosophy from implementation
-│   └── 003-trunk-based-development.md # Adopting TBD
-└── deprecated/                        # Retired patterns and practices
-    ├── branch-protection-rules.md    # Replaced by Repository Rulesets
-    └── manual-runbooks.md            # Superseded by automation
-
+│   └── 002-covenant-citadel-split.md # Separating philosophy from implementation
+└── deprecated/                       # (reserved for future retired patterns)
 ```
+
+> **Note**: The `decisions/` directory contains legacy ADRs from before the three-pillar
+> architecture was established. **Current ADRs live in `docs/architecture/`.**
 
 ## The Legacy Safe-Settings Files
 
 ### `legacy-safe-settings/org-settings.yml`
-**Original Purpose**: Defined organization-wide GitHub settings including rulesets, labels, and default behaviors.  
-**Superseded By**: `citadel-config/github.tf` - Terraform GitHub provider resources  
+**Original Purpose**: Defined organization-wide GitHub settings including rulesets, labels, and default behaviors.
+**Superseded By**: `the-citadel/github.tf` - Terraform GitHub provider resources
 **Key Learning**: YAML was readable but lacked the power of a true programming language. We needed conditionals, loops, and modules.
 
-### `legacy-safe-settings/suborg-platform-clan.yml` 
-**Original Purpose**: Configured settings for all `service-*` repositories under the platform team's domain.  
-**Superseded By**: `citadel-config/modules/github-stronghold/` - Reusable Terraform module  
+### `legacy-safe-settings/suborg-platform-clan.yml`
+**Original Purpose**: Configured settings for all `service-*` repositories under the platform team's domain.
+**Superseded By**: `the-citadel/modules/github-stronghold/` - Reusable Terraform module
 **Key Learning**: The suborg pattern was powerful but inflexible. Terraform modules provide better composition and reusability.
 
 ### `legacy-safe-settings/repo-citadel-config.yml`
-**Original Purpose**: Specific configuration for the citadel-config repository itself.  
-**Superseded By**: Self-referential Terraform configuration in `citadel-config`  
+**Original Purpose**: Specific configuration for the Citadel infrastructure repository (now locally named `the-citadel`).
+**Superseded By**: Self-referential Terraform configuration in `the-citadel`
 **Key Learning**: Having the configuration repository configure itself created elegant self-hosting.
 
 ## Architecture Decision Records
@@ -64,40 +61,36 @@ Our most important documents. Each ADR captures:
 ### Featured Decisions
 
 #### ADR-001: Terraform Migration
-**Status**: Implemented  
-**Summary**: Moved from Safe-Settings YAML to Terraform for infrastructure management  
-**Key Outcomes**: 
+**Status**: Implemented
+**Summary**: Moved from Safe-Settings YAML to Terraform for infrastructure management
+**Key Outcomes**:
 - Unified management of GitHub and Cloudflare
 - State management and drift detection
 - Modular, reusable configurations
 
 #### ADR-002: Covenant-Citadel Split
-**Status**: Implemented  
-**Summary**: Separated philosophical governance (Covenant) from technical implementation (Citadel)  
+**Status**: Implemented
+**Summary**: Separated philosophical governance (Covenant) from technical implementation (Citadel)
 **Key Outcomes**:
 - Clear separation of concerns
 - Governance changes don't trigger infrastructure changes
 - Philosophy documented separately from implementation
 
-#### ADR-003: Trunk-Based Development
-**Status**: Active  
-**Summary**: Adopted TBD with short-lived feature branches  
-**Key Outcomes**:
-- Reduced integration pain
-- Faster feedback cycles
-- Simplified Git history
+**Note**: Current ADRs are maintained in [`docs/architecture/`](../docs/architecture/).
 
 ## Deprecated Patterns
 
 ### Branch Protection Rules → Repository Rulesets
-**Deprecated**: 2024-06  
-**Reason**: GitHub's Repository Rulesets provide more power and flexibility  
+**Deprecated**: 2024-06
+**Reason**: GitHub's Repository Rulesets provide more power and flexibility
 **Migration Path**: All branch protection converted to rulesets with enhanced conditions
+**Note**: No formal ADR was recorded for this transition.
 
 ### Manual Runbooks → Automated Responses
-**Deprecated**: 2024-09  
-**Reason**: Manual steps at 3 AM are error-prone  
+**Deprecated**: 2024-09
+**Reason**: Manual steps at 3 AM are error-prone
 **Migration Path**: All critical runbooks converted to automated workflows or scripts
+**Note**: No formal ADR was recorded for this transition.
 
 ## The Wisdom of the Archives
 
@@ -105,7 +98,7 @@ Each archived file contains a header comment block:
 
 ```yaml
 # ARCHIVED: 2025-08-13
-# REASON: Migrated to Terraform (citadel-config/github.tf)
+# REASON: Migrated to Terraform (the-citadel/github.tf)
 # ORIGINAL PURPOSE: Organization-wide GitHub settings
 # NOTABLE FEATURES: First implementation of Conventional Commits enforcement
 # LESSONS LEARNED: YAML insufficient for complex conditional logic
@@ -154,14 +147,14 @@ These archives are not static. They grow with every major decision, every migrat
 | Old System | New System | Migration Date | ADR |
 |------------|------------|----------------|-----|
 | Safe-Settings YAML | Terraform IaC | 2025-08 | [001](./decisions/001-terraform-migration.md) |
-| Branch Protection | Repository Rulesets | 2024-06 | [004](./decisions/004-repository-rulesets.md) |
-| Manual Runbooks | Automated Workflows | 2024-09 | [005](./decisions/005-automated-operations.md) |
-| Click-Ops | GitOps | 2025-01 | [006](./decisions/006-gitops-everything.md) |
+| Branch Protection | Repository Rulesets | 2024-06 | — |
+| Manual Runbooks | Automated Workflows | 2024-09 | — |
+| Click-Ops | GitOps | 2025-01 | — |
 
 ---
 
 *"The Archives are not about the past. They are about not repeating it unnecessarily."*
 
-**Return to**: [`README.md`](../README.md) - The Covenant  
-**See Also**: [`citadel-config`](https://github.com/the-nash-group/citadel-config) - Current implementation  
+**Return to**: [`README.md`](../README.md) - The Covenant
+**See Also**: [The Citadel](https://github.com/The-Nash-Group/citadel-config) - Current implementation
 **Questions?**: Open an issue labeled `archaeology`

@@ -18,12 +18,12 @@ Our governance operates on three interconnected levels:
 1. **[The Covenant](./PRINCIPLES.md)** - The "Why"
    - Defines our timeless principles and values
    - Abstract, philosophical, slow-moving
-   
+
 2. **The Human Mandate** (this document) - The "Who"
    - Defines Guardian responsibilities and roles
    - Operational, procedural, focused on human judgment
-   
-3. **[The Citadel](https://github.com/the-nash-group/citadel-config)** - The "How"
+
+3. **[The Citadel](https://github.com/The-Nash-Group/citadel-config)** - The "How"
    - Contains the Infrastructure as Code
    - Concrete, technical, fast-moving
 
@@ -46,6 +46,8 @@ This creed defines the inviolable boundary between human and machine responsibil
 ## The Five Archetypes of Guardianship
 
 These are not job titles but "hats" that Guardians wear depending on the task at hand. A single person may wear multiple hats throughout their day.
+
+> **Note**: The sixth archetype, The Executor, represents synthetic agents that assist Guardians. See [The Executors](#the-executors-synthetic-agents) section below.
 
 ### 1. The Philosopher
 **Purpose:** To debate and refine the principles that govern our realm
@@ -71,7 +73,7 @@ These are not job titles but "hats" that Guardians wear depending on the task at
 - Bridge the gap between abstract and concrete
 
 **Key Actions:**
-- Opens PRs to `citadel-config`
+- Opens PRs to `the-citadel`
 - Writes Terraform resources
 - Creates module documentation
 
@@ -130,7 +132,7 @@ The abstract roles of the Mandate are fulfilled by our formally defined teams. W
 **Mission:** To serve as the primary architects and stewards of The Citadel and its governed repositories.
 
 **Primary Hats Worn:**
-- **The Judge:** Mentors are the default reviewers for all infrastructure changes in `citadel-config`
+- **The Judge:** Mentors are the default reviewers for all infrastructure changes in `the-citadel`
 - **The Architect:** Mentors translate principles from The Covenant into robust Terraform code
 - **The Gardener:** Mentors own the technical health of the automation
 
@@ -165,6 +167,107 @@ The abstract roles of the Mandate are fulfilled by our formally defined teams. W
 - Propose changes to any accessible repository
 - Participate in all public debates
 - Raise concerns about principles or implementation
+
+## The Executors (Synthetic Agents)
+
+While The Human Mandate defines human responsibilities, The Nash Group also employs synthetic agents—automated systems that assist Guardians in their duties. These are not Guardians themselves but tools that Guardians delegate tasks to.
+
+### The Sacred Agent Boundary
+
+**Agents are tools, not decision-makers.** They operate within explicitly defined boundaries and cannot override human judgment on matters requiring wisdom.
+
+**Agents Will:**
+- **Execute Delegated Tasks:** Perform work assigned by Guardians within defined authority
+- **Emit Complete Audit Trails:** Log every action for human review
+- **Respect Least Privilege:** Operate with minimal necessary permissions
+- **Escalate Appropriately:** Recognize when human judgment is needed
+
+**Agents Will NOT:**
+- **Make Final Decisions:** On matters affecting governance, security, or strategy
+- **Override Human Judgment:** Even when they disagree with the assessment
+- **Bypass Validation:** Skip required checks or approval gates
+- **Access Beyond Authority:** Request permissions outside their defined scope
+
+### The Six Synthetic Roles
+
+Synthetic agents map to Guardian archetypes, operating as assistants to humans wearing those hats:
+
+| Agent Role | Guardian Analog | Primary Function |
+|------------|-----------------|------------------|
+| **Gardener-Agent** | The Gardener | Dependency updates, formatting, health monitoring |
+| **Explorer-Agent** | The Explorer | Research, capability discovery (sandbox only) |
+| **Steward-Agent** | The Judge (Risk) | Risk identification, policy violation detection |
+| **Catalyst-Agent** | The Architect | Implementation proposals, velocity advocacy |
+| **Adjudicator-Agent** | The Judge (Neutral) | Debate synthesis, verdict rendering |
+| **Coordinator-Agent** | New (Orchestrator) | Task delegation, workflow management |
+
+### The Synthetic Council
+
+For decisions at **Citadel level or above**, agents form a Synthetic Council that debates before proposing to humans:
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                    SYNTHETIC COUNCIL                         │
+│                                                              │
+│   ┌──────────────┐    ┌──────────────┐    ┌──────────────┐  │
+│   │   CATALYST   │◄──►│   STEWARD    │◄──►│  ADJUDICATOR │  │
+│   │  (Advocate)  │    │  (Adversary) │    │   (Arbiter)  │  │
+│   └──────────────┘    └──────────────┘    └──────────────┘  │
+│          │                   │                   │          │
+│          └───────────────────┼───────────────────┘          │
+│                              ▼                               │
+│                    ┌──────────────────┐                     │
+│                    │  COUNCIL VERDICT │                     │
+│                    │  (Still requires │                     │
+│                    │  human approval) │                     │
+│                    └──────────────────┘                     │
+└─────────────────────────────────────────────────────────────┘
+```
+
+**The Council Protocol:**
+1. **Catalyst** proposes implementation path
+2. **Steward** identifies risks and policy violations (must cite specific policies)
+3. **Catalyst** proposes mitigations for each objection
+4. **Adjudicator** synthesizes debate and renders verdict
+5. **Verdict** is presented to appropriate human Guardians for approval
+
+**Council verdicts are recommendations, not decisions.** Human Guardians retain final authority.
+
+### Agent Authority Levels
+
+| Authority | Description | Human Involvement |
+|-----------|-------------|-------------------|
+| **Autonomous** | Agent proceeds without asking | Post-hoc audit within 24h |
+| **Propose** | Agent creates proposal for human review | Human must approve |
+| **Escalate** | Agent flags for human decision | Human takes over |
+
+### Decision Routing by Level
+
+| Decision Level | Council Required? | Human Approval |
+|----------------|-------------------|----------------|
+| **Stronghold** (routine) | No | 1 Mentor (async) |
+| **Citadel** (infrastructure) | Yes | 1 Mentor + 1 Watcher |
+| **Covenant** (governance) | Yes | 2 Watchers + 2 Mentors + 72h debate |
+
+### Governance as a Function of Risk
+
+The Synthetic Council embodies "quiet operations"—the system only speaks up when it matters:
+
+- **Low Risk (Stronghold):** Agents proceed autonomously, humans audit later
+- **Medium Risk (Citadel):** Agents debate, humans approve
+- **High Risk (Covenant):** Full debate, extended human deliberation
+
+This ensures velocity for routine work while maintaining rigor for consequential decisions.
+
+### Agent Configuration
+
+Agent roles and authority are defined in:
+- `governance/agent-roles.yaml` - Role definitions and capabilities
+- `governance/config/governance-config.yaml` - Authority matrix and decision routing
+
+Changes to agent configuration require **Covenant-level governance** (2 Watchers + 2 Mentors, 72h debate).
+
+---
 
 ## Rituals of Guardianship
 
@@ -223,5 +326,5 @@ This document, like The Covenant it serves, is living law. As our organization g
 
 *"The Human Mandate is not about limiting human action, but about making it deliberate, principled, and powerful."*
 
-*For the philosophical foundation, see [The Covenant](./README.md)*  
-*For the technical implementation, see [The Citadel](https://github.com/the-nash-group/citadel-config)*
+*For the philosophical foundation, see [The Covenant](./README.md)*
+*For the technical implementation, see [The Citadel](https://github.com/The-Nash-Group/citadel-config)*

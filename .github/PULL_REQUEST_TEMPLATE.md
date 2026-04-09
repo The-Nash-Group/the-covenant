@@ -12,7 +12,7 @@
 <!-- How will this affect our daily operations? Consider both immediate effects and long-term implications. -->
 
 ### The Implementation
-<!-- What changes will be needed in citadel-config to enforce this principle? Be specific about Terraform resources. -->
+<!-- What changes will be needed in the-citadel to enforce this principle? Be specific about Terraform resources. -->
 
 ## Type of Change
 
@@ -42,7 +42,7 @@ I understand my role as defined in [The Human Mandate](../HUMAN_MANDATE.md) and 
 - [ ] I have read and understood the current principles in PRINCIPLES.md
 - [ ] I have read and understood the governance model in GOVERNANCE.md
 - [ ] This change aligns with our core values (Immortality, Single Source of Truth, The Quickening)
-- [ ] I have described the specific Terraform changes needed in citadel-config
+- [ ] I have described the specific Terraform changes needed in the-citadel
 - [ ] I have considered the impact on existing systems and workflows
 - [ ] I am prepared to defend this position in the Council's deliberation
 

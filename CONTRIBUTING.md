@@ -11,7 +11,7 @@ Before contributing, understand that The Covenant is not just documentation—it
 
 Remember the fundamental architecture:
 - **This repository (`the-covenant`)**: Defines the "why" - our principles, standards, and governance
-- **The implementation (`citadel-config`)**: Defines the "how" - the Terraform code that enforces our principles
+- **The implementation (`the-citadel`)**: Defines the "how" - the Terraform code that enforces our principles
 
 Never confuse the two. We debate philosophy here; we implement machinery there.
 
@@ -24,7 +24,7 @@ When you've identified a gap in our standards or a new best practice worth codif
 1. **Search First**: Check if a similar principle already exists in `PRINCIPLES.md`
 2. **Document the Problem**: What issue does this principle address?
 3. **Provide Evidence**: Share examples, post-mortems, or industry best practices
-4. **Define Implementation**: How would this be enforced via Terraform in `citadel-config`?
+4. **Define Implementation**: How would this be enforced via Terraform in `the-citadel`?
 
 ### 2. Amending Existing Principles
 
@@ -33,7 +33,7 @@ When experience has taught us a principle needs refinement:
 1. **Reference the Original**: Link to the principle being amended
 2. **Explain the Evolution**: What have we learned since the original was written?
 3. **Show the Delta**: Be clear about what's changing and what's staying the same
-4. **Update Implementation**: Describe changes needed in `citadel-config`
+4. **Update Implementation**: Describe changes needed in `the-citadel`
 
 ### 3. Governance Changes
 
@@ -44,7 +44,19 @@ When proposing changes to how we make decisions:
 3. **Consider Edge Cases**: What could go wrong with this governance model?
 4. **Seek Broad Input**: Governance affects everyone; ensure wide consultation
 
-### 4. Documentation Improvements
+### 4. Updating Existing ADRs
+
+ADRs are living documents — they should stay current rather than accumulate stale information. However, ADRs are governance documents and updates follow the same review process as other Covenant changes.
+
+1. **Get Guardian approval first** — ADR updates are not casual edits; propose changes and get human sign-off
+2. **Edit in place rather than supersede** — unless the original decision is being genuinely reversed
+3. **Add a changelog entry** — append a row to the Changelog table at the bottom with date, author, and summary
+4. **Preserve original context** — keep the original Date in metadata; use "Last Updated" for your edit
+5. **Ensure self-containment** — a reader encountering the ADR for the first time should get an accurate picture of today's architecture
+
+Only create a *new* superseding ADR when the original decision is genuinely reversed and the old rationale no longer applies.
+
+### 5. Documentation Improvements
 
 When clarifying without changing meaning:
 
@@ -162,7 +174,7 @@ The strongest principles achieve unanimous support. To build consensus:
 
 Once your change is merged:
 
-1. **Monitor Implementation**: Watch for the corresponding PR in `citadel-config`
+1. **Monitor Implementation**: Watch for the corresponding PR in `the-citadel`
 2. **Support Adoption**: Help teams understand and adopt the new principle
 3. **Gather Feedback**: Real-world usage reveals improvements
 4. **Iterate**: Be open to future refinements
