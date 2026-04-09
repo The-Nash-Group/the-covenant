@@ -13,12 +13,12 @@ This governance structure operates within the framework of [The Human Mandate](.
 
 #### The Immortals (Contributors)
 - **Who They Are**: All members of The Nash Group organization
-- **Their Power**: 
+- **Their Power**:
   - Propose changes (Pull Requests) to any repository they have access to
   - Participate in debates on proposed changes
   - Raise issues and concerns
   - Share knowledge and experience
-- **Their Responsibility**: 
+- **Their Responsibility**:
   - Uphold the principles of the Covenant
   - Review and provide feedback on proposals
   - Share knowledge freely with fellow Immortals
@@ -35,7 +35,7 @@ This governance structure operates within the framework of [The Human Mandate](.
   - Maintain quality and consistency
   - Review proposals thoroughly and promptly
   - Document decisions and share knowledge
-  - Ensure principles are properly implemented in `citadel-config`
+  - Ensure principles are properly implemented in `the-citadel`
 
 #### The Watchers (Administrators)
 - **Who They Are**: The guardians of infrastructure and organization-wide concerns
@@ -62,9 +62,9 @@ Different decisions require different levels of authority and consensus:
 - **Required Approvals**: 1 Mentor minimum (2 for critical services)
 
 ### Citadel Decisions (Infrastructure)
-- **Scope**: Changes to `citadel-config` affecting Cloudflare, GitHub settings, or other infrastructure
+- **Scope**: Changes to `the-citadel` affecting Cloudflare, GitHub settings, or other infrastructure
 - **Authority**: Joint between Mentors and Watchers
-- **Process**: 
+- **Process**:
   1. Proposal must reference a principle from the Covenant
   2. Terraform plan must be reviewed
   3. Changes affecting security require Watcher approval
@@ -88,7 +88,7 @@ Changing the Covenant is a sacred act. It requires deliberation, consensus, and 
   - **The Change**: What principle or governance rule is being modified?
   - **The Rationale**: Why is this change necessary?
   - **The Impact**: How will this affect our daily operations?
-  - **The Implementation**: What changes will be needed in `citadel-config`?
+  - **The Implementation**: What changes will be needed in `the-citadel`?
 
 ### 2. The Debate Period
 - **Minimum Duration**: 72 hours for minor changes, 1 week for major changes
@@ -105,7 +105,7 @@ Changing the Covenant is a sacred act. It requires deliberation, consensus, and 
 ### 4. The Proclamation
 Upon approval and merge:
 - The change is announced in `#engineering-announcements`
-- A corresponding issue is automatically created in `citadel-config` for implementation
+- A corresponding issue is automatically created in `the-citadel` for implementation
 - The merge commit includes all approvers as co-authors
 - The decision is recorded in `REFERENCE/decisions/`
 
@@ -117,7 +117,7 @@ In times of crisis, normal governance may be suspended:
 - **When**: Critical security issues, production outages, or compliance emergencies
 - **Who**: Any Watcher may invoke emergency powers
 - **What**: Direct changes to infrastructure without prior Covenant approval
-- **After**: 
+- **After**:
   - Emergency changes must be documented within 24 hours
   - A post-mortem must be conducted within 1 week
   - Covenant updates must be proposed to codify lessons learned
@@ -191,5 +191,5 @@ All who join The Nash Group implicitly accept this governance model. By contribu
 
 *"In unity, strength. In debate, wisdom. In code, immortality."*
 
-**Next Document**: [`PRINCIPLES.md`](./PRINCIPLES.md) - Our technical standards  
-**Implementation**: [`citadel-config`](https://github.com/the-nash-group/citadel-config) - Where philosophy becomes reality
+**Next Document**: [`PRINCIPLES.md`](./PRINCIPLES.md) - Our technical standards
+**Implementation**: [`the-citadel`](https://github.com/The-Nash-Group/citadel-config) - Where philosophy becomes reality

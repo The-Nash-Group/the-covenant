@@ -1,0 +1,17 @@
+# the-covenant — Philosophy & Governance
+# Tool versions per .org/standards/tool-versions.md
+
+[tools]
+python = "3.13"
+
+[tasks.validate]
+description = "Validate repo structure"
+run = "../.org/tooling/validators/validate-repo-structure.sh ."
+
+[tasks.check-naming]
+description = "Check naming conventions"
+run = "../.org/tooling/validators/validate-naming.sh ."
+
+[tasks.check-secrets]
+description = "Scan for secrets"
+run = "../.org/tooling/validators/check-secrets.sh ."

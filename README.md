@@ -13,7 +13,7 @@ Our core values, principles, and sacred laws. The philosophical foundation that 
 ### 2. **[The Human Mandate](./HUMAN_MANDATE.md)** - The "Who"
 The responsibilities and roles of the Guardians who interpret our principles and operate our systems. The bridge between philosophy and implementation.
 
-### 3. **[The Citadel](https://github.com/the-nash-group/citadel-config)** - The "How"
+### 3. **[The Citadel](https://github.com/The-Nash-Group/citadel-config)** - The "How"
 The technical engine of enforcement. The Infrastructure as Code that translates our principles into reality through Terraform.
 
 This is `the-covenant` - the philosophical foundation, where human wisdom guides machine execution.
@@ -22,21 +22,43 @@ This is `the-covenant` - the philosophical foundation, where human wisdom guides
 
 ```
 the-covenant/
-├── README.md                    # This scroll - The gate inscription
+├── README.md                     # This scroll - The gate inscription
+├── CLAUDE.md                     # AI assistant context
 ├── HUMAN_MANDATE.md              # The Bridge - Guardian roles and responsibilities
 ├── GOVERNANCE.md                 # The Laws of the Clans
 ├── PRINCIPLES.md                 # The Art of the Duel (technical standards)
+├── CONTRIBUTING.md               # The Path to Immortality
+├── CHANGELOG.md                  # Change history
+├── LICENSE                       # License
+├── docs/
+│   ├── role-mapping.md           # Guardian role mapping
+│   └── architecture/             # Architecture Decision Records (canonical home)
+│       ├── 000-template.md
+│       ├── 001-establish-three-pillar-repository-architecture.md
+│       ├── 002-governed-agentic-development.md
+│       └── 003-establish-cloudflare-governance-baseline.md
+├── policies/                     # Formal policy framework
+│   ├── README.md                 # Policy index and mapping
+│   ├── sc-*.md                   # Source Control policies
+│   ├── sec-*.md                  # Security policies
+│   ├── gov-*.md                  # Governance policies
+│   ├── ops-*.md                  # Operations policies
+│   ├── inf-*.md, doc-*.md, ...   # Infrastructure, Documentation, etc.
+│   ├── agt-*.md                  # Agent Governance policies
+│   ├── guides/                   # Policy implementation guides
+│   │   └── policy-enforcement.md
+│   └── specs/                    # Policy specifications
+│       └── iam-specification.md
+├── history/                      # Historical reports and research
+│   ├── reports/2025-11/          # November 2025 governance and strategy artifacts
+│   └── research/                 # Research documents
+├── schemas/                      # JSON schemas (e.g., ADR schema)
 ├── REFERENCE/                    # The Archives
 │   ├── index.md                  # The Archivist's Guide
 │   ├── legacy-safe-settings/     # The Old Ways (archived YAML)
-│   │   ├── org-settings.yml
-│   │   ├── suborg-platform.yml
-│   │   └── repo-citadel.yml
-│   └── decisions/                # Architecture Decision Records
-│       └── 001-terraform-migration.md
-├── .github/
-│   └── PULL_REQUEST_TEMPLATE.md # The Ritual of Amendment
-└── CONTRIBUTING.md               # The Path to Immortality
+│   └── decisions/                # Legacy decision records (archived)
+└── .github/
+    └── PULL_REQUEST_TEMPLATE.md  # The Ritual of Amendment
 ```
 
 ## The Mission, Vision, and Values
@@ -75,7 +97,7 @@ The PR is debated openly. All Immortals may voice their wisdom. The proposal mus
 Once approved and merged, the principle becomes law. The document is updated, the chronicle recorded.
 
 ### 4. The Translation
-A Mentor opens a PR in `citadel-config`, translating the ratified principle into Terraform code:
+A Mentor opens a PR in `the-citadel`, translating the ratified principle into Terraform code:
 - A governance change becomes a `github_repository_ruleset`
 - A security principle becomes a `cloudflare_ruleset`
 - An access policy becomes team permissions and CODEOWNERS
@@ -95,7 +117,7 @@ Defines the clans, their powers, and the rituals of change. Who may propose, who
 Our technical playbook. Specific, actionable standards for how we build. Each principle includes:
 - **The Law**: The rule itself
 - **The Lesson**: The hard-fought wisdom behind it
-- **The Implementation**: How it's enforced in `citadel-config`
+- **The Implementation**: How it's enforced in `the-citadel`
 
 ### `REFERENCE/`
 The archives of our journey. Historical context, deprecated practices, and the evolution of our thinking. Not a graveyard, but a museum.
@@ -141,7 +163,7 @@ The Covenant is maintained by the collective wisdom of The Nash Group, with spec
 
 ## The Bridge to Implementation
 
-While this repository holds no technical enforcement, it maintains a sacred link to `citadel-config`:
+While this repository holds no technical enforcement, it maintains a sacred link to `the-citadel`:
 
 - Every principle here should map to Terraform code there
 - Every Terraform resource there should trace back to a principle here
@@ -149,12 +171,12 @@ While this repository holds no technical enforcement, it maintains a sacred link
 
 ## The Ancient Wisdom
 
-> "The Covenant without the Citadel is mere words.  
-> The Citadel without the Covenant is mere machinery.  
+> "The Covenant without the Citadel is mere words.
+> The Citadel without the Covenant is mere machinery.
 > Together, they are civilization."
 
 ---
 
-*For the technical implementation of these principles, see [`citadel-config`](https://github.com/the-nash-group/citadel-config)*
+*For the technical implementation of these principles, see [`the-citadel`](https://github.com/The-Nash-Group/citadel-config)*
 
 *For questions about this governance model, raise an issue or consult the archives in `REFERENCE/`*

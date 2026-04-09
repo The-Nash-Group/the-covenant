@@ -1,0 +1,28 @@
+repos:
+  - repo: local
+    hooks:
+      - id: validate-structure
+        name: Validate Repository Structure
+        entry: bash -c 'if [ -f "../.org/tooling/validators/validate-repo-structure.sh" ]; then ../.org/tooling/validators/validate-repo-structure.sh .; fi'
+        language: system
+        pass_filenames: false
+
+      - id: validate-naming
+        name: Validate Naming Conventions
+        entry: bash -c 'if [ -f "../.org/tooling/validators/validate-naming.sh" ]; then ../.org/tooling/validators/validate-naming.sh .; fi'
+        language: system
+        pass_filenames: false
+
+      - id: check-secrets
+        name: Check for Secrets
+        entry: bash -c 'if [ -f "../.org/tooling/validators/check-secrets.sh" ]; then ../.org/tooling/validators/check-secrets.sh .; fi'
+        language: system
+        pass_filenames: false
+
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.5.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-added-large-files

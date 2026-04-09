@@ -1,0 +1,325 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://the-nash-group.org/schemas/adr-schema.json",
+  "title": "Architecture Decision Record Schema",
+  "description": "JSON Schema for validating ADRs in The Nash Group. This is The Contract that all agents and humans must follow when proposing architectural decisions.",
+  "type": "object",
+  "required": [
+    "title",
+    "status",
+    "context",
+    "decision",
+    "consequences",
+    "metadata"
+  ],
+  "properties": {
+    "title": {
+      "type": "string",
+      "description": "The title of the ADR, matching the filename",
+      "minLength": 10,
+      "maxLength": 200,
+      "pattern": "^[A-Z].*[^.]$"
+    },
+    "status": {
+      "type": "string",
+      "description": "Current status of the ADR",
+      "enum": [
+        "proposed",
+        "accepted",
+        "deprecated",
+        "superseded"
+      ]
+    },
+    "date": {
+      "type": "string",
+      "description": "Date the ADR was created (ISO 8601)",
+      "format": "date",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+    },
+    "deciders": {
+      "type": "array",
+      "description": "List of Guardians who must approve this ADR",
+      "items": {
+        "type": "string",
+        "pattern": "^@[a-z-]+$"
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "consulted": {
+      "type": "array",
+      "description": "List of roles/people consulted but not deciding",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "informed": {
+      "type": "array",
+      "description": "List of roles/people to be informed after decision",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "context": {
+      "type": "object",
+      "description": "The context section explaining the problem/situation",
+      "required": ["problem", "constraints", "assumptions"],
+      "properties": {
+        "problem": {
+          "type": "string",
+          "description": "What problem are we solving?",
+          "minLength": 50
+        },
+        "constraints": {
+          "type": "array",
+          "description": "What constraints limit our options?",
+          "items": {
+            "type": "string",
+            "minLength": 10
+          },
+          "minItems": 1
+        },
+        "assumptions": {
+          "type": "array",
+          "description": "What assumptions are we making?",
+          "items": {
+            "type": "string",
+            "minLength": 10
+          },
+          "minItems": 1
+        },
+        "alternatives_considered": {
+          "type": "array",
+          "description": "What alternatives did we consider and reject?",
+          "items": {
+            "type": "object",
+            "required": ["name", "reasoning"],
+            "properties": {
+              "name": {
+                "type": "string",
+                "minLength": 5
+              },
+              "reasoning": {
+                "type": "string",
+                "minLength": 20
+              }
+            }
+          }
+        }
+      }
+    },
+    "decision": {
+      "type": "object",
+      "description": "The actual decision being made",
+      "required": ["summary", "rationale", "implementation"],
+      "properties": {
+        "summary": {
+          "type": "string",
+          "description": "One sentence summary of the decision",
+          "minLength": 20,
+          "maxLength": 200
+        },
+        "rationale": {
+          "type": "string",
+          "description": "Detailed explanation of why this decision",
+          "minLength": 100
+        },
+        "implementation": {
+          "type": "object",
+          "description": "How will this be implemented",
+          "required": ["approach", "components"],
+          "properties": {
+            "approach": {
+              "type": "string",
+              "minLength": 50
+            },
+            "components": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "minItems": 1
+            },
+            "timeline": {
+              "type": "string",
+              "description": "Expected timeline for implementation"
+            }
+          }
+        }
+      }
+    },
+    "consequences": {
+      "type": "object",
+      "description": "What becomes easier/harder because of this decision",
+      "required": ["positive", "negative", "neutral"],
+      "properties": {
+        "positive": {
+          "type": "array",
+          "description": "What becomes easier/better",
+          "items": {
+            "type": "string",
+            "minLength": 10
+          },
+          "minItems": 1
+        },
+        "negative": {
+          "type": "array",
+          "description": "What becomes harder/worse",
+          "items": {
+            "type": "string",
+            "minLength": 10
+          },
+          "minItems": 1
+        },
+        "neutral": {
+          "type": "array",
+          "description": "What remains unchanged",
+          "items": {
+            "type": "string",
+            "minLength": 10
+          }
+        },
+        "risks": {
+          "type": "array",
+          "description": "What risks does this introduce",
+          "items": {
+            "type": "object",
+            "required": ["risk", "mitigation"],
+            "properties": {
+              "risk": {
+                "type": "string",
+                "minLength": 10
+              },
+              "severity": {
+                "type": "string",
+                "enum": ["low", "medium", "high", "critical"]
+              },
+              "mitigation": {
+                "type": "string",
+                "minLength": 10
+              }
+            }
+          }
+        }
+      }
+    },
+    "compliance": {
+      "type": "object",
+      "description": "How this ADR aligns with existing governance",
+      "properties": {
+        "covenant_principles": {
+          "type": "array",
+          "description": "Which Covenant principles does this support/implement",
+          "items": {
+            "type": "string",
+            "pattern": "^Principle #[0-9]+: .+"
+          }
+        },
+        "policies_affected": {
+          "type": "array",
+          "description": "Which policies are created/modified/deprecated",
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Z]{3}-[0-9]{3}: .+"
+          }
+        },
+        "governance_level": {
+          "type": "string",
+          "description": "What approval level is required",
+          "enum": [
+            "stronghold",
+            "citadel",
+            "covenant"
+          ]
+        }
+      }
+    },
+    "metadata": {
+      "type": "object",
+      "description": "Metadata about the ADR itself",
+      "required": ["author", "created_date"],
+      "properties": {
+        "author": {
+          "type": "string",
+          "description": "Who authored this ADR (human or agent)",
+          "pattern": "^(@[a-z-]+|[A-Z][a-z]+ [A-Z][a-z]+|Claude Sonnet 4\\.5)$"
+        },
+        "author_type": {
+          "type": "string",
+          "description": "Was this authored by human or agent",
+          "enum": ["human", "agent"]
+        },
+        "created_date": {
+          "type": "string",
+          "format": "date",
+          "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+        },
+        "updated_date": {
+          "type": "string",
+          "format": "date",
+          "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+        },
+        "supersedes": {
+          "type": "array",
+          "description": "List of ADRs this supersedes",
+          "items": {
+            "type": "string",
+            "pattern": "^ADR-[0-9]{3}$"
+          }
+        },
+        "superseded_by": {
+          "type": "string",
+          "description": "ADR that supersedes this one",
+          "pattern": "^ADR-[0-9]{3}$"
+        },
+        "tags": {
+          "type": "array",
+          "description": "Tags for categorization",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z-]+$"
+          }
+        },
+        "related_adrs": {
+          "type": "array",
+          "description": "Related ADRs",
+          "items": {
+            "type": "string",
+            "pattern": "^ADR-[0-9]{3}$"
+          }
+        }
+      }
+    },
+    "validation": {
+      "type": "object",
+      "description": "Validation metadata (auto-generated by Iron Gate)",
+      "properties": {
+        "schema_version": {
+          "type": "string",
+          "description": "Version of this schema used for validation",
+          "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+        },
+        "validated_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "validated_by": {
+          "type": "string",
+          "description": "Which validation system/workflow",
+          "pattern": "^(constitutional-validation\\.yml|manual-review)$"
+        },
+        "policy_references_verified": {
+          "type": "boolean",
+          "description": "Were all policy references validated against actual files"
+        },
+        "principle_references_verified": {
+          "type": "boolean",
+          "description": "Were all principle references validated"
+        }
+      }
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,8 +1,10 @@
+> **ARCHIVED**: This is a legacy decision record. Current ADRs live in `docs/architecture/`.
+
 # ADR-002: Separation of Philosophy and Implementation
 
-**Date**: 2025-08-13  
-**Status**: Accepted  
-**Deciders**: @the-nash-group/watchers, @the-nash-group/mentors  
+**Date**: 2025-08-13
+**Status**: Accepted
+**Deciders**: @the-nash-group/watchers, @the-nash-group/mentors
 
 ## Context
 
