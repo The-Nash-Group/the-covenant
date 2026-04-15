@@ -40,7 +40,7 @@ We will replace static API keys with **identity-based authentication** using the
 
 * **Identity Provider**: Authentik (self-hosted on Hetzner as the-shield) with Google Workspace as the upstream identity source.
 * **Auth Chain**: Google Workspace → Authentik → GitHub OAuth apps (one per org). This is the "Poor Man's Enterprise" pattern — OAuth-based SSO rather than GitHub Enterprise SAML (see ADR-004).
-* **Secrets Management**: Infisical (self-hosted at infisical.jefahnierocks.com) manages all secrets and API tokens. gopass serves as the offline mirror for break-glass scenarios.
+* **Secrets Management**: Runtime and automation use the repo's approved managed backend. On the managed workstation, local developer and agent reads use env vars and/or `op read`. Any remaining legacy archive material is migration-only residue, not current behavior.
 * **Signing**: Every decision will be cryptographically signed using ephemeral keys (Fulcio/Sigstore).
 * **Transparency**: All signatures are logged to a transparency log (Rekor).
 

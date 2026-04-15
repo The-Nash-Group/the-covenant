@@ -80,7 +80,7 @@ Google Workspace (SSoT for identity)
 Infisical, self-hosted at infisical.jefahnierocks.com, replaces ad-hoc secrets management:
 
 - **Primary secrets store**: All API tokens, service credentials, and configuration secrets
-- **gopass as offline mirror**: Break-glass access when Infisical is unreachable (gopass passphrase: managed separately)
+- **Local vs runtime boundary**: Managed workstations use env vars and/or `op read` for local bootstrap. Runtime and CI continue to use each repo's approved managed backend. Any remaining legacy archive material is non-default.
 - **Eliminates**: Static tokens in `.envrc` files, manually-rotated API keys, secrets scattered across services
 - **Per-org scoping**: Infisical projects map to GitHub orgs, enabling least-privilege secret access
 

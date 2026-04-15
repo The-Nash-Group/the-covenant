@@ -33,7 +33,7 @@ Short-lived, scoped machine identities eliminate these risks by design.
 **Exceptions:**
 - `GITHUB_TOKEN` within GitHub Actions workflows (platform-managed, job-scoped, automatic)
 - Developer Fine-grained PATs for local CLI use (subject to org approval policy and 90-day max expiry)
-- Break-glass credentials stored in gopass (subject to GOV-003 emergency procedures)
+- Break-glass credentials stored in the repo's approved managed backend; on the managed workstation, local retrieval may use env vars or `op read` under GOV-003. Any remaining legacy archive material is non-default.
 
 ## Identity Hierarchy for Machines
 
@@ -142,7 +142,7 @@ resource "google_iam_workload_identity_pool_provider" "github" {
 ### Human Process
 
 1. **App Registration**: New GitHub Apps proposed via PR to the-citadel, reviewed per Citadel governance (1 Mentor + 1 Watcher)
-2. **Private Key Custody**: Private keys stored in secrets vault (gopass now, Infisical after POC 2)
+2. **Private Key Custody**: Private keys stored in the repo's approved secrets authority. On the managed workstation, local OpenTofu reads use env vars or `op read`; CI/runtime follow the repo's managed backend.
 3. **Permission Review**: Quarterly review of all App permissions against actual usage
 4. **Decommissioning**: Unused Apps removed via PR, private keys destroyed
 

@@ -1,8 +1,8 @@
 # GitHub Machine Identity Specification
 
-**Version**: 1.0.0
+**Version**: 1.1.0
 **Created**: 2026-03-02
-**Updated**: 2026-03-02
+**Updated**: 2026-04-15
 **Policies**: SEC-005 (Machine Identity), SEC-001 (Zero Trust), SEC-003 (Least Privilege), INF-001 (Infrastructure as Code)
 
 ---
@@ -32,7 +32,8 @@ The Nash Group uses a **single GitHub App, multi-installation** model:
 │  Owner: @verlyn13                                  │
 │                                                     │
 │  Private Key (.pem)                                │
-│  └── Stored in: gopass (now), Infisical (future)   │
+│  └── Local managed machine: env vars / `op read`   │
+│      CI/runtime: repo-approved managed backend     │
 │                                                     │
 │  Installations:                                     │
 │  ├── The-Nash-Group    (all repos, full perms)     │
@@ -122,7 +123,7 @@ The Nash Group uses a **single GitHub App, multi-installation** model:
 |------------|-----------------|
 | `actions` | Not needed for Terraform management |
 | `packages` | Not managing GitHub Packages |
-| `secrets` | Secrets managed via Infisical/gopass, not GitHub |
+| `secrets` | Secrets managed outside the App via repo-approved backends, not GitHub |
 | `security_events` | Read-only audit handled separately |
 | `single_file` | Not needed — use `contents` with repo scoping |
 
@@ -258,8 +259,8 @@ GitHub App credentials are injected into CI and local runs through approved secr
 
 | Variable | Category | Sensitive | Source |
 |----------|----------|-----------|--------|
-| `APP_ID` / `TF_VAR_github_app_id` | GitHub Actions secret / local env | No | GitHub App settings page / gopass |
-| `APP_PEM` / `TF_VAR_github_app_pem_file` | GitHub Actions secret / local env | **Yes** | Downloaded `.pem`, stored in gopass as PEM contents |
+| `APP_ID` / `TF_VAR_github_app_id` | GitHub Actions secret / local env | No | GitHub App settings page / local env or `op read` bootstrap |
+| `APP_PEM` / `TF_VAR_github_app_pem_file` | GitHub Actions secret / local env | **Yes** | Downloaded `.pem`, stored in the repo's approved local bootstrap and runtime backend |
 | `steps.app-token.outputs.installation-id` / `TF_VAR_github_app_installation_id` | Workflow output / local env | No | GitHub App installation page |
 
 ---
@@ -268,27 +269,15 @@ GitHub App credentials are injected into CI and local runs through approved secr
 
 ### 4.1 Storage
 
-**Current (Pre-Infisical):**
+**Current local/CI contract:**
 
 ```bash
-# Store in gopass
-gopass insert -m infra/github-app/private-key
-
-# Retrieve for local OpenTofu use
-export TF_VAR_github_app_pem_file="$(gopass cat infra/github-app/private-key)"
+# Local OpenTofu reads the PEM from env vars or `op read`
+export TF_VAR_github_app_pem_file="$(op read --account my.1password.com "op://Dev/citadel-github-app/private-key")"
 tofu plan
 ```
 
-**Future (Post-Infisical, after POC 2):**
-
-```bash
-# Store in Infisical
-infisical secrets set GITHUB_APP_PEM --env=production --project=the-citadel
-
-# Retrieve for local use
-eval $(infisical export --format=dotenv --env=production --project=the-citadel)
-terraform plan
-```
+CI and runtime continue to use the repo's approved managed backend. For `the-citadel` today, that is GitHub Actions secrets plus GitHub App authentication. If a repo later adopts Infisical or another managed runtime backend, that is a repo decision and does not replace the local workstation contract automatically.
 
 ### 4.2 Rotation
 
@@ -296,7 +285,7 @@ Private keys **should** be rotated every 6 months:
 
 1. Generate new private key in GitHub App settings (old key remains valid)
 2. Store new key in secrets vault
-3. Update GitHub Actions `APP_PEM` secret and local gopass entry
+3. Update GitHub Actions `APP_PEM` secret and the local `op read` source
 4. Verify OpenTofu can authenticate with new key
 5. Delete old key from GitHub App settings
 6. Delete old key from secrets vault
@@ -308,7 +297,7 @@ If a private key is suspected compromised:
 1. **Immediately** delete all private keys in GitHub App settings (revokes all IATs)
 2. Generate a new private key
 3. Store in secrets vault
-4. Update GitHub Actions `APP_PEM` secret and local gopass entry
+4. Update GitHub Actions `APP_PEM` secret and the local `op read` source
 5. Audit GitHub audit log for unauthorized actions
 6. File incident report per OPS-010
 
@@ -415,7 +404,7 @@ gh api /apps/tng-citadel-automation | jq '.permissions'
 
 - [ ] Register `tng-citadel-automation` GitHub App in The-Nash-Group org
 - [ ] Set permissions per Section 2.2
-- [ ] Generate private key, store in gopass
+- [ ] Generate private key, store in the approved local bootstrap and CI backend
 - [ ] Install App in seven-springs org (POC target)
 - [ ] Configure Terraform provider with App auth
 - [ ] Verify: `terraform plan` authenticates via App
@@ -435,12 +424,12 @@ gh api /apps/tng-citadel-automation | jq '.permissions'
 - [ ] Configure Push Protection for private key patterns
 - [ ] Set up quarterly compliance check workflow
 
-### Phase 4: Migration to Infisical (Post-POC 2)
+### Phase 4: Runtime backend hardening (repo decision)
 
-- [ ] Migrate private key from gopass to Infisical
-- [ ] Update GitHub Actions and local runbooks to source from Infisical
-- [ ] Update local development workflow
-- [ ] Decommission gopass entry
+- [ ] If the repo adopts a managed runtime backend, document that authority explicitly
+- [ ] Keep local workstation reads on env vars and/or `op read`
+- [ ] Update CI and local runbooks together if the runtime backend changes
+- [ ] Retire any legacy archive entry after migration is confirmed
 
 ---
 
@@ -457,13 +446,9 @@ gh api /apps/tng-citadel-automation | jq '.permissions'
 
 ## Changelog
 
-### v1.0.0 (2026-03-02)
-- Initial specification
-- GitHub App as primary machine identity
-- Single-app multi-installation model for 5 orgs
-- Terraform provider integration pattern
-- Private key management via gopass (Infisical planned)
-- Fine-grained PAT policy for developer CLI use
-- Compliance verification procedures
+### v1.1.0 (2026-04-15)
+- Updated local secret guidance to env vars and/or `op read`
+- Clarified that runtime secret authority remains repo-owned
+- Marked legacy archive handling as non-current behavior
 
 *"One App, five orgs, zero static credentials. Every API call authenticated, scoped, and auditable."*
