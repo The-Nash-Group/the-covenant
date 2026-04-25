@@ -1,8 +1,9 @@
 # Cloudflare Ownership Transition Specification
 
-**Status:** PROPOSED
+**Status:** ACCEPTED
 **Date:** 2026-04-08
-**Authority:** Draft Covenant specification for review; parent directive is binding for current execution
+**Accepted:** 2026-04-10
+**Authority:** Ratified Covenant specification; parent directive is binding for current execution
 **Implements:** Principle 5 (Infrastructure as Code), Principle 9 (Zero Trust), Principle 10 (Least Privilege), ADR-004, ADR-005
 
 ---
