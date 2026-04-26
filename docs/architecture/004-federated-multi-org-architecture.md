@@ -5,11 +5,11 @@
 | Field | Value |
 |-------|-------|
 | **Date** | 2026-03-02 |
-| **Last Updated** | 2026-03-02 |
+| **Last Updated** | 2026-04-26 |
 | **Author** | Agent |
 | **Governance Level** | Covenant (2 Watchers + 2 Mentors, 72h debate) |
 | **Status** | Accepted |
-| **Related ADRs** | ADR-001, ADR-002, ADR-003 |
+| **Related ADRs** | ADR-001, ADR-002, ADR-003, ADR-007 (refines §4) |
 
 ## Context
 
@@ -49,7 +49,7 @@ Each legal/operational entity gets its own GitHub organization, all on Free tier
 | Organization | Entity | Legal Structure | Primary Domain |
 |-------------|--------|----------------|----------------|
 | `the-nash-group` | Parent holding company | Sole proprietorship | thenash.group |
-| `happy-patterns` | Happy Patterns LLC | LLC | happy-patterns.co |
+| `happy-patterns-org` | Happy Patterns LLC | LLC | happy-patterns.com (also owns happy-patterns.co) |
 | `jefahnierocks` | Personal/creative | Personal | jefahnierocks.com |
 | `litecky-editing` | Professional editing | Sole proprietorship | litecky-editing (TBD) |
 | `seven-springs` | Sandbox/examples | None (synthetic) | None |
@@ -83,14 +83,15 @@ Infisical, self-hosted at infisical.jefahnierocks.com, replaces ad-hoc secrets m
 - **Local vs runtime boundary**: Managed workstations use env vars and/or `op read` for local bootstrap. Runtime and CI continue to use each repo's approved managed backend. Any remaining legacy archive material is non-default.
 - **Eliminates**: Static tokens in `.envrc` files, manually-rotated API keys, secrets scattered across services
 - **Per-org scoping**: Infisical projects map to GitHub orgs, enabling least-privilege secret access
+- **IaC planning path**: OpenTofu may manage Infisical declaratively through the Infisical provider for projects, identities, approvals, dynamic secrets, rotations, syncs, certificate management, and secret objects; the detailed planning inventory lives in the Secrets Management Specification
 
 ### 4. Subsidiary Governance Model
 
-All subsidiaries inherit the 16 Covenant principles. They can add constraints but never subtract.
+> **Refined by ADR-007 (2026-04-20):** The original formulation below described governance as inheritance. ADR-007 refines this to a restatement model: subsidiaries do not inherit parent rules by pointer; they restate functionally equivalent rules on their own authority, in their own voice, in their own artifacts. A subsidiary may add constraints beyond what the parent specifies, but must not describe its own dev-agent-facing rules as Nash-derived. See ADR-007 for the three invariants (identity isolation, authority restatement, spec flow).
 
 | Governance Aspect | Parent (the-nash-group) | Subsidiaries |
 |-------------------|------------------------|--------------|
-| **Principles** | Defines all 16 | Inherits all 16, may add more |
+| **Principles** | Defines all 16 | Restates equivalent rules on own authority; may add more |
 | **Default governance** | Covenant (highest) | Stronghold (lowest) |
 | **Infrastructure changes** | Citadel level | Citadel level (the-citadel manages all orgs) |
 | **Product changes** | N/A | Stronghold (1 Mentor) |
@@ -101,7 +102,7 @@ All subsidiaries inherit the 16 Covenant principles. They can add constraints bu
 | Domain | Owner | Purpose | Notes |
 |--------|-------|---------|-------|
 | `thenash.group` | Parent | Organizational identity | Cloudflare-managed |
-| `happy-patterns.co` | Happy Patterns LLC | Primary product domain | `.com` redirects to `.co` |
+| `happy-patterns.com` | Happy Patterns LLC | Primary product domain | Landing page pending; `happy-patterns.co` also owned as secondary |
 | `jefahnierocks.com` | Personal | Personal/creative projects | Hosts Infisical, Authentik |
 | Future subsidiary domains | Per entity | As needed | Follow Cloudflare governance (ADR-003) |
 
@@ -114,25 +115,25 @@ All subsidiaries inherit the 16 Covenant principles. They can add constraints bu
 3. **No Enterprise tax**: All orgs on Free tier; Authentik provides federation for free (self-hosted)
 4. **Identity federation**: Single login experience across all orgs via Authentik OAuth
 5. **Secrets centralized**: Infisical eliminates secrets sprawl across `.envrc` files and manual rotation
-6. **IaC coverage**: the-citadel manages all orgs via multi-provider Terraform — no ClickOps anywhere
+6. **IaC coverage**: the-citadel manages all orgs via multi-provider OpenTofu/IaC — no ClickOps anywhere
 
 ### Negative
 
-1. **No cross-org branch protection**: GitHub Free tier cannot enforce rulesets across orgs; each org configures independently via Terraform
+1. **No cross-org branch protection**: GitHub Free tier cannot enforce rulesets across orgs; each org configures independently via OpenTofu/IaC
 2. **Authentik maintenance**: Self-hosted identity provider requires uptime monitoring, updates, and backup
 3. **No SAML-enforced login**: OAuth apps are voluntary — a user *could* bypass Authentik and log in directly to GitHub (mitigated by single-operator discipline)
-4. **Multi-provider Terraform complexity**: the-citadel requires one GitHub provider block per org, increasing configuration surface
+4. **Multi-provider OpenTofu/IaC complexity**: the-citadel requires one GitHub provider block per org, increasing configuration surface
 
 ### Neutral
 
 1. **Per-org billing**: Each org manages its own billing relationship (appropriate for separate legal entities)
-2. **Terraform multi-provider**: Adds ~20 lines of provider config per org, manageable for 5 orgs
+2. **OpenTofu multi-provider**: Adds ~20 lines of provider config per org, manageable for 5 orgs
 3. **Authentik learning curve**: One-time setup cost; Authentik has good documentation and active community
 
 ## Compliance
 
 - **Principle #1** (Sacred Timeline / SSoT): Google Workspace is the single source of truth for identity
-- **Principle #5** (Infrastructure as Code): All org configurations managed via Terraform in the-citadel
+- **Principle #5** (Infrastructure as Code): All org configurations managed via OpenTofu/IaC in the-citadel
 - **Principle #9** (Zero Trust): Authentik enforces identity-based access; no shared credentials
 - **Principle #10** (Least Privilege): Per-org OAuth scoping limits blast radius; Infisical projects scope secrets per-org
 - **Principle #16** (Living Law): This architecture evolved from experience — single-org was tried, found wanting, and replaced
@@ -142,6 +143,7 @@ All subsidiaries inherit the 16 Covenant principles. They can add constraints bu
 - [ADR-001: Three-Pillar Repository Architecture](./001-establish-three-pillar-repository-architecture.md)
 - [ADR-002: Governed Agentic Development](./002-governed-agentic-development.md)
 - [ADR-003: Cloudflare Governance Baseline](./003-establish-cloudflare-governance-baseline.md)
+- [ADR-007: Subsidiary Authority and Identity Isolation](./007-subsidiary-authority-and-identity-isolation.md) — refines §4 (restatement model)
 - [PRINCIPLES.md](../../PRINCIPLES.md) — 16 core principles
 - [GOVERNANCE.md](../../GOVERNANCE.md) — Decision authority matrix
 
@@ -155,3 +157,6 @@ All subsidiaries inherit the 16 Covenant principles. They can add constraints bu
 |------|--------|---------|
 | 2026-03-02 | Agent | Initial creation — documents multi-org GitHub, Authentik federation, Infisical secrets, subsidiary governance, domain architecture |
 | 2026-04-05 | Agent | Added current-state note: ADR-005 migration converged for the parent org on 2026-04-04, Phase 4 now focuses on onboarding `jefahnierocks`, and OPA enforcement is partially delivered rather than merely planned. |
+| 2026-04-15 | Agent | Clarified the Infisical planning path: OpenTofu may manage Infisical projects, identities, approvals, dynamic secrets, syncs, rotations, certificates, and secret objects as code; detailed capability inventory moved to the active Secrets Management Specification. |
+| 2026-04-20 | Agent | Refined §4 Subsidiary Governance Model in place per ADR-007: replaced inheritance language ("inherits all 16") with restatement model ("restates equivalent rules on own authority"); updated §5 Domain Architecture entry for Happy Patterns LLC (primary domain is happy-patterns.com, happy-patterns.co also owned as secondary); corrected §1 GitHub Organization table to reference happy-patterns-org (the actual GitHub org slug, now on a two-seat teams plan); added ADR-007 to Related ADRs and References. Original decision preserved; refinement scope limited to authority-layer semantics and factual corrections. |
+| 2026-04-26 | Agent | Aligned current-state IaC wording with ADR-005: replaced active Terraform implementation language with OpenTofu/IaC terminology without changing the multi-org architecture decision. |

@@ -1,6 +1,6 @@
 # Secrets Management Specification
 
-**Version:** 1.2.0
+**Version:** 1.3.0
 **Status:** ACTIVE
 **Date:** 2026-04-15
 **Implements:** Principle 6 (No Committed Secrets), Principle 9 (Zero Trust), Principle 10 (Least Privilege)
@@ -169,6 +169,153 @@ The `.envrc.template` pattern in the Citadel repository. The Guardian copies it 
 
 Runtime and service secret injection are repo-owned. Approved authorities may include Infisical, GitHub environments, GitHub App auth, OIDC, cloud secret managers, or another governed backend. The parent policy defines the boundary; each repo defines its concrete runtime authority. 1Password on the managed workstation is a local human/agent read path, not the default runtime backend.
 
+### 4.4 Planning Profile: Self-Hosted Infisical via OpenTofu
+
+Self-hosted Infisical is an approved **planning-stage** runtime backend profile within the Nash Group secrets architecture.
+
+This subsection records the current planning assumption for Infrastructure as Code:
+
+- Infisical may serve as a repo-owned runtime secret authority where a repo intentionally adopts it
+- OpenTofu may manage Infisical objects declaratively through the Infisical provider
+- Adopting a provider-backed Infisical model does **not** automatically replace the managed-workstation local bootstrap contract (`op read` and/or environment variables)
+- Human interactive workstation identity policy still belongs to SEC-004 and COM-001
+- Machine identity rules for unattended automation still belong to SEC-005
+- Each adopting repo must pin the Infisical provider version intentionally and treat the generated lockfile as part of the contract
+
+**Planning intent:** capture Infisical itself as governed infrastructure, not just a manual backend. The provider capability surface makes it possible to manage identity, approvals, dynamic secrets, rotation, sync, certificate issuance, and direct secret objects as code.
+
+**Current planning inventory of Infisical provider capabilities:**
+
+**Group machine identity:**
+- `infisical_group_machine_identity`
+
+**App connections:**
+- `infisical_app_connection_1password`
+- `infisical_app_connection_aws`
+- `infisical_app_connection_azure_app_configuration`
+- `infisical_app_connection_azure_client_secrets`
+- `infisical_app_connection_azure_devops`
+- `infisical_app_connection_azure_key_vault`
+- `infisical_app_connection_bitbucket`
+- `infisical_app_connection_cloudflare`
+- `infisical_app_connection_databricks`
+- `infisical_app_connection_flyio`
+- `infisical_app_connection_gcp`
+- `infisical_app_connection_github`
+- `infisical_app_connection_gitlab`
+- `infisical_app_connection_ldap`
+- `infisical_app_connection_mssql`
+- `infisical_app_connection_mysql`
+- `infisical_app_connection_oracledb`
+- `infisical_app_connection_postgres`
+- `infisical_app_connection_render`
+- `infisical_app_connection_supabase`
+
+**Approval controls:**
+- `infisical_access_approval_policy`
+- `infisical_secret_approval_policy`
+
+**Certificate management:**
+- `infisical_cert_manager_ca_certificate`
+- `infisical_cert_manager_certificate`
+- `infisical_cert_manager_certificate_policy`
+- `infisical_cert_manager_certificate_profile`
+- `infisical_cert_manager_external_ca_acme`
+- `infisical_cert_manager_external_ca_adcs`
+- `infisical_cert_manager_internal_ca`
+
+**Dynamic secrets:**
+- `infisical_dynamic_secret_aws_iam`
+- `infisical_dynamic_secret_kubernetes`
+- `infisical_dynamic_secret_mongo_atlas`
+- `infisical_dynamic_secret_mongo_db`
+- `infisical_dynamic_secret_sql_database`
+
+**External KMS:**
+- `infisical_external_kms_aws`
+
+**Groups:**
+- `infisical_group`
+- `infisical_groups` (data source)
+
+**Identities and identity auth methods:**
+- `infisical_identity`
+- `infisical_identity_aws_auth`
+- `infisical_identity_azure_auth`
+- `infisical_identity_gcp_auth`
+- `infisical_identity_jwt_auth`
+- `infisical_identity_kubernetes_auth`
+- `infisical_identity_oidc_auth`
+- `infisical_identity_token_auth`
+- `infisical_identity_token_auth_token`
+- `infisical_identity_universal_auth`
+- `infisical_identity_universal_auth_client_secret`
+- `infisical_identity_details` (data source)
+
+**KMS:**
+- `infisical_kms_key`
+- `infisical_kms_key_public_key` (data source)
+
+**Native integrations (deprecated):**
+- `infisical_integration_aws_parameter_store`
+- `infisical_integration_aws_secrets_manager`
+- `infisical_integration_circleci`
+- `infisical_integration_databricks`
+- `infisical_integration_gcp_secret_manager`
+
+**Organization role:**
+- `infisical_org_role`
+
+**Projects and project access model:**
+- `infisical_project`
+- `infisical_project_environment`
+- `infisical_project_group`
+- `infisical_project_identity`
+- `infisical_project_identity_specific_privilege`
+- `infisical_project_role`
+- `infisical_project_template`
+- `infisical_project_user`
+- `infisical_projects` (data source)
+
+**Secret rotations:**
+- `infisical_secret_rotation_aws_iam_user_secret`
+- `infisical_secret_rotation_azure_client_secret`
+- `infisical_secret_rotation_ldap_password`
+- `infisical_secret_rotation_mssql_credentials`
+- `infisical_secret_rotation_mysql_credentials`
+- `infisical_secret_rotation_oracledb_credentials`
+- `infisical_secret_rotation_postgres_credentials`
+
+**Secret syncs:**
+- `infisical_secret_sync_1password`
+- `infisical_secret_sync_aws_parameter_store`
+- `infisical_secret_sync_aws_secrets_manager`
+- `infisical_secret_sync_azure_app_configuration`
+- `infisical_secret_sync_azure_devops`
+- `infisical_secret_sync_azure_key_vault`
+- `infisical_secret_sync_bitbucket`
+- `infisical_secret_sync_cloudflare_pages`
+- `infisical_secret_sync_cloudflare_workers`
+- `infisical_secret_sync_databricks`
+- `infisical_secret_sync_flyio`
+- `infisical_secret_sync_gcp_secret_manager`
+- `infisical_secret_sync_github`
+- `infisical_secret_sync_gitlab`
+- `infisical_secret_sync_render`
+- `infisical_secret_sync_supabase`
+
+**Secrets, folders, imports, and tags:**
+- `infisical_secret` also appears in the provider surface as an ephemeral resource in the current planning input
+- `infisical_secret`
+- `infisical_secret_folder`
+- `infisical_secret_import`
+- `infisical_secret_tag`
+- `infisical_secret_folders` (data source)
+- `infisical_secret_metadata` (data source)
+- `infisical_secrets` (data source)
+
+**Planning implication:** if the Nash Group moves more runtime authority into Infisical, the platform can govern not only static secret values but also identity bootstrap, delegated access, approvals, dynamic credentials, provider sync, and rotation policy as code.
+
 ---
 
 ## 5. Lifecycle Requirements
@@ -298,6 +445,12 @@ This specification must be reviewed:
 ---
 
 ## Changelog
+
+### v1.3.0 (2026-04-15)
+
+- Added the planning-stage Infisical backend profile for OpenTofu-based management
+- Recorded the current Infisical provider capability inventory for identity, approvals, certificates, dynamic secrets, rotation, sync, KMS, projects, and direct secret resources
+- Clarified that adopting Infisical as runtime authority does not replace the managed-workstation local bootstrap contract automatically
 
 ### v1.2.0 (2026-04-15)
 

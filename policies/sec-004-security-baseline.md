@@ -3,11 +3,11 @@
 **Policy ID:** SEC-004
 **Category:** Security
 **Effective Date:** 2024-09-30
-**Last Updated:** 2024-09-30
+**Last Updated:** 2026-04-15
 
 ## Statement
 
-All systems and applications **must** implement a comprehensive security baseline covering authentication, encryption, vulnerability management, and incident response. Security is not an add-on but a foundational requirement.
+All systems and applications **must** implement a comprehensive security baseline covering authentication, encryption, vulnerability management, incident response, and workstation identity custody. Security is not an add-on but a foundational requirement.
 
 ## Rationale
 
@@ -31,6 +31,8 @@ Comprehensive security baseline enables proactive threat prevention, rapid incid
 - All third-party integrations and dependencies
 - All development and deployment processes
 - All user access management and authentication systems
+- Managed developer workstations used for organization access
+- Human-supervised local agent activity running on those workstations
 
 **Exceptions:**
 - Development and testing environments (reduced requirements)
@@ -551,6 +553,25 @@ if __name__ == "__main__":
 4. **Incident Response**: Rapid response to security incidents and vulnerabilities
 5. **Continuous Monitoring**: Ongoing security monitoring and threat intelligence
 
+## Managed Workstation SSH Baseline
+
+Managed workstations are part of the Nash Group security boundary. Interactive SSH identities on those machines must assume exposure pressure from local tools, browser extensions, terminals, shells, and synthetic agents.
+
+**Required controls:**
+- Interactive SSH private keys must not remain the active plaintext workstation path once migrated
+- Vault-backed or hardware-backed interactive key custody is preferred over plaintext private keys on disk
+- 1Password SSH agent is approved as the Nash Group default for interactive workstation SSH authentication
+- Public keys may remain on disk for OpenSSH host mapping, SSH signing references, and inventory
+- SSH agent forwarding must be disabled by default and enabled only per-host for explicitly trusted workflows
+- Human-supervised local agents may use a human interactive identity only with explicit human approval in the loop
+- This workstation control does not authorize use of human identities for unattended automation, CI, or servers
+
+**Example baseline SSH configuration:**
+```sshconfig
+Host *
+  ForwardAgent no
+```
+
 ## Security Control Categories
 
 ### Authentication and Identity Management
@@ -624,6 +645,29 @@ const authMiddleware = {
     legacyHeaders: false
   })
 };
+```
+
+### Workstation Identity Custody
+
+**Required workstation identity baseline:**
+```yaml
+workstation_identity_controls:
+  interactive_ssh_keys:
+    description: "Interactive private keys must be held outside active plaintext disk storage"
+    approved_custody:
+      - "1Password SSH agent"
+      - "Hardware-backed SSH key custody"
+    notes:
+      - "Public keys may remain on disk"
+      - "Human interactive identities are not machine identities"
+
+  ssh_forwarding:
+    description: "SSH forwarding is disabled by default"
+    default: "ForwardAgent no"
+    exception_rule: "Per-host only for explicitly trusted workflows"
+
+  local_agent_use:
+    description: "Human-supervised local agents require explicit human approval before using the human identity"
 ```
 
 ### Encryption and Data Protection
@@ -1213,12 +1257,14 @@ fi
 - Weekly security configuration validation
 - Monthly compliance framework assessment
 - Quarterly penetration testing and security review
+- Managed workstation baseline checks verify default `ForwardAgent no` posture where workstation configuration is audited
 
 **Manual Audits:**
 - Monthly security control effectiveness review
 - Quarterly incident response procedure testing
 - Annual third-party security assessment
 - Annual compliance framework certification
+- Quarterly review of managed workstation SSH custody and any forwarding exceptions
 
 **Reporting:**
 - Real-time security baseline compliance dashboard
@@ -1234,7 +1280,10 @@ fi
 - **Zero Trust:** [SEC-001 Zero Trust Architecture](./sec-001-zero-trust.md)
 - **Secrets Management:** [SEC-002 Secret Scanning](./sec-002-secret-scanning.md)
 - **Access Control:** [SEC-003 Least Privilege](./sec-003-least-privilege.md)
+- **Machine Identity Boundary:** [SEC-005 Machine Identity Management](./sec-005-machine-identity.md)
+- **Decision Record:** [ADR-006: Adopt 1Password SSH Agent for Interactive Workstation Identities](../docs/architecture/006-adopt-1password-ssh-agent-for-interactive-workstation-identities.md)
 
 ## Change History
 
 - **2024-09-30** - Initial creation establishing comprehensive security baseline requirements
+- **2026-04-15** - Added managed workstation SSH baseline controls for interactive key custody, forwarding defaults, and human-supervised local agent use

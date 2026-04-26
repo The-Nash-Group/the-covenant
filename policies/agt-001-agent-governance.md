@@ -2,8 +2,10 @@
 
 *Policy ID: AGT-001*
 *Status: Active*
+*Last Updated: 2026-04-20*
 *Covenant Principle: Human Mandate Extension*
 *Guardian Ownership: Watchers*
+*Related: ORG-001 (Subsidiary Authority and Identity Isolation), Subsidiary Authority Specification*
 
 > "Agents are tools that humans delegate tasks to, not decision-makers."
 
@@ -14,10 +16,12 @@ This policy defines the governance framework for synthetic agents operating with
 ## Scope
 
 This policy applies to:
-- All automated agents operating on behalf of The Nash Group
-- AI systems with access to organizational resources
+- All automated agents operating on behalf of The Nash Group (parent-scope / L0 agents)
+- AI systems with access to parent organizational resources
 - Synthetic Council proceedings
-- Cross-subsidiary agent operations
+- **Cross-entity parent orchestration** — parent agents that act adjacent to subsidiary operations (e.g., spanning multiple subsidiary repos, publishing migration guidance, auditing subsidiary compliance)
+
+This policy **does not** apply to subsidiary-scope agents (L1 and L2). Per ORG-001, subsidiary agents operate under subsidiary authority — each subsidiary defines its own agent governance, within the minimum contract for product-agents in `governance/agent-roles.yaml`. Parent does not prescribe subsidiary agent behavior beyond that minimum contract.
 
 ## Core Principles
 
@@ -74,6 +78,20 @@ Adversarial debate improves decision quality but cannot replace human judgment o
 - Council verdicts require human ratification per authority matrix
 - Verdicts without human approval cannot proceed
 - "Rubber stamp" approval patterns generate warnings
+
+### Principle AGT-5: Agents Respect Entity Boundaries
+
+**The Law**
+Parent-scope agents must not impose parent identity, archetypes, or governance terminology on subsidiary repositories. Parent agents may read subsidiary repositories for audit and may author migration guidance for human-relay handoff, but must not modify subsidiary files directly (except break-glass per GOV-003) and must not frame subsidiary rules as parent-derived in subsidiary-facing artifacts.
+
+**The Lesson**
+Subsidiaries of The Nash Group are legally distinct entities with their own governance authority. Treating them as pass-through children of the parent conflates legal, operational, and agent-context boundaries. The correct model is asynchronous spec delivery (parent publishes, subsidiary adopts on its own authority), not runtime authority extension.
+
+**Enforcement**
+- Parent agents operate only within `~/Organizations/the-nash-group/` during normal operation
+- Cross-entity artifacts authored by parent live under `.claude/orchestration/`, never inside a subsidiary repo
+- Contamination findings (parent identifiers in subsidiary-scope artifacts) are tracked per ORG-001 §Compliance Verification and the Subsidiary Governance Standard
+- Break-glass cross-entity writes are logged and reconciled per GOV-003 within 24 hours
 
 ## Agent Authority Matrix
 
@@ -153,32 +171,36 @@ reasoning_trace:
 | REJECTED | Policy violation unmitigated OR risk >= 10% |
 | ESCALATE | Novel situation, policy ambiguity, or council deadlock |
 
-## Subsidiary-Specific Rules
+## Cross-Entity Escalation Awareness
 
-### Happy Patterns LLC
+> **Scope note**: This section records what *parent* orchestration agents must be aware of when their work touches subsidiary-adjacent concerns. It does not prescribe subsidiary-internal agent governance — per ORG-001, each subsidiary authors its own agent governance on its own authority. The rules below govern parent behavior at the entity boundary.
 
-Stricter governance due to legal entity status:
-- Financial threshold: $500 (vs. parent $1000)
-- Council required for: billing changes, contract integrations
-- Additional reviewer: legal review for customer-facing changes
+The subsidiary registry at `.org/iam/federation/subsidiaries.yaml` records each subsidiary's `governance_level` and any `governance_override` the parent has agreed to recognize for cross-entity coordination. When a parent-scope agent acts adjacent to a subsidiary (for example, publishing a spec that will require the subsidiary to adopt, authoring a migration guide, or running an audit), the agent must:
+
+### Happy Patterns LLC (own GitHub org: `happy-patterns-org`)
+
+- Recognize that cross-entity financial coordination (billing reconciliation, shared infrastructure cost allocation) involves a separate LLC with its own legal and tax treatment
+- Escalate any parent-initiated change that would affect Happy Patterns' customer-facing artifacts to human-relay handoff
+- Treat Happy Patterns' own governance as authoritative within its own GitHub org; do not prescribe parent archetypes in migration guidance authored for Happy Patterns
 
 ### Litecky Editing Services
 
-Isolated operations with spouse co-ownership:
-- Strict isolation: No cross-subsidiary automation
-- Either owner (Jeffrey or spouse) can approve changes
-- External integrations require explicit consent
+- Honor the co-ownership model recorded in the registry: either co-owner has full approval authority for subsidiary-internal changes
+- Treat cross-subsidiary automation as explicitly declined — the registry's `isolation: { cross_subsidiary_access: none }` entry applies to parent orchestration as well
+- External integrations touching Litecky Editing require explicit human-relay consent
 
-### Seven Springs
+### Seven Springs (sandbox)
 
-Relaxed sandbox environment:
-- Elevated autonomous authority
-- Council optional for experimental features
-- Higher autonomous budget: $200
+- The pedagogical-exception annotation in the Subsidiary Authority Specification §7.4 applies
+- Parent agents may use Seven Springs for demonstration purposes that would be contamination elsewhere
+- Production-bearing activity in Seven Springs would revoke the exception
 
-### Jefahnierocks
+### Jefahnierocks (personal/creative)
 
-Inherits parent defaults without modification.
+- Treat as a full subsidiary under ORG-001 — isolation rules apply equally
+- Do not treat `jefahnierocks` as a relaxed extension of parent personal work; it has its own identity layer
+
+**Subsidiary-internal rules** (financial thresholds, council triggers, approval counts within the subsidiary's own governance, legal review requirements, etc.) are authored by each subsidiary in its own artifacts. Parent does not prescribe them. This section is parent-scope awareness of cross-entity boundaries, not subsidiary-scope governance.
 
 ## Human Override Mechanisms
 
@@ -242,9 +264,9 @@ Per Principle AGT-2, all agent actions must:
 
 ### Source Files
 
-- `governance/agent-roles.yaml` - Role definitions
-- `governance/config/governance-config.yaml` - Authority matrix
-- `governance/subsidiary-overrides.yaml` - Subsidiary rules
+- `governance/agent-roles.yaml` — Role definitions (includes product-agent minimum contract for subsidiary-scope)
+- `governance/config/governance-config.yaml` — Authority matrix
+- `.org/iam/federation/subsidiaries.yaml` — Subsidiary registry with per-subsidiary `governance_level` and any `governance_override` fields (authoritative; supersedes the previously referenced `governance/subsidiary-overrides.yaml` path which was never created)
 
 ### Change Authority
 
@@ -255,11 +277,17 @@ Changes to agent governance require:
 
 ## Related Policies
 
+- **ORG-001**: Subsidiary Authority and Identity Isolation — entity-boundary rules for parent agents
 - **GOV-003**: Break-Glass Procedures
 - **GOV-004**: Team Authority Matrix
 - **SEC-003**: Least Privilege
 - **OPS-001**: Change Management
 - **HUMAN_MANDATE.md**: Guardian Role Definitions
+
+## Related Specifications
+
+- **Subsidiary Authority Specification** (`policies/specs/subsidiary-authority.md`) — Operational model for the three-tier authority structure; per-subsidiary current-state assessment
+- **Subsidiary Governance Standard** (`.org/standards/subsidiary-governance.md`) — Session-scoping mechanics and contamination detection
 
 ---
 

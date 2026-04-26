@@ -133,11 +133,11 @@ All infrastructure and platform configuration must be defined as code. Manual ch
 We've lost entire configurations to accidental clicks. We've spent days trying to recreate a manually-configured system. "Documentation" of manual steps is fiction—only code is truth.
 
 **The Implementation**
-In `the-citadel/cloudflare.tf` and `github.tf`:
-- All DNS records defined in Terraform
+In the relevant `the-citadel` OpenTofu/IaC workspaces:
+- All DNS records defined in OpenTofu/IaC
 - All WAF rules codified
 - All repository settings declared
-- Drift detection via nightly `terraform plan` runs
+- Drift detection via scheduled `tofu plan` runs
 
 ### Principle 6: Secrets Are Never Committed
 
@@ -348,7 +348,7 @@ This document itself is under version control, with a clear change process defin
 | Conventional Commits | `github.tf` | `github_repository_ruleset` |
 | Required Reviews | `github.tf` | `github_repository_ruleset` |
 | CI Gates | `github.tf` | `github_repository_ruleset` |
-| IaC Only | `terraform.tf` | Backend configuration |
+| IaC Only | `terraform.tf` | OpenTofu backend configuration |
 | Secret Scanning | `github.tf` | `github_repository_ruleset` |
 | Zero Trust | `cloudflare.tf` | `cloudflare_access_*` |
 | Least Privilege | `github.tf` | `github_team_repository` |

@@ -3,11 +3,11 @@
 **Policy ID:** COM-001
 **Category:** Source Control
 **Effective Date:** 2024-09-30
-**Last Updated:** 2024-09-30
+**Last Updated:** 2026-04-15
 
 ## Statement
 
-The `main` branch **must** represent production truth with linear, readable, and meaningful history. Every commit **must** follow Conventional Commits format and speak its purpose clearly.
+The `main` branch **must** represent production truth with linear, readable, and meaningful history. Every commit **must** follow Conventional Commits format and speak its purpose clearly. Commits that enter protected history **must** be signed with an organization-accepted, GitHub-verifiable signing method. The governing control is signed commits, not GPG specifically.
 
 ## Rationale
 
@@ -28,6 +28,7 @@ Linear, well-documented Git history enables rapid debugging, safe rollbacks, and
 - All Git repositories owned by The Nash Group organization
 - All branches that will eventually merge to main/master
 - All commit messages in production branches
+- All commits that land on protected branches
 - All pull request titles and descriptions
 - All release tagging and versioning
 
@@ -93,6 +94,10 @@ resource "github_repository_ruleset" "covenant_of_commits" {
   }
 
   rules {
+    # Require signed commits on protected history.
+    # GitHub may verify GPG or SSH signatures.
+    required_signatures = true
+
     # Conventional commits enforcement
     commit_message_pattern {
       operator = "starts_with"
@@ -250,6 +255,12 @@ jobs:
 - Must not contain vague terms like "fix stuff" or "update code"
 - Must provide meaningful description of changes
 
+**Commit Signing Standards:**
+- Protected-branch history must contain signed commits
+- The accepted control is GitHub-verifiable signing, not GPG-only signing
+- GPG and SSH signing are both acceptable unless a higher-level policy explicitly narrows the method
+- SSH signing is approved for interactive workstation use, including 1Password-backed SSH keys
+
 **Branch Naming Conventions:**
 ```bash
 # Valid branch patterns
@@ -342,9 +353,10 @@ echo "  - Linear history requirements"
 
 1. **Branch Creation**: Create feature branches with conventional naming
 2. **Commit Discipline**: Write clear, conventional commit messages as work progresses
-3. **Rebase Workflow**: Use rebase to maintain linear history before merging
-4. **PR Review**: Ensure PR titles follow conventional commits format
-5. **Squash Merging**: Use squash merges to maintain clean main branch history
+3. **Commit Signing**: Configure an approved signing method before contributing to protected history; SSH signing is acceptable where GitHub verifies it
+4. **Rebase Workflow**: Use rebase to maintain linear history before merging
+5. **PR Review**: Ensure PR titles follow conventional commits format
+6. **Squash Merging**: Use squash merges to maintain clean main branch history
 
 ## Git Workflow Standards
 
@@ -630,6 +642,7 @@ echo "Git workflow standards setup complete"
 - Pre-commit hooks validate commit message format
 - CI/CD validates linear history and conventional commits
 - Branch protection enforces review requirements
+- Signed-commit enforcement validates GitHub-verifiable signatures on protected history
 - Automated commit message analysis in pull requests
 
 **Manual Audits:**
@@ -706,7 +719,9 @@ echo "Git workflow standards setup complete"
 - **Governance Authority:** [GOVERNANCE.md - Development Standards](../the-covenant/GOVERNANCE.md#stronghold-decisions-individual-repositories)
 - **Implementation:** GitHub rulesets, Git hooks, CI/CD workflows
 - **Development Process:** [SC-003 Trunk-Based Development](./sc-003-trunk-based-development.md)
+- **Decision Record:** [ADR-006: Adopt 1Password SSH Agent for Interactive Workstation Identities](../docs/architecture/006-adopt-1password-ssh-agent-for-interactive-workstation-identities.md)
 
 ## Change History
 
 - **2024-09-30** - Initial creation based on Principles 1 & 2: Sacred Timeline and Commit Purpose
+- **2026-04-15** - Clarified that signed commits are the governing control for protected history and that GitHub-verifiable SSH signing is acceptable alongside GPG
