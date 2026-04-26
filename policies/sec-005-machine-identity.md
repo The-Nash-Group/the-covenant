@@ -3,7 +3,7 @@
 **Policy ID:** SEC-005
 **Category:** Security
 **Effective Date:** 2026-03-02
-**Last Updated:** 2026-04-15
+**Last Updated:** 2026-04-26
 
 ## Statement
 
@@ -25,7 +25,7 @@ Short-lived, scoped machine identities eliminate these risks by design.
 ## Scope
 
 **Applies To:**
-- All GitHub API automation (CI/CD, Terraform, bots, integrations)
+- All GitHub API automation (CI/CD, OpenTofu/IaC, bots, integrations)
 - All cloud provider service-to-service authentication (AWS, GCP, Cloudflare)
 - All CLI tooling that authenticates to external platforms
 - All cross-organization automation
@@ -150,7 +150,7 @@ resource "google_iam_workload_identity_pool_provider" "github" {
 
 **Permission Drift Detection:**
 - Weekly scan comparing App permissions against the spec
-- Alert on any permission added outside of Terraform
+- Alert on any permission added outside of OpenTofu/IaC
 - Quarterly review of Installation Access Token usage patterns
 
 ### Human Process
@@ -176,13 +176,13 @@ Each GitHub organization **must** have its own GitHub App installation:
 
 | Organization | App Name | Purpose | Permissions |
 |-------------|----------|---------|-------------|
-| The-Nash-Group | `tng-citadel-automation` | Terraform IaC management | `administration:write`, `contents:write`, `members:read` |
-| seven-springs | `tng-citadel-automation` | Terraform IaC management | `administration:write`, `contents:write` |
-| jefahnierocks | `tng-citadel-automation` | Terraform IaC management | `administration:write`, `contents:write` |
-| happy-patterns | `tng-citadel-automation` | Terraform IaC management | `administration:write`, `contents:write` |
-| litecky-editing | `tng-citadel-automation` | Terraform IaC management | `administration:write`, `contents:write` |
+| the-nash-group | `tng-citadel-automation` | OpenTofu/IaC management | `administration:write`, `contents:write`, `members:read` |
+| seven-springs | `tng-citadel-automation` | OpenTofu/IaC management | `administration:write`, `contents:write` |
+| jefahnierocks | `tng-citadel-automation` | OpenTofu/IaC management | `administration:write`, `contents:write` |
+| happy-patterns-org | `tng-citadel-automation` | OpenTofu/IaC management | `administration:write`, `contents:write` |
+| litecky-editing | `tng-citadel-automation` | OpenTofu/IaC management | `administration:write`, `contents:write` |
 
-**Strategy**: One App registered in The-Nash-Group, installed across all subsidiary orgs. This provides:
+**Strategy**: One App registered in `the-nash-group`, installed across all subsidiary orgs. This provides:
 - Single private key to manage
 - Consistent audit attribution ("tng-citadel-automation" in all org logs)
 - Per-installation permission scoping (subsidiaries can have fewer permissions)
@@ -191,7 +191,7 @@ Each GitHub organization **must** have its own GitHub App installation:
 
 **Automated Checks:**
 - No Classic PATs detected across any organization (monthly scan)
-- All GitHub Apps registered in Terraform (drift detection)
+- All GitHub Apps registered in OpenTofu/IaC (drift detection)
 - All Fine-grained PATs have expiry <= 90 days
 - Push Protection enabled on all repositories (SEC-002 cross-reference)
 - CI and runtime paths must not depend on a human workstation SSH agent session or other interactive custody flow
@@ -231,3 +231,4 @@ Each GitHub organization **must** have its own GitHub App installation:
 
 - **2026-03-02** - Initial creation implementing Principles 5, 6, 9, 10 for GitHub and cross-platform machine identities
 - **2026-04-15** - Clarified the boundary between machine identities and human interactive workstation identities, including explicit exclusion of 1Password SSH agent flows for unattended automation
+- **2026-04-26** - Aligned GitHub organization names and current IaC wording with the OpenTofu and subsidiary authority model

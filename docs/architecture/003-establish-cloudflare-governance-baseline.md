@@ -5,13 +5,13 @@
 | Field | Value |
 |-------|-------|
 | **Date** | 2025-11-21 |
-| **Last Updated** | 2026-04-08 |
+| **Last Updated** | 2026-04-26 |
 | **Author** | Agent |
 | **Governance Level** | Citadel (1 Mentor + 1 Watcher) |
 | **Status** | Accepted |
 | **Related ADRs** | ADR-001, ADR-004, ADR-005 |
 
-> **Current-state note (2026-04-08)**: The active Cloudflare implementation no longer uses the pre-ADR-005 monolithic path shown in older examples below. Current Citadel Cloudflare management lives in `the-citadel/terraform/modules/cloudflare-zone-standard/` plus per-workspace roots under `the-citadel/terraform/orgs/<workspace>/`. The baseline zone-settings layer is converged for `thenash.group` and `jefahnierocks.com`, and new Cloudflare delivery resources now follow the transitional ownership rule captured in `the-covenant/policies/specs/cloudflare-ownership-transition.md`.
+> **Current-state note (2026-04-26)**: The active Cloudflare implementation no longer uses the pre-ADR-005 monolithic path shown in older examples below. Current Citadel Cloudflare management lives in `the-citadel/terraform/modules/cloudflare-zone-standard/` plus per-workspace roots under `the-citadel/terraform/orgs/<workspace>/`. The baseline zone-settings layer is converged for `thenash.group` and `jefahnierocks.com`, and new Cloudflare delivery resources now follow the transitional ownership rule captured in `the-covenant/policies/specs/cloudflare-ownership-transition.md`. Happy Patterns LLC's primary domain is now `happy-patterns.com`; `happy-patterns.co` is secondary.
 
 ## Context
 
@@ -128,7 +128,7 @@ the-citadel/terraform/providers/cloudflare/
     │   ├── dns.tf
     │   ├── workers.tf
     │   └── terraform.tfvars
-    ├── happy-patterns-co/      # Happy Patterns LLC (happy-patterns.co; .com redirects)
+    ├── happy-patterns-com/     # Happy Patterns LLC (happy-patterns.com; .co secondary)
     │   └── main.tf
     ├── jefahnierocks-com/      # Personal/creative (jefahnierocks.com)
     │   └── main.tf
@@ -394,7 +394,7 @@ Not all Cloudflare zones require the same governance level:
 | Zone | Governance | Rationale |
 |------|-----------|-----------|
 | `thenash.group` | Citadel | Parent org, infrastructure backbone |
-| `happy-patterns.co` | Citadel | Production LLC, customer-facing |
+| `happy-patterns.com` | Citadel | Production LLC, customer-facing; `happy-patterns.co` secondary |
 | `jefahnierocks.com` | Stronghold | Personal, lower blast radius |
 | `litecky-editing` domains | Stronghold | Small business, lower blast radius |
 
@@ -421,7 +421,7 @@ All zones still use the `standard_zone` module and pass OPA policy checks — go
 **Tasks**:
 1. Instantiate `standard_zone` for first organization
 2. Add DNS records following proxy-by-default pattern
-3. Validate with `terraform plan`
+3. Validate with `tofu plan`
 4. Run OPA policy checks
 5. Apply to production
 
@@ -491,3 +491,4 @@ All zones still use the `standard_zone` module and pass OPA policy checks — go
 | 2026-03-02 | Agent | Replaced placeholder domains with real subsidiary names (thenash-group, happy-patterns-co, jefahnierocks-com, litecky-editing). Added per-subsidiary governance table. Updated metadata to match new template format. Confirmed OPA policy path at the-citadel/policies/opa/. |
 | 2026-04-05 | Agent | Recorded current implementation state: Cloudflare v5.18.0 migration delivered, SEC-004 enforced from the-citadel CI, and the baseline now expressed through individual `cloudflare_zone_setting` resources. |
 | 2026-04-08 | Agent | Marked the ADR accepted and added a current-state note for the delivered OpenTofu multi-workspace architecture and Cloudflare ownership transition rule. |
+| 2026-04-26 | Codex | Clarified current Happy Patterns domain ownership: `happy-patterns.com` is primary and `happy-patterns.co` is secondary. |

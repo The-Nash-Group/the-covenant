@@ -1,8 +1,8 @@
 # Subsidiary Authority Specification
 
-**Version:** 1.0.0
+**Version:** 1.0.1
 **Status:** ACTIVE
-**Date:** 2026-04-20
+**Date:** 2026-04-26
 **Implements:** Principle 5 (Infrastructure as Code), Principle 9 (Zero Trust), Principle 10 (Least Privilege), Principle 15 (Three Circles of Trust)
 **Policies:** ORG-001 (Subsidiary Authority and Identity Isolation), AGT-001 (Agent Governance), GOV-003 (Break-Glass), SEC-005 (Machine Identity)
 
@@ -91,6 +91,26 @@ Some concerns legitimately span tiers. The spec names them explicitly to prevent
 | Billing labels | Parent (L0) defines the taxonomy; subsidiaries (L1) apply to their own cloud resources | Taxonomy published as a Nash-authored standard; subsidiaries restate and apply |
 | Cloudflare zones | Parent controls the transitional stewardship account (per the Cloudflare Ownership Transition spec); workspace root owns per-zone resources | Transitional; long-term goal is per-subsidiary Cloudflare account separation |
 | Audit and drift detection | Parent (L0) may read subsidiary repositories for audit; parent does not write to them except by break-glass | Read-only traversal across the boundary is permitted; write is not |
+
+### 1.4 Semantic Ownership vs Operational Hosting
+
+Authority follows semantic ownership even when current hosting is transitional.
+
+| Term | Meaning | Example |
+|------|---------|---------|
+| Semantic owner | Entity that owns governance, billing label, long-term GitHub/IaC placement, secrets boundary, and agent context | Happy Patterns LLC owns `scopecam`; Jefahnierocks owns personal projects |
+| Operational host | Current place where repository, GitHub features, Cloudflare resources, CI, or runtime infrastructure live | A personal project may remain in lower-cost hosting while paid Jefahnierocks org features are deferred |
+| Long-term home | Target authority boundary once migration triggers are met | Active Happy Patterns product work belongs under `happy-patterns-org`; active Jefahnierocks work converges on the Jefahnierocks boundary |
+
+A temporary semantic-owner / operational-host mismatch is permitted only when the parent-scoped registry or orchestration record names:
+
+1. semantic owner
+2. current operational host
+3. intended long-term home
+4. migration trigger
+5. controls and claims that remain pending while hosting is transitional
+
+Transitional hosting must not be used to route subsidiary work through parent or global roots as an ownership shortcut.
 
 ---
 
@@ -186,7 +206,7 @@ When a new subsidiary is added:
 1. **Parent registers** the subsidiary in `.org/iam/federation/subsidiaries.yaml` with: display name, legal entity type, GitHub org reference, owned domains, governance level at which the subsidiary operates by default, billing labels, `agent_isolation_required: true`.
 2. **Parent publishes** the migration packet template (already in `.claude/orchestration/subsidiary-authority-migration/`) as the subsidiary's starting point.
 3. **Subsidiary authors** its own CLAUDE.md, README.md, and public subsidiary metadata using the template skeleton. The subsidiary's voice is its own; parent reviews for isolation compliance only (not for voice or content).
-4. **Subsidiary establishes** its own GitHub organization (if not already present) with its own team structure, branch protection, and CI. Parent provides the Citadel automation GitHub App installation.
+4. **Subsidiary establishes or records** its GitHub organization boundary. If paid org features are justified, the subsidiary uses its own plan, team structure, branch protection, and CI. If paid features are deferred, the registry records semantic owner, current operational host, long-term home, and migration trigger under §1.4. Parent provides the Citadel automation GitHub App installation when the subsidiary boundary is active.
 5. **Parent verifies** isolation compliance: no Nash identifiers in subsidiary-scoped artifacts, sensitive metadata is stored correctly per §6, router at `~/Organizations/CLAUDE.md` correctly directs sessions into the new subsidiary's own CLAUDE.md.
 
 ## 5. Subsidiary Offboarding
@@ -235,6 +255,7 @@ As of 2026-04-20, the state of each subsidiary against this specification:
 | Aspect | Current | Target | Delta |
 |--------|---------|--------|-------|
 | GitHub organization | `happy-patterns-org` (own org, two-seat teams plan with `verlyn13` and `happy-patterns`) | Same | None |
+| Project ownership | `scopecam` is a Happy Patterns LLC project | Same | None |
 | Primary domain | `happy-patterns.com` (also owns `happy-patterns.co`, landing page pending) | Same | None |
 | Subsidiary shell CLAUDE.md | Nash-framed ("subsidiary of The Nash Group", inheritance language) | Authored in Happy Patterns' own voice, no Nash identifiers | Full rewrite needed |
 | Subsidiary shell README.md | Nash-framed | Authored in Happy Patterns' own voice | Full rewrite needed |
@@ -246,12 +267,12 @@ As of 2026-04-20, the state of each subsidiary against this specification:
 
 | Aspect | Current | Target | Delta |
 |--------|---------|--------|-------|
-| GitHub organization | `jefahnierocks` (own org) | Same | None |
+| GitHub organization | `jefahnierocks` exists as intended boundary; paid Team-style features are deferred | Use paid org features only when collaboration, compliance, billing, or automation requires them | Track semantic ownership separately from current operational hosting |
 | Primary domain | `jefahnierocks.com` | Same | None |
 | Subsidiary shell CLAUDE.md | Nash-framed | Authored in own voice | Full rewrite needed |
 | Subsidiary shell README.md | Nash-framed | Authored in own voice | Full rewrite needed |
 | Public metadata file | `.subsidiary.yaml` exists; no confidential legal/financial data observed | Routing fields only | Minor cleanup; confirm no confidential drift |
-| Project-level artifacts | Various; spot-check pending | Clean | Per-project audit |
+| Project-level artifacts | Various personal projects; some may remain in lower-cost hosting while semantically classified as Jefahnierocks-owned | Clean, Jefahnierocks-owned artifacts once moved into the subsidiary boundary | Per-project audit; record current host and move trigger |
 
 ### 7.3 Litecky Editing Services
 
@@ -354,3 +375,4 @@ The migration campaign produces the first authoritative router template and trac
 | Date | Author | Summary |
 |------|--------|---------|
 | 2026-04-20 | Agent | Initial creation (v1.0.0, ACTIVE) establishing the operational detail for the three-tier authority model per ADR-007 and ORG-001; includes ownership matrix, restatement workflow, onboarding/offboarding, sensitive metadata placement rules, and per-subsidiary current-state assessment. |
+| 2026-04-26 | Codex | v1.0.1 — Added semantic ownership vs operational hosting rule; recorded Happy Patterns ownership of `scopecam` and Jefahnierocks paid GitHub org deferral for personal projects. |

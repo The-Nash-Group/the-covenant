@@ -5,7 +5,7 @@
 | Field | Value |
 |-------|-------|
 | **Date** | 2026-04-20 |
-| **Last Updated** | 2026-04-20 |
+| **Last Updated** | 2026-04-26 |
 | **Author** | Agent |
 | **Governance Level** | Covenant (2 Watchers + 2 Mentors, 72h debate) |
 | **Status** | Accepted |
@@ -23,6 +23,7 @@ That inheritance-by-pointer model predated real subsidiary operation. Three chan
 1. **Happy Patterns LLC became an independent GitHub organization** (`happy-patterns-org`, two-seat teams plan with members `verlyn13` and `happy-patterns`). Its repositories are no longer team resources inside `the-nash-group`; they are assets of a separate legal entity with its own governance surface.
 2. **Product development began inside a subsidiary.** A working product repository (scopecam, under Happy Patterns) now has its own CLAUDE.md, AGENTS.md, operational contract, and dev-agent workflow. These files — correctly — make zero reference to Nash Group, Covenant, Citadel, Nexus, or any parent archetype.
 3. **The subsidiary shell leaks parent identity.** The directory layer between the product and the parent (for example, `~/Organizations/happy-patterns/CLAUDE.md`) is currently written in Nash-facing voice ("this subsidiary inherits…", "subsidiary of The Nash Group") and pulls Nash governance terminology into any session started at the subsidiary root. The parent router at `~/Organizations/CLAUDE.md` compounds this by listing subsidiaries as rows in the Nash matrix.
+4. **Semantic ownership and current hosting may diverge temporarily.** Happy Patterns now justifies paid GitHub Team collaboration and owns `scopecam`. Jefahnierocks is still the semantic home for personal projects, but it is not yet practical to pay for every GitHub organization feature; some personal projects may remain in lower-cost or existing hosting until collaboration, compliance, billing, or automation needs justify migration.
 
 The inheritance model is also factually imprecise. Happy Patterns LLC is a distinct legal entity. It does not "inherit" Nash Group rules the way a child inherits from a parent class; it adopts equivalent rules on its own authority because it chooses to, because the rules are sound, and because the parent relationship requires it as a condition of structural coherence. The two framings are operationally similar and legally very different.
 
@@ -98,6 +99,20 @@ These are enforceable rules that subordinate specs and standards must implement:
 - Its own CLAUDE.md and optionally AGENTS.md
 - Its build, test, and deployment commands
 - Its contribution workflow
+
+### 3.1 Transitional Hosting Rule
+
+Authority is determined by semantic owner, not by the current paid hosting surface. A project may be semantically owned by a subsidiary before it has been moved into that subsidiary's paid GitHub plan, OpenTofu workspace, or fully codified runtime boundary.
+
+This exception is allowed only when a parent-scoped registry or orchestration record names:
+
+- the semantic owner
+- the current operational host
+- the intended long-term home
+- the trigger that will force migration
+- the controls that must not be overclaimed while hosting is transitional
+
+The rule prevents the parent or shared global roots from becoming informal ownership shortcuts. Transitional hosting is a staging state; it is not authority transfer.
 
 ### 4. The Boundary
 
@@ -184,3 +199,4 @@ Phases 1–3 are parent-repo work. Phase 4 is the parent's handoff to subsidiari
 | Date | Author | Summary |
 |------|--------|---------|
 | 2026-04-20 | Agent | Initial creation — establishes three-tier authority model, three invariants (identity isolation, authority restatement, spec flow), sensitive metadata placement rule; supersedes inheritance-by-pointer language in ADR-004 §4 (amended in place same date) |
+| 2026-04-26 | Codex | Added the transitional hosting rule: Happy Patterns LLC owns `scopecam` under its paid Team org, while Jefahnierocks remains semantic owner for personal projects whose paid org hosting is deferred until justified. |

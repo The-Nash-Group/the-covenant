@@ -1,8 +1,8 @@
 # GitHub Machine Identity Specification
 
-**Version**: 1.1.0
+**Version**: 1.1.1
 **Created**: 2026-03-02
-**Updated**: 2026-04-15
+**Updated**: 2026-04-26
 **Policies**: SEC-005 (Machine Identity), SEC-001 (Zero Trust), SEC-003 (Least Privilege), INF-001 (Infrastructure as Code)
 
 ---
@@ -14,7 +14,7 @@
 | **SEC-005: Machine Identity** | GitHub Apps as primary machine identity; no Classic PATs |
 | **SEC-001: Zero Trust** | Every API call authenticated via Installation Access Token |
 | **SEC-003: Least Privilege** | Per-installation permission scoping; minimum required permissions |
-| **INF-001: Infrastructure as Code** | App configuration managed via Terraform in the-citadel |
+| **INF-001: Infrastructure as Code** | App configuration managed via OpenTofu/IaC in the-citadel |
 | **GOV-010: Labeling** | All Apps follow `tng-{repo}-{purpose}` naming convention |
 
 ---
@@ -28,7 +28,7 @@ The Nash Group uses a **single GitHub App, multi-installation** model:
 ```
 ┌────────────────────────────────────────────────────┐
 │  GitHub App: tng-citadel-automation                │
-│  Registered in: The-Nash-Group org                 │
+│  Registered in: the-nash-group org                 │
 │  Owner: @verlyn13                                  │
 │                                                     │
 │  Private Key (.pem)                                │
@@ -36,10 +36,10 @@ The Nash Group uses a **single GitHub App, multi-installation** model:
 │      CI/runtime: repo-approved managed backend     │
 │                                                     │
 │  Installations:                                     │
-│  ├── The-Nash-Group    (all repos, full perms)     │
+│  ├── the-nash-group    (all repos, full perms)     │
 │  ├── seven-springs     (all repos, scoped perms)   │
 │  ├── jefahnierocks     (all repos, scoped perms)   │
-│  ├── happy-patterns    (all repos, scoped perms)   │
+│  ├── happy-patterns-org (all repos, scoped perms)  │
 │  └── litecky-editing   (all repos, scoped perms)   │
 └────────────────────────────────────────────────────┘
 ```
@@ -48,7 +48,7 @@ The Nash Group uses a **single GitHub App, multi-installation** model:
 - One private key to rotate and protect
 - Consistent audit trail ("tng-citadel-automation" in every org's audit log)
 - Centralized permission governance (the-citadel manages all installations)
-- Simpler Terraform provider configuration
+- Simpler OpenTofu provider configuration
 
 ### 1.2 Token Lifecycle
 
@@ -91,7 +91,7 @@ The Nash Group uses a **single GitHub App, multi-installation** model:
 |---------|-------|-----------|
 | **Name** | `tng-citadel-automation` | Per SEC-005 naming convention |
 | **Description** | "The Nash Group infrastructure automation via the-citadel" | Clear purpose |
-| **Homepage URL** | `https://github.com/The-Nash-Group/citadel-config` | Points to IaC repo |
+| **Homepage URL** | `https://github.com/the-nash-group/the-citadel` | Points to IaC repo |
 | **Webhook** | Disabled (unless needed for events) | Minimize attack surface |
 | **Request user auth** | Disabled | Machine-only identity |
 | **Expire user auth tokens** | N/A (no user auth) | — |
@@ -114,14 +114,14 @@ The Nash Group uses a **single GitHub App, multi-installation** model:
 | Permission | Access | Rationale |
 |------------|--------|-----------|
 | `members` | Read | Audit team memberships |
-| `organization_administration` | Read & Write | Manage org settings via Terraform |
+| `organization_administration` | Read & Write | Manage org settings via OpenTofu/IaC |
 | `organization_custom_roles` | Read | Audit custom roles |
 
 **Not Granted (Least Privilege):**
 
 | Permission | Reason Excluded |
 |------------|-----------------|
-| `actions` | Not needed for Terraform management |
+| `actions` | Not needed for current OpenTofu/IaC management |
 | `packages` | Not managing GitHub Packages |
 | `secrets` | Secrets managed outside the App via repo-approved backends, not GitHub |
 | `security_events` | Read-only audit handled separately |
@@ -133,15 +133,15 @@ Subsidiary orgs receive **reduced permissions** at installation time:
 
 | Organization | Repository Access | Extra Restrictions |
 |-------------|-------------------|--------------------|
-| **The-Nash-Group** | All repositories | Full permission set |
+| **the-nash-group** | All repositories | Full permission set |
 | **seven-springs** | All repositories | No `organization_administration` |
 | **jefahnierocks** | All repositories | No `organization_administration` |
-| **happy-patterns** | All repositories | No `organization_administration` |
+| **happy-patterns-org** | All repositories | No `organization_administration` |
 | **litecky-editing** | All repositories | No `organization_administration` |
 
 ---
 
-## 3. Terraform Integration
+## 3. OpenTofu/IaC Integration
 
 ### 3.1 Provider Configuration
 
@@ -150,7 +150,7 @@ Subsidiary orgs receive **reduced permissions** at installation time:
 
 # Primary org — uses GitHub App authentication
 provider "github" {
-  owner = "The-Nash-Group"
+  owner = "the-nash-group"
 
   app_auth {
     id              = var.github_app_id
@@ -184,7 +184,7 @@ provider "github" {
 
 provider "github" {
   alias = "happy_patterns"
-  owner = "happy-patterns"
+  owner = "happy-patterns-org"
 
   app_auth {
     id              = var.github_app_id
@@ -223,7 +223,7 @@ variable "github_app_pem" {
 }
 
 variable "github_app_installation_the_nash_group" {
-  description = "Installation ID for The-Nash-Group org"
+  description = "Installation ID for the-nash-group GitHub organization"
   type        = string
   sensitive   = false
 }
@@ -241,7 +241,7 @@ variable "github_app_installation_jefahnierocks" {
 }
 
 variable "github_app_installation_happy_patterns" {
-  description = "Installation ID for happy-patterns org"
+  description = "Installation ID for happy-patterns-org GitHub organization"
   type        = string
   sensitive   = false
 }
@@ -383,7 +383,7 @@ Every Nash Group org **must** configure:
 # Quarterly compliance verification
 
 # 1. List all GitHub Apps installed in each org
-gh api /orgs/The-Nash-Group/installations | jq '.[].app_slug'
+gh api /orgs/the-nash-group/installations | jq '.[].app_slug'
 gh api /orgs/seven-springs/installations | jq '.[].app_slug'
 
 # 2. Verify no Classic PATs exist (org admin)
@@ -402,17 +402,17 @@ gh api /apps/tng-citadel-automation | jq '.permissions'
 
 ### Phase 1: App Creation (POC 1 Scope)
 
-- [ ] Register `tng-citadel-automation` GitHub App in The-Nash-Group org
+- [ ] Register `tng-citadel-automation` GitHub App in the-nash-group GitHub organization
 - [ ] Set permissions per Section 2.2
 - [ ] Generate private key, store in the approved local bootstrap and CI backend
 - [ ] Install App in seven-springs org (POC target)
-- [ ] Configure Terraform provider with App auth
-- [ ] Verify: `terraform plan` authenticates via App
+- [ ] Configure OpenTofu provider with App auth
+- [ ] Verify: `tofu plan` authenticates via App
 
 ### Phase 2: Multi-Org Rollout
 
 - [ ] Install App in jefahnierocks org
-- [ ] Install App in happy-patterns org
+- [ ] Install App in happy-patterns-org GitHub organization
 - [ ] Install App in litecky-editing org
 - [ ] Configure all aliased providers in the-citadel
 - [ ] Record platform-ready installations in the Citadel workspace registry and CI wiring
@@ -445,6 +445,11 @@ gh api /apps/tng-citadel-automation | jq '.permissions'
 ---
 
 ## Changelog
+
+### v1.1.1 (2026-04-26)
+- Aligned GitHub organization slugs with the subsidiary registry
+- Replaced current Terraform wording with OpenTofu/IaC language
+- Recorded Happy Patterns as `happy-patterns-org`
 
 ### v1.1.0 (2026-04-15)
 - Updated local secret guidance to env vars and/or `op read`
