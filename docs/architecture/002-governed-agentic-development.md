@@ -5,11 +5,11 @@
 | Field | Value |
 |-------|-------|
 | **Date** | 2025-11-23 |
-| **Last Updated** | 2026-03-02 |
+| **Last Updated** | 2026-04-26 |
 | **Author** | Agent (The Architect) |
 | **Governance Level** | Covenant (2 Watchers + 2 Mentors, 72h debate) |
 | **Status** | Proposed |
-| **Related ADRs** | ADR-001, ADR-004 |
+| **Related ADRs** | ADR-001, ADR-004, ADR-005, ADR-007 |
 
 ## Context
 
@@ -40,7 +40,7 @@ We will replace static API keys with **identity-based authentication** using the
 
 * **Identity Provider**: Authentik (self-hosted on Hetzner as the-shield) with Google Workspace as the upstream identity source.
 * **Auth Chain**: Google Workspace → Authentik → GitHub OAuth apps (one per org). This is the "Poor Man's Enterprise" pattern — OAuth-based SSO rather than GitHub Enterprise SAML (see ADR-004).
-* **Secrets Management**: Infisical (self-hosted at infisical.jefahnierocks.com) manages all secrets and API tokens. gopass serves as the offline mirror for break-glass scenarios.
+* **Secrets Management**: Runtime and automation use the repo's approved managed backend. On the managed workstation, local developer and agent reads use env vars and/or `op read`. Any remaining legacy archive material is migration-only residue, not current behavior.
 * **Signing**: Every decision will be cryptographically signed using ephemeral keys (Fulcio/Sigstore).
 * **Transparency**: All signatures are logged to a transparency log (Rekor).
 
@@ -54,9 +54,9 @@ We will standardize on the SDR format (combining ADRs with Sigstore bundles) as 
 
 The Synthetic Council applies to **Covenant and Citadel-level changes** across all Nash Group repositories. However:
 
-* **Stronghold-level changes** in subsidiary orgs (happy-patterns, jefahnierocks, litecky-editing, seven-springs) may bypass the Council per governance level.
-* Subsidiaries inherit the 16 Covenant principles but can add their own constraints.
-* the-citadel manages subsidiary GitHub orgs via multi-provider Terraform — infrastructure changes always require Citadel governance regardless of which org they affect.
+* **Stronghold-level changes** in subsidiary orgs (`happy-patterns-org`, `jefahnierocks`, `litecky-editing`, `seven-springs`) may bypass the Council per governance level.
+* Subsidiaries restate adopted parent specs on their own authority and can add their own constraints.
+* the-citadel manages active subsidiary GitHub and Cloudflare controls through OpenTofu/IaC per readiness and placement rules — infrastructure changes always require Citadel governance regardless of which org they affect.
 
 ### 5. The Workflow
 
@@ -109,3 +109,4 @@ The Synthetic Council applies to **Covenant and Citadel-level changes** across a
 |------|--------|---------|
 | 2025-11-23 | Agent (The Architect) | Initial creation — Constitutional API model proposed |
 | 2026-03-02 | Agent | Updated auth chain to reflect Authentik + Infisical. Added subsidiary governance scoping, implementation status note, multi-org coverage. Added metadata block per ADR template modernization. |
+| 2026-04-26 | Codex | Aligned subsidiary scoping with ADR-005 and ADR-007: restatement replaces inheritance language, `happy-patterns-org` is the active Happy Patterns org, and OpenTofu/IaC replaces current Terraform wording. |

@@ -14,7 +14,7 @@ Our core values, principles, and sacred laws. The philosophical foundation that 
 The responsibilities and roles of the Guardians who interpret our principles and operate our systems. The bridge between philosophy and implementation.
 
 ### 3. **[The Citadel](https://github.com/The-Nash-Group/citadel-config)** - The "How"
-The technical engine of enforcement. The Infrastructure as Code that translates our principles into reality through Terraform.
+The technical engine of enforcement. OpenTofu-backed Infrastructure as Code and Policy as Code translate our principles into reality.
 
 This is `the-covenant` - the philosophical foundation, where human wisdom guides machine execution.
 
@@ -97,16 +97,16 @@ The PR is debated openly. All Immortals may voice their wisdom. The proposal mus
 Once approved and merged, the principle becomes law. The document is updated, the chronicle recorded.
 
 ### 4. The Translation
-A Mentor opens a PR in `the-citadel`, translating the ratified principle into Terraform code:
+A Mentor opens a PR in `the-citadel`, translating the ratified principle into OpenTofu/IaC and policy code:
 - A governance change becomes a `github_repository_ruleset`
 - A security principle becomes a `cloudflare_ruleset`
 - An access policy becomes team permissions and CODEOWNERS
 
 ### 5. The Scrying
-The Terraform plan reveals exactly what will change in our infrastructure. No surprises, no hidden consequences.
+The OpenTofu/IaC plan reveals exactly what will change in our infrastructure. No surprises, no hidden consequences.
 
 ### 6. The Forging
-Upon approval and merge, Terraform applies the changes. The philosophy becomes reality.
+Upon approval and merge, the approved IaC or policy change is applied. The philosophy becomes reality.
 
 ## The Sacred Documents
 
@@ -128,7 +128,7 @@ This Covenant is living law. It evolves through structured debate and careful co
 
 1. **Changes to philosophy precede changes to implementation**
    - First we agree on the principle
-   - Then we encode it in Terraform
+   - Then we encode it in OpenTofu/IaC, Policy as Code, or another Citadel enforcement artifact
    - Never the reverse
 
 2. **Documentation is prophecy**
@@ -165,8 +165,8 @@ The Covenant is maintained by the collective wisdom of The Nash Group, with spec
 
 While this repository holds no technical enforcement, it maintains a sacred link to `the-citadel`:
 
-- Every principle here should map to Terraform code there
-- Every Terraform resource there should trace back to a principle here
+- Every principle here should map to an enforcement artifact there
+- Every OpenTofu/IaC resource or policy rule there should trace back to a principle here
 - Regular audits ensure alignment between philosophy and implementation
 
 ## The Ancient Wisdom

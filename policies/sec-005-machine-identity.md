@@ -3,11 +3,11 @@
 **Policy ID:** SEC-005
 **Category:** Security
 **Effective Date:** 2026-03-02
-**Last Updated:** 2026-03-02
+**Last Updated:** 2026-04-26
 
 ## Statement
 
-All machine-to-platform authentication **must** use short-lived, scoped credentials issued by a registered identity (GitHub App, OIDC provider, or platform-native token). Static, long-lived credentials (Classic PATs, service account passwords, manually-created API keys) are **prohibited** for automation. Every machine identity **must** be registered in the organization's identity registry, scoped to the minimum permissions required, and auditable by name.
+All machine-to-platform authentication **must** use short-lived, scoped credentials issued by a registered identity (GitHub App, OIDC provider, or platform-native token). Static, long-lived credentials (Classic PATs, service account passwords, manually-created API keys) are **prohibited** for automation. Every machine identity **must** be registered in the organization's identity registry, scoped to the minimum permissions required, and auditable by name. This policy governs nonhuman credentials only; human interactive workstation identities must not be repurposed as unattended automation credentials.
 
 ## Rationale
 
@@ -25,7 +25,7 @@ Short-lived, scoped machine identities eliminate these risks by design.
 ## Scope
 
 **Applies To:**
-- All GitHub API automation (CI/CD, Terraform, bots, integrations)
+- All GitHub API automation (CI/CD, OpenTofu/IaC, bots, integrations)
 - All cloud provider service-to-service authentication (AWS, GCP, Cloudflare)
 - All CLI tooling that authenticates to external platforms
 - All cross-organization automation
@@ -33,7 +33,21 @@ Short-lived, scoped machine identities eliminate these risks by design.
 **Exceptions:**
 - `GITHUB_TOKEN` within GitHub Actions workflows (platform-managed, job-scoped, automatic)
 - Developer Fine-grained PATs for local CLI use (subject to org approval policy and 90-day max expiry)
-- Break-glass credentials stored in gopass (subject to GOV-003 emergency procedures)
+- Break-glass credentials stored in the repo's approved managed backend; on the managed workstation, local retrieval may use env vars or `op read` under GOV-003. Any remaining legacy archive material is non-default.
+
+**Governed Elsewhere:**
+- Human interactive workstation SSH authentication and SSH commit signing are governed by SEC-004 and COM-001
+- Human-supervised local agent use of a human identity remains a human-in-the-loop workstation control, not a machine identity pattern
+
+## Boundary with Human Interactive Identities
+
+Human interactive workstation identities are not machine identities, even when the workstation is agentic.
+
+- A human SSH identity stored in 1Password SSH agent or equivalent protected custody remains a human identity
+- Human-supervised local agent actions may use that identity only with explicit human approval in the loop
+- Unattended agents, CI, servers, cron jobs, and shared automation must use separate nonhuman credentials
+- Personal workstation identities must never become shared automation credentials for team or service use
+- 1Password SSH agent is not the Nash Group machine-identity platform
 
 ## Identity Hierarchy for Machines
 
@@ -73,6 +87,8 @@ Short-lived, scoped machine identities eliminate these risks by design.
 ```
 
 ## Implementation
+
+This section defines the policy shape and acceptable enforcement evidence. Exact OpenTofu files, provider layout, workflows, and automation commands are owned by `the-citadel`; examples here are conceptual unless Citadel's repo contract confirms them.
 
 ### Technical Enforcement
 
@@ -136,15 +152,16 @@ resource "google_iam_workload_identity_pool_provider" "github" {
 
 **Permission Drift Detection:**
 - Weekly scan comparing App permissions against the spec
-- Alert on any permission added outside of Terraform
+- Alert on any permission added outside of OpenTofu/IaC
 - Quarterly review of Installation Access Token usage patterns
 
 ### Human Process
 
 1. **App Registration**: New GitHub Apps proposed via PR to the-citadel, reviewed per Citadel governance (1 Mentor + 1 Watcher)
-2. **Private Key Custody**: Private keys stored in secrets vault (gopass now, Infisical after POC 2)
+2. **Private Key Custody**: Private keys stored in the repo's approved secrets authority. On the managed workstation, local OpenTofu reads use env vars or `op read`; CI/runtime follow the repo's managed backend.
 3. **Permission Review**: Quarterly review of all App permissions against actual usage
 4. **Decommissioning**: Unused Apps removed via PR, private keys destroyed
+5. **Boundary Enforcement**: If a workflow stops being human-supervised, it must move to a separate machine identity before continued use
 
 ## Naming Convention
 
@@ -161,13 +178,13 @@ Each GitHub organization **must** have its own GitHub App installation:
 
 | Organization | App Name | Purpose | Permissions |
 |-------------|----------|---------|-------------|
-| The-Nash-Group | `tng-citadel-automation` | Terraform IaC management | `administration:write`, `contents:write`, `members:read` |
-| seven-springs | `tng-citadel-automation` | Terraform IaC management | `administration:write`, `contents:write` |
-| jefahnierocks | `tng-citadel-automation` | Terraform IaC management | `administration:write`, `contents:write` |
-| happy-patterns | `tng-citadel-automation` | Terraform IaC management | `administration:write`, `contents:write` |
-| litecky-editing | `tng-citadel-automation` | Terraform IaC management | `administration:write`, `contents:write` |
+| the-nash-group | `tng-citadel-automation` | OpenTofu/IaC management | `administration:write`, `contents:write`, `members:read` |
+| seven-springs | `tng-citadel-automation` | OpenTofu/IaC management | `administration:write`, `contents:write` |
+| jefahnierocks | `tng-citadel-automation` | OpenTofu/IaC management | `administration:write`, `contents:write` |
+| happy-patterns-org | `tng-citadel-automation` | OpenTofu/IaC management | `administration:write`, `contents:write` |
+| litecky-editing | `tng-citadel-automation` | OpenTofu/IaC management | `administration:write`, `contents:write` |
 
-**Strategy**: One App registered in The-Nash-Group, installed across all subsidiary orgs. This provides:
+**Strategy**: One App registered in `the-nash-group`, installed across all subsidiary orgs. This provides:
 - Single private key to manage
 - Consistent audit attribution ("tng-citadel-automation" in all org logs)
 - Per-installation permission scoping (subsidiaries can have fewer permissions)
@@ -176,14 +193,16 @@ Each GitHub organization **must** have its own GitHub App installation:
 
 **Automated Checks:**
 - No Classic PATs detected across any organization (monthly scan)
-- All GitHub Apps registered in Terraform (drift detection)
+- All GitHub Apps registered in OpenTofu/IaC (drift detection)
 - All Fine-grained PATs have expiry <= 90 days
 - Push Protection enabled on all repositories (SEC-002 cross-reference)
+- CI and runtime paths must not depend on a human workstation SSH agent session or other interactive custody flow
 
 **Manual Audits:**
 - Quarterly review of GitHub App permissions vs. actual usage
 - Quarterly review of Fine-grained PAT approvals
 - Annual review of OIDC trust relationships
+- Quarterly review that human interactive identities have not become shared automation credentials
 
 **Reporting:**
 - Dashboard showing active machine identities per org
@@ -201,13 +220,17 @@ Each GitHub organization **must** have its own GitHub App installation:
   - [SEC-001: Zero Trust Authentication](./sec-001-zero-trust.md)
   - [SEC-002: Secret Scanning](./sec-002-secret-scanning.md)
   - [SEC-003: Least Privilege Access](./sec-003-least-privilege.md)
+  - [SEC-004: Security Baseline Requirements](./sec-004-security-baseline.md)
   - [GOV-003: Break-Glass Procedures](./gov-003-break-glass.md)
   - [GOV-010: Organizational Labeling](./gov-010-labeling-standard.md)
 - **Specifications:**
   - [IAM Specification](./specs/iam-specification.md) — AWS/GCP identity architecture
   - [GitHub Machine Identity Specification](./specs/github-machine-identity.md) — GitHub App implementation details
-- **Implementation:** `the-citadel/terraform/github/apps.tf`
+  - [ADR-006: Adopt 1Password SSH Agent for Interactive Workstation Identities](../docs/architecture/006-adopt-1password-ssh-agent-for-interactive-workstation-identities.md) — Human-versus-machine identity boundary for interactive SSH use
+- **Citadel-owned implementation reference:** `the-citadel` OpenTofu/IaC GitHub App resources
 
 ## Change History
 
 - **2026-03-02** - Initial creation implementing Principles 5, 6, 9, 10 for GitHub and cross-platform machine identities
+- **2026-04-15** - Clarified the boundary between machine identities and human interactive workstation identities, including explicit exclusion of 1Password SSH agent flows for unattended automation
+- **2026-04-26** - Aligned GitHub organization names and current IaC wording with the OpenTofu and subsidiary authority model

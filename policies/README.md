@@ -6,6 +6,8 @@
 
 This directory contains the complete formal policy framework for The Nash Group, transforming philosophical principles into enforceable, traceable, and auditable organizational policies. These policies provide multi-layer technical enforcement through Infrastructure as Code, automated validation, and human governance processes.
 
+> **Current-state note:** ADR-005 makes OpenTofu the active IaC engine in `the-citadel`. Some older policy examples still use historical Terraform wording or `terraform/` path names; read active implementation guidance as OpenTofu/IaC unless the reference is explicitly historical, product-specific, or a literal file path.
+
 ## Policy Categories
 
 ### Source Control (SC)
@@ -132,7 +134,7 @@ Each policy follows a standardized template:
 
 ## Implementation
 ### Technical Enforcement
-[Terraform code examples]
+[OpenTofu/IaC and Policy as Code examples]
 ### Automated Validation
 [CI/CD, monitoring, automation]
 ### Human Process
@@ -155,7 +157,7 @@ Each policy follows a standardized template:
 ## Implementation Status
 
 ### Technical Enforcement
-- ✅ **Terraform Examples**: All policies include working IaC examples
+- ✅ **OpenTofu/IaC Examples**: Policies include implementable IaC examples for Citadel translation
 - ✅ **GitHub Configurations**: Repository settings, rulesets, and workflows
 - ✅ **Cloudflare Settings**: Access policies, DNS, and WAF configurations
 - ✅ **CI/CD Integration**: Automated validation and enforcement pipelines
@@ -203,5 +205,5 @@ Each policy follows a standardized template:
 *"These policies transform The Nash Group's philosophical foundation into executable organizational reality, ensuring our principles are not just aspirations but lived practice."*
 
 **Source Documents**: PRINCIPLES.md, GOVERNANCE.md, HUMAN_MANDATE.md
-**Implementation**: [The Citadel](https://github.com/The-Nash-Group/citadel-config) - Infrastructure as Code enforcement
+**Implementation**: [The Citadel](https://github.com/The-Nash-Group/citadel-config) - OpenTofu/IaC and Policy as Code enforcement
 **Change Process**: [GOV-002 Amendment Process](./gov-002-amendment-process.md)

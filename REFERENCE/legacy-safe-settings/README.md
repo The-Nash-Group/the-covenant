@@ -1,7 +1,7 @@
 # Legacy Safe-Settings Configuration
 
-**Archived**: 2025-08-13  
-**Replaced By**: Terraform configuration in `citadel-config`  
+**Archived**: 2025-08-13
+**Replaced By**: Terraform configuration in `citadel-config`
 **Migration ADR**: [001-terraform-migration.md](../decisions/001-terraform-migration.md)
 
 ## Overview

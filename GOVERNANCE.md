@@ -5,7 +5,7 @@
 
 ## The Foundation: The Human Mandate
 
-This governance structure operates within the framework of [The Human Mandate](./HUMAN_MANDATE.md), which defines the five archetypal roles that Guardians fulfill: The Philosopher, The Architect, The Judge, The Gardener, and The Explorer. While the roles below define formal authority, the Mandate defines functional responsibility.
+This governance structure operates within the framework of [The Human Mandate](./HUMAN_MANDATE.md), which defines the five archetypal roles that Guardians fulfill: The Philosopher, The Architect, The Judge, The Gardener, and The Explorer. While the roles below define formal authority, the Mandate defines functional responsibility. Synthetic agents may assist with analysis and recommendations, but they are never Guardians and never final approvers.
 
 ## The Hierarchy of the Realm
 
@@ -66,7 +66,7 @@ Different decisions require different levels of authority and consensus:
 - **Authority**: Joint between Mentors and Watchers
 - **Process**:
   1. Proposal must reference a principle from the Covenant
-  2. Terraform plan must be reviewed
+  2. OpenTofu/IaC plan or equivalent enforcement diff must be reviewed
   3. Changes affecting security require Watcher approval
 - **Required Approvals**: 1 Mentor + 1 Watcher for infrastructure changes
 

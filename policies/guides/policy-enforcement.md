@@ -1,7 +1,9 @@
 # Policy Enforcement Guide - The Shield
-**Version**: 1.0.0
+**Version**: 1.0.1
 **Created**: 2025-11-20
-**Purpose**: How to use OPA policy enforcement for OpenTofu / IaC plans (SEC-003)
+**Purpose**: Covenant policy context for OPA enforcement of IaC plans (SEC-003)
+
+> **Ownership boundary:** This document is retained as Covenant policy context and historical implementation shape. Exact commands, Make targets, workflow files, tool versions, and runnable enforcement code are owned by `the-citadel`. Do not treat command snippets in this guide as the current Citadel runbook unless Citadel's repo contract confirms them.
 
 ---
 
@@ -28,7 +30,7 @@
 > "The System Will Enforce Invariantly. The Guardians Will Exercise Judgment."
 
 **Machine enforces**: No wildcard IAM, no admin roles for services, strict tenant isolation
-**Human reviews**: Terraform plans, approves changes, exercises break-glass when needed
+**Human reviews**: IaC plans, approves changes, exercises break-glass when needed
 
 ---
 
@@ -472,6 +474,8 @@ conftest test tfplan.json -p ../sec-003-least-privilege.rego
 
 ### GitHub Actions Workflow
 
+> **Citadel-owned:** The runnable workflow belongs in `the-citadel`. The example below is historical context for the intended enforcement gate, not a current Covenant instruction to create workflow files here.
+
 Create `.github/workflows/terraform-shield.yml`:
 
 ```yaml
@@ -610,14 +614,14 @@ make emergency-bypass WORKSPACE_DIR=terraform/organization
 
 ## Related Documents
 
-- [SEC-003 Policy Specification](../../the-covenant/policies/sec-003-least-privilege.md)
-- [TERRAFORM-SPECIFICATION.md](../TERRAFORM-SPECIFICATION.md)
+- [SEC-003 Policy Specification](../sec-003-least-privilege.md)
+- [ADR-005: Adopt OpenTofu as IaC Engine](../../docs/architecture/005-adopt-opentofu-as-iac-engine.md)
 - [ROLES-AND-POLICIES-ANALYSIS.md](../../the-shield/docs/ROLES-AND-POLICIES-ANALYSIS.md)
 
 ---
 
-**Last Updated**: 2025-11-20
-**Version**: 1.0.0
+**Last Updated**: 2026-04-26
+**Version**: 1.0.1
 
 ---
 

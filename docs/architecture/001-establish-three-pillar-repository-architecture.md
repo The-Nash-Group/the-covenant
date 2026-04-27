@@ -5,11 +5,11 @@
 | Field | Value |
 |-------|-------|
 | **Date** | 2025-10-30 |
-| **Last Updated** | 2026-03-02 |
+| **Last Updated** | 2026-04-26 |
 | **Author** | The Watchers, The Mentors |
 | **Governance Level** | Covenant (2 Watchers + 2 Mentors, 72h debate) |
 | **Status** | Accepted |
-| **Related ADRs** | ADR-003, ADR-004 |
+| **Related ADRs** | ADR-003, ADR-004, ADR-005, ADR-007 |
 
 ## Context
 
@@ -17,7 +17,7 @@ The Nash Group initially evolved with multiple repositories whose purposes becam
 
 - `the-covenant` - Philosophy and governance (clear purpose)
 - `the-citadel` - Contained 41 policy specification markdown files (misleading — name suggested infrastructure)
-- `citadel-config` - Terraform infrastructure as code (confusing name alongside "the-citadel")
+- `citadel-config` - infrastructure-as-code repository (confusing name alongside "the-citadel"; later renamed and standardized on OpenTofu)
 - `nexus` - Operational tooling monorepo (clear purpose, missing "the-" prefix)
 
 ### Problems Identified
@@ -43,8 +43,8 @@ Establish a **Three-Pillar Repository Architecture** with semantic naming, exten
          ↓                • policies/ (policy specifications)
 ┌────────────────────┐
 │  THE CITADEL       │ ← How We Build
-│  (Infrastructure)  │   • Terraform IaC (GitHub, Cloudflare, Hetzner)
-└────────────────────┘   • Multi-org management via Terraform
+│  (Infrastructure)  │   • OpenTofu/IaC (GitHub, Cloudflare, Hetzner)
+└────────────────────┘   • Multi-org management via OpenTofu
          ↓                • OPA policy enforcement
          ↓                • State in Hetzner Object Storage via OpenTofu
 ┌────────────────────┐
@@ -78,7 +78,7 @@ As the architecture matured, two additional repositories emerged to serve specia
 | Repository | Purpose | Contains | Governance |
 |------------|---------|----------|------------|
 | **the-covenant** | Philosophy & policy specifications | PRINCIPLES.md, GOVERNANCE.md, policies/ | Covenant (2 Watchers + 2 Mentors, 72h debate) |
-| **the-citadel** | Infrastructure as Code | Terraform, GitHub/Cloudflare/Hetzner config | Citadel (1 Mentor + 1 Watcher) |
+| **the-citadel** | Infrastructure as Code | OpenTofu/IaC, GitHub/Cloudflare/Hetzner config | Citadel (1 Mentor + 1 Watcher) |
 | **the-nexus** | Operational tooling | Apps, services, MCP servers | Stronghold (1 Mentor) |
 | **the-shield** | Identity & Access Management | Authentik config, IAM framework (Rust/WASM/Rego) | Citadel (1 Mentor + 1 Watcher) |
 | **the-tartan** | Public website & identity | Astro site, Rust/WASM, Cloudflare Pages | Stronghold (1 Mentor) |
@@ -87,21 +87,21 @@ As the architecture matured, two additional repositories emerged to serve specia
 
 The Nash Group is a holding company with subsidiaries that are separate legal and operational entities. The three-pillar architecture serves as the governance backbone for all of them.
 
-**GitHub Organizations** (all on Free tier):
+**GitHub Organizations / authority boundaries**:
 
-| Organization | Entity | Purpose |
-|-------------|--------|---------|
-| `the-nash-group` | Parent holding company | Governance, infrastructure, shared tooling |
-| `happy-patterns` | Happy Patterns LLC | Production products |
-| `jefahnierocks` | Personal/creative | Personal projects |
-| `litecky-editing` | Professional editing | Spouse's editing business |
-| `seven-springs` | Sandbox | Synthetic sandbox/examples |
+| Organization / Boundary | Entity | Purpose | Current Hosting Posture |
+|-------------|--------|---------|-------------------------|
+| `the-nash-group` | Parent holding company | Governance, infrastructure, shared tooling | Parent GitHub org |
+| `happy-patterns-org` | Happy Patterns LLC | Production products, including `scopecam` | GitHub Team, two members |
+| `jefahnierocks` | Personal/creative | Personal projects | Semantic owner; paid org features deferred until justified |
+| `litecky-editing` | Professional editing | Spouse's editing business | Subsidiary boundary; co-owner governance |
+| `seven-springs` | Sandbox | Synthetic sandbox/examples | Relaxed sandbox boundary |
 
 **Key architectural points**:
 
-- No GitHub Enterprise — all orgs on Free tier (see ADR-004 for the "Poor Man's Enterprise" pattern)
-- Governance inheritance: all subsidiaries inherit the 16 Covenant principles; they can add constraints but never subtract
-- the-citadel manages ALL subsidiary GitHub orgs via multi-provider Terraform
+- GitHub Enterprise is deferred; GitHub Team is used where collaboration justifies it, and paid org features are deferred where the practical need has not arrived (see ADR-004)
+- Governance restatement: subsidiaries restate adopted parent specs on their own authority; they do not inherit parent text by pointer
+- the-citadel manages active GitHub and Cloudflare controls through OpenTofu/IaC per subsidiary readiness and explicit ownership placement
 - Identity federation via Authentik (the-shield) rather than GitHub Enterprise SAML
 
 ### Implementation Plan
@@ -136,8 +136,8 @@ Post-implementation, the Organizational Consistency Audit (2026-03-01) validated
 ### Negative
 
 1. **Git History Split**: Policy file history split between repositories (old the-citadel archived for reference)
-2. **Multi-Org Complexity**: the-citadel now manages 5 GitHub orgs via multi-provider Terraform
-3. **No Cross-Org Branch Protection**: GitHub Free tier cannot enforce org-wide rulesets (see ADR-004)
+2. **Multi-Org Complexity**: the-citadel manages active GitHub and Cloudflare controls through multi-workspace OpenTofu/IaC
+3. **Uneven platform features**: GitHub plan capabilities differ by subsidiary readiness and paid-plan adoption (see ADR-004)
 
 ### Neutral
 
@@ -174,3 +174,4 @@ Post-implementation, the Organizational Consistency Audit (2026-03-01) validated
 | 2025-10-30 | The Watchers, The Mentors | Initial creation — three-pillar architecture established |
 | 2026-03-02 | Agent | Updated to reflect five-repo architecture (added the-shield, the-tartan), multi-org context, subsidiary governance model. Trimmed completed implementation scripts. Added metadata block per ADR template modernization. |
 | 2026-04-05 | Agent | Corrected local path vs GitHub slug language for the infrastructure repo and aligned the architecture record with the current parent standards. |
+| 2026-04-26 | Codex | Aligned multi-org context with ADR-004/ADR-007: Happy Patterns LLC is active on GitHub Team and owns `scopecam`; Jefahnierocks remains semantic owner for personal projects while paid org features are deferred until justified. |

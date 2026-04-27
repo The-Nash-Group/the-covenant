@@ -276,7 +276,7 @@ git commit --no-verify -m "emergency: [reason]"
 | Validate structure | `../.org/tooling/validators/validate-repo-structure.sh .` | Must pass before commit |
 | Check naming | `../.org/tooling/validators/validate-naming.sh .` | Enforce kebab-case |
 | Scan secrets | `../.org/tooling/validators/check-secrets.sh .` | Zero tolerance |
-| View memory | `/memory` | Shows loaded CLAUDE.md files |
+| View memory | `/memory` | Shows loaded AGENTS.md files |
 
 ## Org-Wide Standards
 
@@ -284,14 +284,14 @@ git commit --no-verify -m "emergency: [reason]"
 - **Naming**: kebab-case for files/repos/dirs (except Python: snake_case.py)
 - **Commits**: Conventional Commits format required
 - **PRs**: Reference Covenant principles being implemented
-- **Documentation**: UPPERCASE.md for special files (README.md, CLAUDE.md, etc.)
+- **Documentation**: UPPERCASE.md for special files (README.md, AGENTS.md, etc.)
 - **History**: Linear only, squash and merge
 - **Reviews**: Required for all changes
 
-## For Claude Code
+## For Codex
 
 This repository is **The Covenant** — philosophy and governance.
-See `../CLAUDE.md` for full organizational context and the three-pillar architecture.
+See `../AGENTS.md` for full organizational context and the three-pillar architecture.
 
 ---
 

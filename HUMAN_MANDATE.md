@@ -67,14 +67,14 @@ These are not job titles but "hats" that Guardians wear depending on the task at
 **Purpose:** To transform philosophy into machinery
 
 **Responsibilities:**
-- Translate Covenant principles into Terraform code
+- Translate Covenant principles into OpenTofu/IaC and Policy as Code
 - Design reusable modules and patterns
 - Ensure technical implementation matches philosophical intent
 - Bridge the gap between abstract and concrete
 
 **Key Actions:**
 - Opens PRs to `the-citadel`
-- Writes Terraform resources
+- Writes OpenTofu resources, policy rules, and supporting implementation artifacts
 - Creates module documentation
 
 ### 3. The Judge
@@ -82,13 +82,13 @@ These are not job titles but "hats" that Guardians wear depending on the task at
 
 **Responsibilities:**
 - Review infrastructure changes for compliance
-- Validate that Terraform plans match stated intent
+- Validate that OpenTofu/IaC plans match stated intent
 - Ensure security and operational standards are met
 - Provide the human checkpoint before automation proceeds
 
 **Key Actions:**
 - Reviews PRs in both repositories
-- Validates `terraform plan` output
+- Validates `tofu plan` output and related policy checks
 - Approves or requests changes
 - Documents decision rationale
 
@@ -97,7 +97,7 @@ These are not job titles but "hats" that Guardians wear depending on the task at
 
 **Responsibilities:**
 - Keep dependencies updated
-- Refactor and optimize Terraform code
+- Refactor and optimize OpenTofu/IaC and policy code
 - Monitor for drift and reconcile differences
 - Improve performance and reduce costs
 - Ensure backward compatibility
@@ -125,7 +125,9 @@ These are not job titles but "hats" that Guardians wear depending on the task at
 
 ## From Mandate to Mission: How Roles Map to Teams
 
-The abstract roles of the Mandate are fulfilled by our formally defined teams. While any Guardian may wear any hat, our teams have primary ownership over specific domains.
+The archetypes of the Mandate are functional hats, not approval teams. Formal governance authority remains with the Immortals, Mentors, and Watchers defined in `GOVERNANCE.md`; the hats describe the kind of judgment a Guardian is exercising.
+
+This document remains the normative source for Guardian archetypes and the Human/Machine boundary. Machine-readable mappings may live outside this repository, but they consume Covenant meaning and do not supersede it.
 
 ### `@the-nash-group/mentors`
 
@@ -133,7 +135,7 @@ The abstract roles of the Mandate are fulfilled by our formally defined teams. W
 
 **Primary Hats Worn:**
 - **The Judge:** Mentors are the default reviewers for all infrastructure changes in `the-citadel`
-- **The Architect:** Mentors translate principles from The Covenant into robust Terraform code
+- **The Architect:** Mentors translate principles from The Covenant into robust OpenTofu/IaC and policy code
 - **The Gardener:** Mentors own the technical health of the automation
 
 **Special Authorities:**
@@ -198,12 +200,12 @@ Synthetic agents map to Guardian archetypes, operating as assistants to humans w
 | **Explorer-Agent** | The Explorer | Research, capability discovery (sandbox only) |
 | **Steward-Agent** | The Judge (Risk) | Risk identification, policy violation detection |
 | **Catalyst-Agent** | The Architect | Implementation proposals, velocity advocacy |
-| **Adjudicator-Agent** | The Judge (Neutral) | Debate synthesis, verdict rendering |
+| **Adjudicator-Agent** | The Judge (Neutral) | Debate synthesis, recommendation framing |
 | **Coordinator-Agent** | New (Orchestrator) | Task delegation, workflow management |
 
 ### The Synthetic Council
 
-For decisions at **Citadel level or above**, agents form a Synthetic Council that debates before proposing to humans:
+For decisions at **Citadel level or above**, agents form a Synthetic Council that debates before proposing recommendations to humans:
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
@@ -217,7 +219,7 @@ For decisions at **Citadel level or above**, agents form a Synthetic Council tha
 │          └───────────────────┼───────────────────┘          │
 │                              ▼                               │
 │                    ┌──────────────────┐                     │
-│                    │  COUNCIL VERDICT │                     │
+│                    │  RECOMMENDATION  │                     │
 │                    │  (Still requires │                     │
 │                    │  human approval) │                     │
 │                    └──────────────────┘                     │
@@ -228,10 +230,10 @@ For decisions at **Citadel level or above**, agents form a Synthetic Council tha
 1. **Catalyst** proposes implementation path
 2. **Steward** identifies risks and policy violations (must cite specific policies)
 3. **Catalyst** proposes mitigations for each objection
-4. **Adjudicator** synthesizes debate and renders verdict
-5. **Verdict** is presented to appropriate human Guardians for approval
+4. **Adjudicator** synthesizes debate and renders a recommendation
+5. **Recommendation** is presented to appropriate human Guardians for approval
 
-**Council verdicts are recommendations, not decisions.** Human Guardians retain final authority.
+**Council outputs are recommendations, not decisions.** Human Guardians retain final authority.
 
 ### Agent Authority Levels
 
@@ -319,7 +321,7 @@ This document, like The Covenant it serves, is living law. As our organization g
 ## Connecting the Layers
 
 - **From Principle to Role:** Every principle in The Covenant implies human responsibilities defined here
-- **From Role to Code:** Every human action here results in Terraform code in The Citadel
+- **From Role to Code:** Every human action here results in enforceable OpenTofu/IaC, policy, or operational code in The Citadel
 - **From Code to Principle:** Every line in The Citadel traces back through human decision to philosophical principle
 
 ---
