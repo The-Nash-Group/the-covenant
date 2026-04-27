@@ -16,6 +16,8 @@ This specification does not duplicate the policies it references. SEC-002 define
 
 > **Current-state note (2026-04-15):** On the managed Guardian workstation, local developer secret reads use environment variables and/or `op read`. Runtime, service, and CI secret authority remain repo-owned and may be GitHub environments, GitHub App auth, OIDC, Infisical, cloud secret managers, or another approved backend. gopass is migration-only cold archive and is not an approved active local backend.
 
+> **Ownership boundary:** This specification defines secret classification, lifecycle requirements, approved distribution channels, and handoff criteria. Exact Citadel files, workflow names, commands, and live backend wiring are Citadel-owned implementation details; references below are current-state evidence or expected contracts, not Covenant-run implementation.
+
 ---
 
 ## Governing Principles
@@ -142,7 +144,7 @@ Three channels for how secrets reach consumers.
 
 CI and automation must read from the repo's approved managed backend. For `the-citadel` today, that means GitHub Actions secrets/variables plus GitHub App authentication.
 
-**Current Citadel mapping:**
+**Current Citadel-owned mapping snapshot:**
 
 | Repository Secret | Source Vault Path | Consumers |
 |-------------------|-------------------|-----------|
@@ -159,7 +161,7 @@ CI and automation must read from the repo's approved managed backend. For `the-c
 
 ### 4.2 Local Workstation Injection (direnv + `op read`)
 
-The `.envrc.template` pattern in the Citadel repository. The Guardian copies it to `.envrc`, runs `direnv allow`, and direnv loads environment variables for local `tofu` commands by resolving `op read` references on the managed workstation.
+Citadel currently documents the local workstation injection pattern in its `.envrc.template`. The Covenant contract is that local variables resolve from approved local secret references and never commit plaintext secrets; exact command flow remains Citadel-owned.
 
 **Current mapping note:** The logical namespace in Sections 2 and 3 stays provider-agnostic. The current `op://` item and field mapping for those logical paths is documented in `the-citadel/.envrc.template`, which is the canonical live workstation mapping for Citadel local bootstrap.
 
@@ -438,9 +440,9 @@ This specification must be reviewed:
 - **Specification:** [GitHub Machine Identity](./github-machine-identity.md) — GitHub App PEM lifecycle
 - **Specification:** [Cloudflare Ownership Transition](./cloudflare-ownership-transition.md) — shared token exception
 - **Specification:** [IAM Specification](./iam-specification.md) — identity hierarchy
-- **Implementation:** `the-citadel/.envrc.template` — local workstation injection pattern
-- **Implementation:** `the-citadel/BREAK_GLASS.md` — emergency credential retrieval paths
-- **Implementation:** `the-citadel/.github/workflows/opentofu.yml` — CI secrets consumption
+- **Citadel-owned implementation reference:** `the-citadel/.envrc.template` — local workstation injection pattern
+- **Citadel-owned implementation reference:** `the-citadel/BREAK_GLASS.md` — emergency credential retrieval paths
+- **Citadel-owned implementation reference:** `the-citadel/.github/workflows/opentofu.yml` — CI secrets consumption
 
 ---
 

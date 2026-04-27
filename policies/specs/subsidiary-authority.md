@@ -54,7 +54,7 @@ Authority is allocated per tier. No artifact is owned by more than one tier exce
 | ADRs | `the-covenant/docs/architecture/*.md` |
 | Cross-cutting standards | `.org/standards/*.md` |
 | Templates | `.org/templates/*` |
-| Shared infrastructure | `the-citadel/terraform/` |
+| Shared infrastructure | `the-citadel` OpenTofu/IaC workspaces; exact layout is Citadel-owned |
 | Parent orchestration | `.claude/orchestration/` |
 | Subsidiary registry | `.org/iam/federation/subsidiaries.yaml` (Nash-scoped view) |
 | Cross-entity concerns | Billing label taxonomy, dependency governance tiers (L0/L1/L2 per Principle 15), audit requirements, break-glass procedures |
@@ -361,7 +361,7 @@ The migration campaign produces the first authoritative router template and trac
 - **Standards:**
   - [Subsidiary Governance Standard](../../../.org/standards/subsidiary-governance.md) — Session-scoping mechanics
   - [Agentic Workflow Standard](../../../.org/standards/agentic-workflow.md) — Three-tier references
-- **Implementation:**
+- **Parent-owned implementation references:**
   - `.org/iam/federation/subsidiaries.yaml` — Subsidiary registry
   - `.org/templates/organizations-router-claude-md.template` — Router canonical source
   - `.claude/orchestration/subsidiary-authority-migration/` — Migration campaign

@@ -88,6 +88,8 @@ Human interactive workstation identities are not machine identities, even when t
 
 ## Implementation
 
+This section defines the policy shape and acceptable enforcement evidence. Exact OpenTofu files, provider layout, workflows, and automation commands are owned by `the-citadel`; examples here are conceptual unless Citadel's repo contract confirms them.
+
 ### Technical Enforcement
 
 **GitHub App as Primary Machine Identity:**
@@ -225,7 +227,7 @@ Each GitHub organization **must** have its own GitHub App installation:
   - [IAM Specification](./specs/iam-specification.md) — AWS/GCP identity architecture
   - [GitHub Machine Identity Specification](./specs/github-machine-identity.md) — GitHub App implementation details
   - [ADR-006: Adopt 1Password SSH Agent for Interactive Workstation Identities](../docs/architecture/006-adopt-1password-ssh-agent-for-interactive-workstation-identities.md) — Human-versus-machine identity boundary for interactive SSH use
-- **Implementation:** `the-citadel/terraform/github/apps.tf`
+- **Citadel-owned implementation reference:** `the-citadel` OpenTofu/IaC GitHub App resources
 
 ## Change History
 

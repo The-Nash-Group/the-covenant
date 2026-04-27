@@ -75,7 +75,9 @@ The parent→subsidiary relationship is asynchronous spec delivery (pull model):
 
 A subsidiary repository is considered contaminated if a `grep -r` over its dev-agent-facing artifacts finds any identifier in Invariant 1's forbidden list. Contamination detection is a manual process at present (quarterly audit). A Citadel-enforced automated check may be added in a future OPA policy cycle; such a check **must** respect the exception list above (explicitly-authorized cross-entity artifacts).
 
-## Implementation
+## Implementation Boundary
+
+This policy defines the required boundary and the evidence the parent expects to see. Exact router deployment, subsidiary rewrites, Citadel automation, scripts, and scan wiring are owned by the repositories that run them; this document does not make Covenant the implementation surface.
 
 ### Technical Enforcement
 
@@ -165,7 +167,7 @@ Parent seats in subsidiary GitHub orgs are held only where required by shared in
 - **Standards:**
   - [Subsidiary Governance Standard](../../.org/standards/subsidiary-governance.md) — Session-scoping mechanics
   - [Agentic Workflow Standard](../../.org/standards/agentic-workflow.md) — Agent orchestration patterns (three-tier model referenced there)
-- **Implementation:**
+- **Parent-owned implementation references:**
   - `.org/iam/federation/subsidiaries.yaml` — Subsidiary registry (parent-scoped)
   - `.org/templates/organizations-router-claude-md.template` — Router canonical source
   - `.claude/orchestration/subsidiary-authority-migration/` — Migration campaign packet

@@ -143,6 +143,8 @@ Subsidiary orgs receive **reduced permissions** at installation time:
 
 ## 3. OpenTofu/IaC Integration
 
+This specification defines the desired identity model, permission contract, and validation evidence. Exact provider files, module layout, workflow names, and command sequences are owned by `the-citadel`; snippets in this section are conceptual examples.
+
 ### 3.1 Provider Configuration
 
 ```hcl
@@ -440,7 +442,7 @@ gh api /apps/tng-citadel-automation | jq '.permissions'
 - **Zero Trust**: [SEC-001](../sec-001-zero-trust.md)
 - **Least Privilege**: [SEC-003](../sec-003-least-privilege.md)
 - **Labeling**: [GOV-010](../gov-010-labeling-standard.md)
-- **Implementation**: `the-citadel/terraform/github/apps.tf`
+- **Citadel-owned implementation reference**: `the-citadel` OpenTofu/IaC GitHub App resources
 
 ---
 
