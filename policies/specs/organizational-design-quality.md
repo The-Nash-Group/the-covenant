@@ -40,30 +40,134 @@ This specification must not duplicate existing policy. Where existing policies a
 
 ---
 
-## 3. Audience and Scope
+## 3. Applicability, Scaling, and Intended Use
 
-### 3.1 Audience
+This section is the interpretive key for the specification. It defines who is bound, when the quality bar applies, how evidence scales, and whether the document is policy, aspiration, audit instrument, or design-review guidance.
 
-| Audience | Uses This Specification To |
+### 3.1 Applicability
+
+This specification applies to organizational control surfaces that are owned, operated, coordinated, reviewed, or parent-visible within the authority model.
+
+It applies to the following scopes:
+
+1. **Parent L0 control surfaces** — parent-owned governance, identity, infrastructure, policy, catalog, domain, routing, repository, automation, and evidence systems.
+2. **Subsidiary L1 control surfaces** — subsidiary-owned systems that are adopted, restated, reported, coordinated, or cataloged for parent-visible governance, audit readiness, cross-entity coordination, or spec delivery.
+3. **Project L2 control surfaces** — project-owned repositories, applications, infrastructure, domains, CI/CD paths, machine identities, agents, data stores, and operational resources that implement parent or subsidiary policy.
+4. **Externally operated control surfaces** — vendors, SaaS tenants, registrars, cloud accounts, identity providers, DNS providers, CI/CD platforms, marketplace apps, OAuth applications, webhooks, MCP/tool connectors, and other integrations that can affect organizational authority, security, delivery, data, cost, or reputation.
+5. **Machine and agentic actors** — service accounts, GitHub Apps, CI runners, deploy keys, OAuth clients, API tokens, bots, synthetic agents, autonomous agents, tool-using LLM systems, and other non-human identities that can read, write, deploy, decide, transform, or transmit organizational resources.
+
+Subsidiary catalog entries, parent-visible evidence records, and transitional hosting records do not transfer ownership. They record coordination, visibility, classification, or custody. The semantic owner remains the authority unless an explicit ownership transfer is recorded.
+
+This specification distinguishes three concepts that must not be collapsed:
+
+| Concept | Meaning |
 |---|---|
-| Parent L0 Guardians and agents | Publish the quality bar, classify parent-owned control surfaces, maintain schemas and catalogs, and audit adoption state |
-| Subsidiary L1 stewards | Restate adopted requirements in their own voice and maintain subsidiary-owned inventories and evidence |
-| Project L2 maintainers and agents | Implement repo-local controls, tests, runbooks, evidence, and lifecycle work inside the subsidiary boundary |
-| Reviewers | Decide whether a design is ready, blocked, accepted with exception, or out of scope |
+| Semantic ownership | Who has governing authority over the control surface |
+| Operational hosting | Where the control surface currently lives, runs, or is administered |
+| Parent visibility | Whether the parent records the control surface for coordination, audit, routing, or spec delivery |
 
-### 3.2 Scope
+### 3.2 Applicability Triggers
 
-This specification applies to organizational control surfaces, including:
+A system, resource, integration, repository, identity, or agent is in scope when any of the following are true:
 
-- repositories, services, APIs, CI workflows, and runner groups;
-- human identities, machine identities, agents, MCP servers, tools, connectors, models, and model providers;
-- cloud accounts, SaaS tenants, vendor integrations, OAuth clients, webhooks, secrets, certificates, and keys;
-- domains, DNS zones, email domains, network segments, devices, infrastructure components, observability surfaces, backups, and incident playbooks;
-- data stores, datasets, data classes, policy controls, and other resources that carry operational authority or organizational risk.
+- it is parent-owned;
+- it is subsidiary-owned but parent-visible for governance, audit, coordination, routing, or spec delivery;
+- it is public-facing;
+- it controls or modifies DNS, domains, routing, firewalls, cloud resources, source code, CI/CD, secrets, identity, deployment, billing, customer data, or operational evidence;
+- it stores, processes, transmits, backs up, or indexes sensitive, confidential, contractual, regulated, student, customer, financial, legal, or operational data;
+- it grants, delegates, or brokers access for humans, services, agents, or vendors;
+- it can create material cost, availability, security, legal, reputational, or cross-entity risk;
+- it is used by an agent, automation path, or non-human identity to perform actions on behalf of a person, entity, project, or organization.
 
-The requirement scales by risk tier, not by headcount alone. A sole-developer entity may keep lightweight evidence for low-risk work, but a single-person owner does not exempt customer-facing, financial, sensitive-data, shared-identity, or critical infrastructure surfaces from stronger controls.
+### 3.3 Risk Classes
 
-### 3.3 Out of Scope
+Each governed control surface must be assigned a risk class.
+
+| Class | Name | Description |
+|---|---|---|
+| **R0** | Local / experimental | Local-only, non-public, non-production work with no sensitive data, no shared secrets, no organizational identity, and no external dependency |
+| **R1** | Internal low risk | Internal utility or documentation surface with limited access, no production authority, no sensitive data, and low operational impact |
+| **R2** | Governed parent-visible | Parent-visible, subsidiary-visible, or project-visible surface requiring ownership, classification, evidence, and periodic review |
+| **R3** | Production / public / sensitive | Public-facing, production, customer-facing, data-bearing, identity-bearing, revenue-bearing, or operationally important surface |
+| **R4** | Critical / cross-entity / privileged | Shared authority, identity infrastructure, secrets infrastructure, DNS/registrar authority, CI/CD deployment authority, privileged machine identity, autonomous agent with write authority, or cross-entity control plane |
+
+Risk class overrides organizational size. A small entity may still operate an R3 or R4 control surface. R3 and R4 surfaces may not be downgraded to self-attestation only merely because the owning entity is small.
+
+### 3.4 Scaling Rules
+
+This specification defines a full target quality bar. Evidence expectations scale by entity size and risk class.
+
+For scaling purposes:
+
+- **operator count** means people with administrative, deployment, approval, financial, security, or operational authority over the relevant entity or control surface;
+- **revenue threshold** means annual revenue materially dependent on the entity, product, or control surface, not necessarily aggregate parent revenue;
+- **risk class** always takes precedence over size.
+
+Default scaling tiers:
+
+| Tier | Default threshold | Evidence expectation |
+|---|---|---|
+| **Micro** | Fewer than 5 operators and less than $250,000 annual dependent revenue, with no R3/R4 surfaces | Annual self-attestation for eligible controls, plus change-time documentation for material changes |
+| **Small** | Fewer than 15 operators and less than $1,000,000 annual dependent revenue, with no R4 surfaces | Annual self-attestation for eligible controls; semiannual or change-driven review for privileged access, DNS, CI/CD, machine identities, and vendors |
+| **Standard** | 15 or more operators, $1,000,000 or more annual dependent revenue, or any R3/R4 production surface | Full design-review evidence, periodic access review, catalog maintenance, operational logging, and control validation |
+| **Critical** | Any R4 surface, cross-entity control plane, identity/secrets authority, privileged agent, production deployment path, or critical public domain | Full control expectations regardless of headcount or revenue. Continuous or change-time evidence is required where specified |
+
+### 3.5 Scale-Down Allowances
+
+For Micro and Small entities, the following may be satisfied by annual self-attestation unless the relevant surface is R3 or R4:
+
+- low-risk repository ownership review;
+- low-risk documentation inventory review;
+- low-risk vendor inventory review;
+- low-risk SaaS access review;
+- low-risk internal toolchain review;
+- low-risk non-production machine identity review;
+- non-critical backup and restore confirmation;
+- non-critical architecture diagram review;
+- non-critical policy conformance review.
+
+For Micro and Small entities, the following may be satisfied by annual self-attestation for R2 surfaces, but must also be reviewed whenever materially changed:
+
+- DNS zone ownership;
+- registrar and renewal posture;
+- firewall and routing rules;
+- CI/CD workflow permissions;
+- repository branch protection;
+- external OAuth applications;
+- webhooks and marketplace applications;
+- agent tool allowlists;
+- cost and quota controls.
+
+The following are not eligible for scale-down to annual self-attestation only:
+
+- named ownership;
+- lifecycle state;
+- authority boundary;
+- prohibition on storing secrets in git;
+- MFA for administrative accounts;
+- distinct human and machine identities;
+- distinct agent identity for agentic action;
+- break-glass ownership and monitoring;
+- production backup existence;
+- credential revocation path;
+- agent shutdown path;
+- review before first production use;
+- review before granting write access to DNS, identity, secrets, CI/CD, production infrastructure, customer data, or financial systems.
+
+Annual self-attestation is allowed only for eligible low-risk controls. R4 authority surfaces are never eligible for annual self-attestation as the only evidence mode.
+
+### 3.6 Intended Use
+
+This specification is intended to serve four purposes:
+
+1. **Design review quality bar** — it defines the minimum questions that must be answered before a new organizational control surface enters production or parent-visible governance.
+2. **Control-surface classification baseline** — it defines how systems, domains, repositories, identities, agents, vendors, and infrastructure are classified, owned, reviewed, and evidenced.
+3. **Vendor and toolchain selection baseline** — it provides criteria for evaluating whether a vendor, SaaS platform, toolchain, or integration can support the organization's ownership, identity, evidence, and lifecycle requirements.
+4. **Internal maturity and audit-readiness instrument** — it supports internal maturity scoring, gap mapping, and evidence collection. It is not, by itself, an external audit report, legal certification, or substitute for entity-owned operating procedures.
+
+The specification is aspirational in maturity model, mandatory in minimum control requirements, and evidence-oriented in implementation.
+
+### 3.7 Out of Scope
 
 This specification does not:
 
@@ -120,7 +224,7 @@ Every R1+ control surface must be represented by an inventory entry compatible w
 
 The parent schema currently recognizes these object classes:
 
-`api`, `agent`, `backup`, `certificate`, `ci-runner`, `ci-workflow`, `cloud-account`, `data-class`, `data-store`, `device`, `dns-zone`, `domain`, `email-domain`, `integration`, `machine-identity`, `mcp-server`, `mcp-tool`, `model`, `model-provider`, `network-segment`, `observability-surface`, `policy-control`, `repository`, `saas-tenant`, `secret`, `service`, `vendor`, and `webhook`.
+`api`, `agent`, `backup`, `certificate`, `ci-runner`, `ci-workflow`, `cloud-account`, `data-class`, `data-store`, `device`, `dns-zone`, `domain`, `email-domain`, `integration`, `machine-identity`, `mcp-server`, `mcp-tool`, `model`, `model-provider`, `network-segment`, `observability-surface`, `policy-control`, `project`, `repository`, `saas-tenant`, `secret`, `service`, `vendor`, and `webhook`.
 
 Adding an object class is a schema change. Schema changes must be reviewed with the same care as other parent semantic changes because downstream catalogs and subsidiary restatements may depend on them.
 
@@ -154,27 +258,27 @@ Ownership records must not contain private account values, bank or tax identifie
 
 ---
 
-## 7. Risk Tiers
+## 7. Risk Class Review Requirements
 
-Risk tier controls the depth of review and evidence required.
+Risk class controls the depth of review and evidence required. Section 3 defines the R0 through R4 classes and the scale tiers used to adjust evidence burden.
 
-| Tier | Definition | Minimum Posture |
-|---|---|---|
-| R0 | Personal, local, non-production, no sensitive data, no material spend | Owner, purpose, lifecycle, no secrets in git |
-| R1 | Internal or experimental organizational surface | Inventory entry, scoped credentials, repo or runbook, annual review |
-| R2 | Production low-risk surface | Review gates, SSO/MFA where feasible, logs, backups, access review |
-| R3 | Customer, financial, sensitive-data, public, or agent-enabled production surface | IaC/Policy as Code where feasible, drift detection, central logs, restore test, threat model |
-| R4 | Shared identity, cross-entity, critical infrastructure, or high-risk autonomous agent surface | Short-lived identity where feasible, continuous evidence, tabletop or GameDay, human approval gates |
+| Class | Minimum Posture |
+|---|---|
+| R0 | Owner, purpose, lifecycle, no secrets in git |
+| R1 | Inventory entry, scoped credentials, repository note or runbook, annual review |
+| R2 | Design-review gates, SSO/MFA where feasible, logs, backups where stateful, access review |
+| R3 | IaC/Policy as Code where feasible, drift detection, central logs where feasible, restore test, threat model |
+| R4 | Short-lived identity where feasible, continuous or change-time evidence, tabletop or GameDay where applicable, human approval gates |
 
-### 7.1 Tier Escalation Rules
+### 7.1 Class Escalation Rules
 
 A control surface must move to at least R3 if it is customer-facing, public-facing, data-bearing with sensitive or financial data, production agent-enabled, or responsible for financial processing.
 
 A control surface must move to R4 if it controls shared identity, cross-entity access, critical infrastructure, high-risk autonomous production action, or a central authority boundary used by multiple subsidiaries.
 
-### 7.2 Sole-Developer Scaling Rule
+### 7.2 Small-Entity Scaling Rule
 
-Sole-developer and small-entity realities are expected. Scaling down means reducing ceremony for low-risk surfaces, not removing explicit ownership or hiding risk.
+Sole-developer and small-entity realities are expected. Scaling down means reducing ceremony for eligible low-risk surfaces, not removing explicit ownership or hiding risk.
 
 At sole-developer scale:
 
@@ -182,6 +286,8 @@ At sole-developer scale:
 - R0 and R1 evidence may be lightweight;
 - R2+ production evidence must still exist;
 - R3 and R4 controls may be phased, but any missing control needs an exception owner, compensating control, review date, and expiration date.
+
+Risk class overrides operator count and revenue threshold. Critical authority surfaces remain critical even inside a Micro or Small entity.
 
 ---
 
@@ -197,9 +303,9 @@ Maturity is evidence-based, not self-declared.
 | 3 | Automated | IaC/Policy as Code, validation, drift detection, logging, and evidence collection are automated where practical |
 | 4 | Adaptive | Continuous evidence, exercises, metrics, feedback loops, and risk-based improvements are active |
 
-Minimum target maturity by risk tier:
+Minimum target maturity by risk class:
 
-| Risk Tier | Minimum Target |
+| Risk Class | Minimum Target |
 |---|---|
 | R0 | Level 1 when retained beyond local experimentation |
 | R1 | Level 1 |
@@ -211,7 +317,7 @@ Reviewers must score maturity from evidence such as design records, plans, audit
 
 ---
 
-## 9. Required Artifacts by Risk Tier
+## 9. Required Artifacts by Risk Class
 
 | Artifact | R0 | R1 | R2 | R3 | R4 |
 |---|---|---|---|---|---|
@@ -328,7 +434,7 @@ Evidence records must not contain raw credentials, bank/tax/private account valu
 Continuous compliance means:
 
 1. catalog entries stay current as owners, risk, lifecycle, and hosting change;
-2. evidence has a review cadence appropriate to risk tier;
+2. evidence has a review cadence appropriate to risk class;
 3. exceptions have owner, compensating control, review date, and expiration date;
 4. drift is remediated or accepted as a documented exception;
 5. incidents and exercises feed back into the catalog, policies, specs, and runbooks.
@@ -382,13 +488,22 @@ After ratification, review at least semi-annually or when a material domain gap 
 
 This specification must remain DRAFT until all of the following are true:
 
-1. At least one sample parent control-surface entry exists.
-2. At least one subsidiary restatement dry run has been completed.
-3. The Council has reviewed whether `ODQ-*` remains catalog-only or becomes a formal Covenant policy family.
+1. Applicability is defined.
+2. Risk classes are defined.
+3. Scale-down rules are defined.
+4. Intended use is defined.
+5. No flat-enterprise authority assumptions remain.
+6. No parent implementation artifacts are required for subsidiary compliance.
+7. No subsidiary catalog entry or parent-visible evidence record implies ownership transfer.
+8. Requirement identifiers do not collide with existing `SEC`, `INF`, `GOV`, `ORG`, `AGT`, or other Covenant policy families.
+9. Every mandatory requirement maps to one of: existing artifact, new artifact, accepted gap, or deferred tranche.
+10. Validators pass for the relevant Covenant draft and parent support artifacts available at activation time.
+11. No sensitive values are stored in git.
+12. A subsidiary can restate the specification without reading parent-local `.org` implementation files during normal operation.
 
 ### 14.4 Change Process
 
-Changes that alter the quality bar, authority model, risk tiers, minimum failure modes, or restatement model are Covenant-level changes and must follow GOV-002.
+Changes that alter the quality bar, authority model, risk classes, minimum failure modes, or restatement model are Covenant-level changes and must follow GOV-002.
 
 Clarifying edits that do not change meaning may be proposed as documentation improvements, but they still require Guardian review before merge.
 
@@ -396,7 +511,7 @@ Clarifying edits that do not change meaning may be proposed as documentation imp
 
 - Patch version: wording clarification, typo fix, or reference update with no meaning change.
 - Minor version: new evidence type, object class, artifact expectation, or review gate clarification that does not change the governing thesis.
-- Major version: changed authority model, risk-tier semantics, minimum failure mode, or production entry requirement.
+- Major version: changed authority model, risk-class semantics, minimum failure mode, or production entry requirement.
 
 ### 14.6 Catalog and Schema Updates
 
@@ -420,7 +535,7 @@ A subsidiary restatement must:
 
 1. be written in the subsidiary's own voice;
 2. state the subsidiary's own quality bar for systems, integrations, identities, agents, data, vendors, domains, and infrastructure under its authority;
-3. define risk tiers and required artifacts in terms the subsidiary can operate;
+3. define risk classes, scale-down allowances, and required artifacts in terms the subsidiary can operate;
 4. name where the subsidiary keeps its inventory and evidence;
 5. keep confidential legal, tax, bank, private account values, credentials, and raw vendor evidence out of git;
 6. record adopted scope and deviations through a parent-visible restatement log entry, not by making parent governance runtime context for subsidiary agents.
@@ -439,7 +554,7 @@ The standard flow is:
 
 Project agents follow the subsidiary's restated rules and the project repository contract. They do not need this parent specification in their runtime context.
 
-When a project graduates to a higher risk tier, changes semantic owner, moves operational host, or receives new sensitive data, the subsidiary updates the relevant inventory, evidence, and restatement state before treating the new posture as approved.
+When a project graduates to a higher risk class, changes semantic owner, moves operational host, or receives new sensitive data, the subsidiary updates the relevant inventory, evidence, and restatement state before treating the new posture as approved.
 
 ---
 
@@ -461,4 +576,4 @@ When a project graduates to a higher risk tier, changes semantic owner, moves op
 
 | Date | Author | Summary |
 |---|---|---|
-| 2026-04-29 | Codex | Initial draft anchor specification for organizational design quality; defines authority tiers, risk tiers, maturity levels, review gates, evidence requirements, domain gap backlog, and subsidiary restatement model without creating a new formal policy ID. |
+| 2026-04-29 | Codex | Initial draft anchor specification for organizational design quality; defines authority tiers, risk classes, maturity levels, review gates, evidence requirements, domain gap backlog, and subsidiary restatement model without creating a new formal policy ID. |
