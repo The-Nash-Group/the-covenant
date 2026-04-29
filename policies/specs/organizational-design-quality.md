@@ -58,6 +58,8 @@ It applies to the following scopes:
 
 Subsidiary catalog entries, parent-visible evidence records, and transitional hosting records do not transfer ownership. They record coordination, visibility, classification, or custody. The semantic owner remains the authority unless an explicit ownership transfer is recorded.
 
+The bound party is the semantic owner or operating authority for the control surface. Parent visibility does not make the parent the owner, and cataloging does not create parent runtime authority over subsidiary work.
+
 This specification distinguishes three concepts that must not be collapsed:
 
 | Concept | Meaning |
@@ -197,6 +199,8 @@ Parent publication is not session inheritance. A subsidiary-scoped agent must no
 2. A human relays the adoption task into the subsidiary context.
 3. The subsidiary authors its own restatement in its own voice and on its own authority.
 4. Parent records adoption and drift state in the parent restatement log.
+
+Subsidiary restatement must be possible from a human-relayed Covenant specification or restatement packet. Subsidiaries are not required to read parent-local `.org` implementation files to adopt or restate this quality bar.
 
 Parent agents may read subsidiary repositories for approved audit, but parent write access to subsidiary repositories remains forbidden except under explicit break-glass or cross-entity approval as defined by ORG-001 and GOV-003.
 
@@ -549,6 +553,8 @@ The standard flow is:
 3. A human opens a subsidiary-scoped session and relays the adoption task.
 4. The subsidiary drafts its restatement in its own repository or operating shell.
 5. Parent records adoption state, restated-from version, review date, and known gaps in the parent restatement log.
+
+The subsidiary does not need direct access to parent-local `.org` catalog, schema, or template files during normal operation. Any parent-local implementation detail must be relayed through a human-approved packet or restated subsidiary artifact.
 
 ### 15.3 Project L2 Behavior
 
