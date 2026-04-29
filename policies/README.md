@@ -65,6 +65,14 @@ This directory contains the complete formal policy framework for The Nash Group,
 - **[AGT-003: Citadel Audit Framework](./agt-003-citadel-audit-framework.md)** - Systematic verification that Covenant principles are enforced
 - **[AGT-004: Enforcement Checklist](./agt-004-enforcement-checklist.md)** - Master verification checklist for Citadel enforcement
 
+### Specifications
+- **[Cloudflare Ownership Transition](./specs/cloudflare-ownership-transition.md)** - Transitional stewardship and placement rules for Cloudflare resources
+- **[GitHub Machine Identity](./specs/github-machine-identity.md)** - GitHub App architecture and credential lifecycle for machine identities
+- **[IAM Specification](./specs/iam-specification.md)** - Strategic and historical IAM architecture reference
+- **[Secrets Management](./specs/secrets-management.md)** - Secret classification, lifecycle, ownership, distribution, and rotation model
+- **[Subsidiary Authority](./specs/subsidiary-authority.md)** - Operational model for parent, subsidiary, and project authority boundaries
+- **[Organizational Design Quality](./specs/organizational-design-quality.md)** - Draft anchor quality bar for control-surface classification, ownership, review, evidence, and subsidiary restatement
+
 > **Note**: GOV-009 was intentionally reserved for future use. The policy ID gap between GOV-008 and GOV-010 is deliberate.
 
 ## Source Document Mapping
