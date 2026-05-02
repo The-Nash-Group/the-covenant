@@ -1,6 +1,6 @@
 # Subsidiary Authority Specification
 
-**Version:** 1.0.2
+**Version:** 1.0.3
 **Status:** ACTIVE
 **Date:** 2026-05-02
 **Implements:** Principle 5 (Infrastructure as Code), Principle 9 (Zero Trust), Principle 10 (Least Privilege), Principle 15 (Three Circles of Trust)
@@ -268,6 +268,7 @@ As of 2026-04-20, the state of each subsidiary against this specification:
 | Aspect | Current | Target | Delta |
 |--------|---------|--------|-------|
 | GitHub organization | `jefahnierocks` exists as the intended Free-tier boundary; paid Team-style features are deferred | Use paid org features only when collaboration, compliance, billing, or automation requires them | Track semantic ownership separately from current operational hosting |
+| Subsidiary shell repository | Private repo `jefahnierocks/jefahnierocks` exists at initial commit `b3c05716f581138d5fed4088166936e52b11f63d` | Shell repo remains shell-only; child project repos stay independent | None; keep low-frequency and public/private posture subsidiary-owned |
 | Primary domain | `jefahnierocks.com` | Same | None |
 | Subsidiary shell CLAUDE.md | Authored in own voice | Same | None |
 | Subsidiary shell README.md | Authored in own voice | Same | None |
@@ -377,3 +378,4 @@ The migration campaign produces the first authoritative router template and trac
 | 2026-04-20 | Agent | Initial creation (v1.0.0, ACTIVE) establishing the operational detail for the three-tier authority model per ADR-007 and ORG-001; includes ownership matrix, restatement workflow, onboarding/offboarding, sensitive metadata placement rules, and per-subsidiary current-state assessment. |
 | 2026-04-26 | Codex | v1.0.1 — Added semantic ownership vs operational hosting rule; recorded Happy Patterns ownership of `scopecam` and Jefahnierocks paid GitHub org deferral for personal projects. |
 | 2026-05-02 | Codex | v1.0.2 — Recorded the Jefahnierocks GitHub Free organization boundary as created, kept paid/team automation deferred, and updated the Jefahnierocks shell/public-metadata current-state rows after the local-authority cleanup. |
+| 2026-05-02 | Codex | v1.0.3 — Recorded the private Jefahnierocks shell repository publication and preserved child-project independence. |
