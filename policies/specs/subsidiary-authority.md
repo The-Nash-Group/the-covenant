@@ -1,8 +1,8 @@
 # Subsidiary Authority Specification
 
-**Version:** 1.0.1
+**Version:** 1.0.2
 **Status:** ACTIVE
-**Date:** 2026-04-26
+**Date:** 2026-05-02
 **Implements:** Principle 5 (Infrastructure as Code), Principle 9 (Zero Trust), Principle 10 (Least Privilege), Principle 15 (Three Circles of Trust)
 **Policies:** ORG-001 (Subsidiary Authority and Identity Isolation), AGT-001 (Agent Governance), GOV-003 (Break-Glass), SEC-005 (Machine Identity)
 
@@ -14,7 +14,7 @@ Define how authority, identity, and session context are distributed across the t
 
 This specification does not duplicate ORG-001. ORG-001 defines the rule (the three invariants and the forbidden identifiers). AGT-001 defines agent boundary rules. SEC-005 defines machine identity boundaries. This specification fills the gap those policies leave: the operational ownership matrix, the onboarding and offboarding flow, the restatement workflow, the per-subsidiary current state, and the migration path from the pre-refinement structure to the three-tier model.
 
-> **Current-state note (2026-04-20):** The parent artifacts (ADR-007, ORG-001, this spec, and the directive under `.claude/orchestration/directives/`) are landing first. Downstream rewrites at each subsidiary — including the router at `~/Organizations/CLAUDE.md`, the subsidiary shell CLAUDE.md and README.md files, and the sensitive-metadata extraction — are tracked as the Subsidiary Authority migration campaign and are expected to land over the subsequent review cycles. This specification describes the target state; the per-subsidiary assessment in §7 describes the current state and the delta.
+> **Current-state note (2026-05-02):** The parent artifacts (ADR-007, ORG-001, this spec, and the directive under `.claude/orchestration/directives/`) are active. Downstream rewrites and publication steps are tracked as the Subsidiary Authority migration campaign. Some subsidiary shells are now aligned and some GitHub boundaries are created; this specification describes the target state while the per-subsidiary assessment in §7 records current state and remaining deltas.
 
 ---
 
@@ -267,11 +267,11 @@ As of 2026-04-20, the state of each subsidiary against this specification:
 
 | Aspect | Current | Target | Delta |
 |--------|---------|--------|-------|
-| GitHub organization | `jefahnierocks` exists as intended boundary; paid Team-style features are deferred | Use paid org features only when collaboration, compliance, billing, or automation requires them | Track semantic ownership separately from current operational hosting |
+| GitHub organization | `jefahnierocks` exists as the intended Free-tier boundary; paid Team-style features are deferred | Use paid org features only when collaboration, compliance, billing, or automation requires them | Track semantic ownership separately from current operational hosting |
 | Primary domain | `jefahnierocks.com` | Same | None |
-| Subsidiary shell CLAUDE.md | Nash-framed | Authored in own voice | Full rewrite needed |
-| Subsidiary shell README.md | Nash-framed | Authored in own voice | Full rewrite needed |
-| Public metadata file | `.subsidiary.yaml` exists; no confidential legal/financial data observed | Routing fields only | Minor cleanup; confirm no confidential drift |
+| Subsidiary shell CLAUDE.md | Authored in own voice | Same | None |
+| Subsidiary shell README.md | Authored in own voice | Same | None |
+| Public metadata file | `.subsidiary.yaml` intentionally removed; no Jefahnierocks-owned consumer exists yet | Recreate only if a Jefahnierocks-owned consumer exists and keep it public-metadata only | No current file required |
 | Project-level artifacts | Various personal projects; some may remain in lower-cost hosting while semantically classified as Jefahnierocks-owned | Clean, Jefahnierocks-owned artifacts once moved into the subsidiary boundary | Per-project audit; record current host and move trigger |
 
 ### 7.3 Litecky Editing Services
@@ -376,3 +376,4 @@ The migration campaign produces the first authoritative router template and trac
 |------|--------|---------|
 | 2026-04-20 | Agent | Initial creation (v1.0.0, ACTIVE) establishing the operational detail for the three-tier authority model per ADR-007 and ORG-001; includes ownership matrix, restatement workflow, onboarding/offboarding, sensitive metadata placement rules, and per-subsidiary current-state assessment. |
 | 2026-04-26 | Codex | v1.0.1 — Added semantic ownership vs operational hosting rule; recorded Happy Patterns ownership of `scopecam` and Jefahnierocks paid GitHub org deferral for personal projects. |
+| 2026-05-02 | Codex | v1.0.2 — Recorded the Jefahnierocks GitHub Free organization boundary as created, kept paid/team automation deferred, and updated the Jefahnierocks shell/public-metadata current-state rows after the local-authority cleanup. |
