@@ -1,12 +1,13 @@
 # IAM Specification - The Nash Group
 **Version**: 1.1.0 (Agentic Era)
+**Status**: PARTIALLY HISTORICAL — REWRITE PENDING
 **Created**: 2025-11-20
-**Updated**: 2025-11-20
+**Updated**: 2025-11-20 (content); 2026-05-02 (status banner)
 **Policies**: SEC-001 (Zero Trust), SEC-003 (Least Privilege), SEC-004 (Security Baseline), GOV-010 (Labeling), OPS-010 (Emergency Response), FIN-001 (Cost Control)
 
 ---
 
-> **Current-state note (2026-04-07)**: This specification is partly strategic and partly historical. The live Citadel machine-identity path is GitHub App + GitHub Actions + OpenTofu with Hetzner Object Storage state, not HCP Terraform. Treat any HCP Terraform-specific sections in this document as planned/legacy reference until this spec receives a full ADR-005-era rewrite.
+> **REWRITE PENDING — DO NOT TREAT AS CURRENT TRUTH** (status updated 2026-05-02). This specification is partly strategic and partly historical. The live Citadel machine-identity path is GitHub App + GitHub Actions + OpenTofu with Hetzner Object Storage state, not HCP Terraform. Multi-org structure follows ADR-004 / ADR-007 (independent subsidiary GitHub orgs under three-tier authority), not the AWS/GCP tenant model described below. SEC-005 (Machine Identity) and the Secrets Management Specification v1.3.0 are the authoritative current parent doctrine for machine credentials and secret storage. Treat AWS, GCP, HCP Terraform, and tenant-isolation sections in this document as decision-time context rather than the current operating model. A full ADR-005/ADR-007-era rewrite is open as remaining roadmap work.
 
 ## Governing Principles
 

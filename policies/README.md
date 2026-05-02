@@ -65,13 +65,16 @@ This directory contains the complete formal policy framework for The Nash Group,
 - **[AGT-003: Citadel Audit Framework](./agt-003-citadel-audit-framework.md)** - Systematic verification that Covenant principles are enforced
 - **[AGT-004: Enforcement Checklist](./agt-004-enforcement-checklist.md)** - Master verification checklist for Citadel enforcement
 
+### Organizational Authority (ORG)
+- **[ORG-001: Subsidiary Authority and Identity Isolation](./org-001-subsidiary-authority.md)** - Three-tier authority model invariants (identity isolation, authority restatement, spec flow); operational rule for the boundary between parent and subsidiary
+
 ### Specifications
-- **[Cloudflare Ownership Transition](./specs/cloudflare-ownership-transition.md)** - Transitional stewardship and placement rules for Cloudflare resources
+- **[Cloudflare Ownership Transition](./specs/cloudflare-ownership-transition.md)** (ACCEPTED v1.1.0) - Transitional stewardship and placement rules for Cloudflare resources
 - **[GitHub Machine Identity](./specs/github-machine-identity.md)** - GitHub App architecture and credential lifecycle for machine identities
-- **[IAM Specification](./specs/iam-specification.md)** - Strategic and historical IAM architecture reference
-- **[Secrets Management](./specs/secrets-management.md)** - Secret classification, lifecycle, ownership, distribution, and rotation model
-- **[Subsidiary Authority](./specs/subsidiary-authority.md)** - Operational model for parent, subsidiary, and project authority boundaries
-- **[Organizational Design Quality](./specs/organizational-design-quality.md)** - Draft anchor quality bar for control-surface classification, ownership, review, evidence, and subsidiary restatement
+- **[IAM Specification](./specs/iam-specification.md)** (PARTIALLY HISTORICAL — REWRITE PENDING) - Pre-ADR-005 IAM architecture reference
+- **[Secrets Management](./specs/secrets-management.md)** (ACTIVE v1.3.0) - Secret classification, lifecycle, ownership, distribution, and rotation model
+- **[Subsidiary Authority](./specs/subsidiary-authority.md)** (ACTIVE v1.0.3) - Operational model for parent, subsidiary, and project authority boundaries
+- **[Organizational Design Quality](./specs/organizational-design-quality.md)** (DRAFT v0.1.0) - Anchor quality bar for control-surface classification, ownership, review, evidence, and subsidiary restatement; not active policy
 
 > **Note**: GOV-009 was intentionally reserved for future use. The policy ID gap between GOV-008 and GOV-010 is deliberate.
 
@@ -205,8 +208,10 @@ Each policy follows a standardized template:
 - **Coverage**: 100% of PRINCIPLES.md, GOVERNANCE.md, and HUMAN_MANDATE.md formalized
 - **Traceability**: Every policy traces to source documents with specific sections
 - **Enforceability**: All policies include technical and procedural enforcement
-- **Completeness**: 28 policies covering all organizational domains
+- **Completeness**: 38 numbered policies (SC, SEC, INF, OPS, DOC, DEP, GOV, COM, AGT, ORG) plus 6 specifications under `specs/`
 - **Consistency**: Standardized template and cross-referencing throughout
+
+> **Frontmatter currency note (2026-05-02)**: Most policies still carry their original `Last Updated: 2024-09-30` stamp because they have not been substantively revised since. Files with newer stamps (SEC-005, AGT-001, ORG-001, COM-001, INF-001, SEC-004) reflect intentional revisions. The original stamp is therefore truthful — not bulk-refreshed dishonestly — but readers should consult the linked Covenant ADRs (especially ADR-005 OpenTofu, ADR-007 Subsidiary Authority) and the active specifications for current enforcement detail.
 
 ---
 

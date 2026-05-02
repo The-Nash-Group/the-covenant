@@ -5,7 +5,7 @@
 | Field | Value |
 |-------|-------|
 | **Date** | 2026-04-20 |
-| **Last Updated** | 2026-04-26 |
+| **Last Updated** | 2026-05-02 |
 | **Author** | Agent |
 | **Governance Level** | Covenant (2 Watchers + 2 Mentors, 72h debate) |
 | **Status** | Accepted |
@@ -187,8 +187,8 @@ Phases 1–3 are parent-repo work. Phase 4 is the parent's handoff to subsidiari
 - [ADR-004: Federated Multi-Org Architecture](./004-federated-multi-org-architecture.md) — amended in place 2026-04-20
 - [PRINCIPLES.md](../../PRINCIPLES.md) — 16 core principles
 - [GOVERNANCE.md](../../GOVERNANCE.md) — Decision authority matrix
-- [ORG-001: Subsidiary Authority and Identity Isolation](../../policies/org-001-subsidiary-authority.md) *(to be created in Phase 1)*
-- [Subsidiary Authority Specification](../../policies/specs/subsidiary-authority.md) *(to be created in Phase 1)*
+- [ORG-001: Subsidiary Authority and Identity Isolation](../../policies/org-001-subsidiary-authority.md) — published 2026-04-20
+- [Subsidiary Authority Specification](../../policies/specs/subsidiary-authority.md) — ACTIVE v1.0.3 (2026-05-02)
 
 ---
 
@@ -200,3 +200,4 @@ Phases 1–3 are parent-repo work. Phase 4 is the parent's handoff to subsidiari
 |------|--------|---------|
 | 2026-04-20 | Agent | Initial creation — establishes three-tier authority model, three invariants (identity isolation, authority restatement, spec flow), sensitive metadata placement rule; supersedes inheritance-by-pointer language in ADR-004 §4 (amended in place same date) |
 | 2026-04-26 | Codex | Added the transitional hosting rule: Happy Patterns LLC owns `scopecam` under its paid Team org, while Jefahnierocks remains semantic owner for personal projects whose paid org hosting is deferred until justified. |
+| 2026-05-02 | Agent | Removed "to be created in Phase 1" labels in §References — ORG-001 is published (2026-04-20) and the Subsidiary Authority Specification is ACTIVE at v1.0.3 (2026-05-02). |

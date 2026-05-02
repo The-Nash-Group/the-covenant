@@ -200,7 +200,9 @@ ADRs are **living documents** — they should reflect current architectural trut
 - **HUMAN_MANDATE.md** - The five Guardian roles and Human/Machine Creed
 - **CONTRIBUTING.md** - How to propose changes
 - **REFERENCE/** - Historical context and legacy configurations
-- **docs/architecture/** - Architecture Decision Records (ADRs)
+- **docs/architecture/** - Architecture Decision Records (ADRs); ADR-007 (2026-04-20) defines the three-tier authority model that refines ADR-004 §4
+- **policies/org-001-subsidiary-authority.md** - Subsidiary authority and identity isolation policy (the three invariants: identity isolation, authority restatement, spec flow)
+- **policies/specs/** - Operational specifications (subsidiary-authority, secrets-management, github-machine-identity, cloudflare-ownership-transition, iam-specification, organizational-design-quality)
 
 ## Constraints & Guidelines
 
@@ -297,4 +299,4 @@ See `../AGENTS.md` for full organizational context and the three-pillar architec
 
 **Remember**: The Covenant without the Citadel is mere words. The Citadel without the Covenant is mere machinery. Together, they are civilization.
 
-*Last Updated: 2026-03-03*
+*Last Updated: 2026-05-02*
