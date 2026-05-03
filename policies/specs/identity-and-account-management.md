@@ -1,7 +1,7 @@
 # Identity and Account Management Specification
 
 **Version:** 0.1.0
-**Status:** DRAFT
+**Status:** DRAFT — Accepted for Validation (2026-05-03 by Guardian under Covenant-tier single-Guardian quorum exception per `STATUS.md §Governance Exceptions`)
 **Date:** 2026-05-03
 **Implements:** Principle 5 (Infrastructure as Code), Principle 9 (Zero Trust), Principle 10 (Least Privilege), Principle 15 (Three Circles of Trust)
 **Policies:** SEC-005 (Machine Identity), ORG-001 (Subsidiary Authority and Identity Isolation), GOV-003 (Break-Glass)
@@ -272,11 +272,13 @@ This is the same shape used for ORG-001 ↔ Subsidiary Authority Specification �
 
 The spec moves from DRAFT to **DRAFT — Accepted for Validation** when:
 
-- [ ] Guardian review completed under the Covenant-tier single-Guardian quorum exception (recorded explicitly in `STATUS.md §Governance Exceptions` and noted in this spec's changelog with date and authority basis)
-- [ ] Cross-references in `the-covenant/policies/README.md` updated to list this spec
-- [ ] D5 references this spec as the foundation for step 1 (MN-1)
+- [x] Guardian review completed under the Covenant-tier single-Guardian quorum exception (recorded explicitly in `STATUS.md §Governance Exceptions` and noted in this spec's changelog with date and authority basis) — completed 2026-05-03
+- [x] Cross-references in `the-covenant/policies/README.md` updated to list this spec — completed 2026-05-03 (commit `9bd058d`)
+- [x] D5 references this spec as the foundation for step 1 (MN-1) — completed 2026-05-03 (D5 §5 step 0, §8, §9)
 
 Acceptance for validation does **not** authorize the spec as ACTIVE policy. It authorizes implementation work to proceed under the spec's contract, with the explicit understanding that the spec will be refined based on what the work teaches.
+
+**This promotion was completed 2026-05-03.** The spec is now in **DRAFT — Accepted for Validation** state. Implementation work (D5 steps 1–7) proceeds under the contract; ACTIVE promotion gates listed below remain pending.
 
 ### Promotion: DRAFT — Accepted for Validation → ACTIVE
 
@@ -335,3 +337,4 @@ The spec promotes to **ACTIVE** only when ALL of the following hold:
 |------|--------|---------|
 | 2026-05-03 | Agent | Initial DRAFT v0.1.0 — narrow spec answering six questions for multi-entity scoped credentials. Respects D5 sequencing. Reserves synthetic council principal slot. Does not replace `iam-specification.md` REWRITE PENDING work. |
 | 2026-05-03 | Agent | DRAFT v0.1.0 refined pre-acceptance based on consult review: (1) §6 Mechanism A reframed from "in place" to current/target/gap (Citadel `opentofu.yml` injects repo-wide `CLOUDFLARE_API_TOKEN` into every plan/apply matrix job — workspace-scoping covers GitHub identity only); (2) §4 rotation cadences corrected from "annual" to **180 days** to inherit Secrets Management Specification v1.3.0 §5.4 targets (no relaxation); (3) §2 vault structure rewritten with canonical Secrets Mgmt §3 logical paths as authoritative + 1Password item names as aliases; (4) Status wording clarified — DRAFT → "Accepted for Validation" → ACTIVE in two distinct promotions, not one; (5) Out-of-Spec Credentials Registry made an explicit required deliverable rather than described as already existing. |
+| 2026-05-03 | Guardian (jeffrey) | **DRAFT → DRAFT — Accepted for Validation.** Recorded under the Covenant-tier single-Guardian quorum exception (`STATUS.md §Governance Exceptions`, also referenced in ADR-007 §Current-state note). The full Covenant-tier quorum (2 Watchers + 2 Mentors per `the-covenant/GOVERNANCE.md` §Covenant Decisions) is restored when the synthetic council per FU-1 is operational. Acceptance authorizes implementation work to proceed under the spec's contract — including D5 step 1 (MN-1 per-entity Cloudflare token issuance), Citadel out-of-spec credentials registry creation, and the Citadel `opentofu.yml` workflow rewrite to resolve the Cloudflare token per matrix entry. **Acceptance does NOT promote the spec to ACTIVE.** ACTIVE promotion requires the second-stage Acceptance Criteria: Citadel registry exists; MN-1 issues per-entity tokens; workflow `env:` blocks rewritten; first per-entity audit-rotation-log entry recorded using canonical paths; Litecky Editing Services first-real-workload migration (D5 step 7) validates the spec end-to-end. |
