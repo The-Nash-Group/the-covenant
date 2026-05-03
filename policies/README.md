@@ -71,6 +71,7 @@ This directory contains the complete formal policy framework for The Nash Group,
 ### Specifications
 - **[Cloudflare Ownership Transition](./specs/cloudflare-ownership-transition.md)** (ACCEPTED v1.1.0) - Transitional stewardship and placement rules for Cloudflare resources
 - **[GitHub Machine Identity](./specs/github-machine-identity.md)** - GitHub App architecture and credential lifecycle for machine identities
+- **[Identity and Account Management](./specs/identity-and-account-management.md)** (DRAFT v0.1.0) - Multi-entity identity contract: per-entity provider account model, credential vault structure, principals, rotation, audit, and cross-entity prevention; narrow scope; promotes to ACTIVE after first end-to-end migration
 - **[IAM Specification](./specs/iam-specification.md)** (PARTIALLY HISTORICAL — REWRITE PENDING) - Pre-ADR-005 IAM architecture reference
 - **[Secrets Management](./specs/secrets-management.md)** (ACTIVE v1.3.0) - Secret classification, lifecycle, ownership, distribution, and rotation model
 - **[Subsidiary Authority](./specs/subsidiary-authority.md)** (ACTIVE v1.0.3) - Operational model for parent, subsidiary, and project authority boundaries
