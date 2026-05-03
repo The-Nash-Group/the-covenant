@@ -16,7 +16,7 @@ Define how identity and credentials map to The Nash Group's multi-entity case �
 
 This specification is intentionally narrow. It answers exactly what is needed for per-entity scoped credentials to be issuable, used, rotated, audited, and revoked without creating cross-entity drift. It does **not** replace the `iam-specification.md` REWRITE PENDING work; that broader rewrite covers AWS IAM Identity Center, GCP IAM, federated SSO, agent sandbox cages, and break-glass alerting infrastructure — most of which does not apply at the current operational scale.
 
-> **Current-state note (2026-05-03):** This spec lands as DRAFT. It becomes ACTIVE after the first credential issuance under its contract (per-entity Cloudflare token in MN-1) and the first end-to-end migration validation (Litecky Editing Services workload per `D5: CREDENTIAL-STRATEGY-RECOMMENDATION-2026-05-02`). Until then, treat this as the design contract that those steps will validate.
+> **Current-state note (2026-05-03):** This spec lands as **DRAFT**. Guardian review may move it to **DRAFT — Accepted for Validation** (recorded in the changelog and acceptance-criteria checklist). It does NOT promote to **ACTIVE** until the first credential issuance under its contract (per-entity Cloudflare token in MN-1) AND the first end-to-end migration validation (Litecky Editing Services workload per `D5: CREDENTIAL-STRATEGY-RECOMMENDATION-2026-05-02`) both complete. Until then, treat this as the design contract that those steps will validate.
 
 > **Ownership boundary:** This specification defines the multi-entity identity contract (principals, vault structure, rotation cadence, audit destinations, cross-entity prevention). Exact Citadel files, workflow names, commands, and live backend wiring are Citadel-owned implementation details; references below are current-state evidence or expected contracts, not Covenant-run implementation.
 
@@ -61,18 +61,28 @@ Each entity has a defined relationship with each provider. The following table r
 
 ### 2. Credential vault structure
 
-#### Phase A: Strict naming in shared `Dev` vault (current and through synthetic council deployment)
+#### Phase A: Canonical logical paths + aliased 1Password item names (current and through synthetic council deployment)
 
-Naming convention for credentials in the `Dev` 1Password vault:
+**Canonical naming is the Secrets Management Specification v1.3.0 §3 namespace** — it is the single source of truth:
 
-| Pattern | Example | Scope |
-|---------|---------|-------|
-| `citadel-cloudflare-<entity>-<scope>` | `citadel-cloudflare-litecky-rw`, `citadel-cloudflare-the-nash-group`, `citadel-cloudflare-jefahnierocks-rw` | per-entity Cloudflare API tokens |
-| `citadel-hetzner-cloud-<entity>` | `citadel-hetzner-cloud-rw` (parent today; per-entity later) | per-entity Hetzner credentials |
-| `citadel-github-app-<installation>` | `citadel-github-app-the-nash-group` | per-installation GitHub App credentials |
-| `acme-dns01-<zone>` | `acme-dns01-jefahnierocks-com` | per-zone DNS-01 ACME tokens (least-priv) |
-| `audit-cloudflare-<entity>-readonly` | `audit-cloudflare-litecky-readonly` | per-entity read-only audit tokens |
-| `<entity>-mcp-<purpose>` | `cloudflare-mcp-jefahnierocks` (already exists) | per-entity read-scope tokens for MCP / agent reads |
+```
+{domain}/{provider-or-resource}/{entity}/{secret-name}
+```
+
+(domain ∈ `infra` | `cloudflare` | `services` | `break-glass`; entity per §1; secret-name describes the credential's purpose.)
+
+1Password item names in the shared `Dev` vault are **aliases** to these canonical logical paths. Item names follow a kebab-cased convention so vault listing remains scannable; the logical path remains canonical for cross-reference, audit, and PaC checks.
+
+| Canonical logical path (Secrets Mgmt §3) | 1Password item alias (Dev vault) | Scope |
+|------------------------------------------|----------------------------------|-------|
+| `cloudflare/<entity>/api-token-rw` | `citadel-cloudflare-<entity>-rw` (e.g. `citadel-cloudflare-litecky-rw`, `citadel-cloudflare-the-nash-group`, `citadel-cloudflare-jefahnierocks-rw`) | per-entity Cloudflare API tokens |
+| `infra/hetzner/<entity>/cloud-rw` | `citadel-hetzner-cloud-<entity>` (e.g. `citadel-hetzner-cloud-rw` — parent today; per-entity later) | per-entity Hetzner credentials |
+| `infra/github-app/<installation>/private-key` | `citadel-github-app-<installation>` (e.g. `citadel-github-app-the-nash-group`) | per-installation GitHub App credentials |
+| `cloudflare/<entity>/acme-dns01-<zone>` | `acme-dns01-<zone>` (e.g. `acme-dns01-jefahnierocks-com`) | per-zone DNS-01 ACME tokens (least-priv) |
+| `cloudflare/<entity>/audit-readonly` | `audit-cloudflare-<entity>-readonly` (e.g. `audit-cloudflare-litecky-readonly`) | per-entity read-only audit tokens |
+| `cloudflare/<entity>/mcp-readonly` | `<entity>-mcp-readonly` (e.g. `cloudflare-mcp-jefahnierocks` — already exists) | per-entity read-scope tokens for MCP / agent reads |
+
+**Why both:** the canonical path supports backend-agnostic logic (PaC, audit-rotation-log entries, registry lookups). The 1Password alias supports human discoverability in the vault UI. Cross-references in this spec, in `subsidiaries.yaml`, and in audit logs MUST use the canonical path; the 1Password item name is the implementation alias.
 
 **Required convention discipline:**
 
@@ -129,20 +139,23 @@ Until then, the slot exists in the principal model so future credential entries 
 
 ### 4. Rotation contract
 
+Cadences are inherited from **Secrets Management Specification v1.3.0 §5.4** (the active Covenant-tier spec governing rotation targets) and applied per credential type:
+
 | Credential type | Cadence | Trigger | Evidence |
 |-----------------|---------|---------|----------|
-| Cloudflare API tokens (per-entity scoped) | annual | calendar; immediate on owner change, principal addition/removal, or breach suspicion | rotation entry in `<entity>/audit-rotation-log.md` (see §5) |
-| Cloudflare API tokens (account-wide; legacy) | retire by next rotation cycle | replacement scoped tokens issued | retirement entry; old token revoked |
-| GitHub App private keys | annual | calendar; immediate on breach or platform security alert | rotation evidence in Citadel CI logs + 1Password version history |
-| GitHub App installation tokens | per-job (1-hour TTL by default) | platform-managed | inherent (no rotation needed at the spec level) |
-| Hetzner API tokens | annual | calendar; immediate on owner change | rotation entry in audit-rotation-log |
-| ACME DNS-01 tokens (per-zone) | quarterly | calendar | renewal evidence in subsidiary scope (HomeNetOps for Jefahnierocks zones; per-entity equivalent for others) |
-| OPNsense API users (HomeNetOps) | quarterly | calendar; immediate on personnel change or privilege drift detection | OPNsense API user inventory (subsidiary-scope); parent records the contract, not the inventory |
+| Cloudflare API tokens (per-entity scoped) | **180 days** (per Secrets Mgmt v1.3.0 §5.4) | calendar; immediate on owner change, principal addition/removal, or breach suspicion | rotation entry in `<entity>/audit-rotation-log.md` (see §5) |
+| Cloudflare API tokens (account-wide; legacy) | retire by next rotation cycle (max 180 days from spec acceptance) | replacement scoped tokens issued | retirement entry; old token revoked |
+| GitHub App private keys (PEM) | **180 days** (per Secrets Mgmt v1.3.0 §5.4) | calendar; immediate on breach or platform security alert | rotation evidence in Citadel CI logs + 1Password version history |
+| GitHub App installation tokens (IAT) | per-job (1-hour TTL by default; protocol-enforced) | platform-managed | inherent (no rotation needed at the spec level) |
+| Hetzner cloud / S3 credentials | **180 days** (per Secrets Mgmt v1.3.0 §5.4) | calendar; immediate on owner change | rotation entry in audit-rotation-log |
+| State encryption passphrase (`TOFU_STATE_ENCRYPTION_PASSPHRASE`) | **rotate only on suspected compromise** (per Secrets Mgmt v1.3.0 §5.4 exception) | breach suspicion or key-custody change | incident record + rotation entry |
+| ACME DNS-01 tokens (per-zone) | quarterly (90 days) | calendar | renewal evidence in subsidiary scope (HomeNetOps for Jefahnierocks zones; per-entity equivalent for others) |
+| OPNsense API users (HomeNetOps) | quarterly (90 days) | calendar; immediate on personnel change or privilege drift detection | OPNsense API user inventory (subsidiary-scope); parent records the contract, not the inventory |
 | 1Password vault membership | reviewed at synthetic council deployment; immediate on personnel change | event-driven | 1Password activity log + rotation entry |
 
-**Evidence requirement:** Every rotation produces a non-secret entry in the per-entity audit-rotation-log naming the credential ID, principal set, rotation date, rotation reason, and verification step. **Secret values are never logged.** Logical token names and rotation dates only.
+**Evidence requirement:** Every rotation produces a non-secret entry in the per-entity audit-rotation-log naming the credential's canonical logical path (per §2), principal set, rotation date, rotation reason, and verification step. **Secret values are never logged.** Logical paths and rotation dates only.
 
-**Cadence rationale:** Annual is the default for long-lived credentials at the current operational scale; quarterly applies where credential blast radius or principal turnover is higher (DNS-01 affects zone-level cert renewal; OPNsense API users gate LAN admin access). Cadences are starting points; rotation under v0.2.0 will tighten or relax based on first-cycle evidence.
+**Cadence rationale:** 180 days is the Secrets Management v1.3.0 target for long-lived material secrets (Cloudflare API tokens, GitHub App PEMs, Hetzner cloud/S3 credentials). Quarterly (90 days) applies where credential blast radius or principal turnover is higher (DNS-01 affects zone-level cert renewal; OPNsense API users gate LAN admin access). State encryption passphrase rotates only on suspected compromise per the Secrets Management v1.3.0 exception. This spec inherits these targets — it does NOT relax them. v0.2.0 may tighten cadence if first-cycle evidence supports it.
 
 ### 5. Audit destination per entity
 
@@ -179,77 +192,103 @@ The log is created by each entity at first credential issuance and maintained on
 
 ### 6. Cross-entity prevention contract
 
-Mechanisms that ensure one entity's credentials cannot be used by another entity's workflows:
+Mechanisms intended to ensure one entity's credentials cannot be used by another entity's workflows. Each entry distinguishes **current state** (what the workflow actually does today) from **target state** (what this spec contracts for) and records the gap.
 
-#### Mechanism A: Workspace-scoped CI secrets (in place)
+#### Mechanism A: Workspace-resolved CI authentication
 
-Each Citadel CI job receives only the credentials needed for its workspace. Resolution is at runtime from `.github/workspace-registry.json`. No global secret reach.
+- **Current state — partial.** The Citadel `opentofu.yml` workflow resolves the GitHub App **installation** per workspace (`detect-changes` reads `.github/workspace-registry.json`; `create-github-app-token@v1` mints a per-installation IAT with `owner: matrix.org`). However, the `plan` and `apply` jobs both inject a **single repo-wide `CLOUDFLARE_API_TOKEN`** at the job level (see `.github/workflows/opentofu.yml` lines ~121 and ~335). The same Cloudflare token is therefore reachable from every per-org plan/apply matrix run. **GitHub identity is workspace-scoped today; Cloudflare identity is not.**
+- **Target state.** Cloudflare authentication resolved per workspace through the same registry mechanism, with per-entity scoped tokens replacing the repo-wide secret.
+- **Gap closure.** D5 step 1 (MN-1) issues per-entity scoped Cloudflare tokens; the workflow's `env:` block at the job level is rewritten to resolve the appropriate token per matrix entry.
 
-Implementation: GitHub Actions `secrets:` are resolved per workspace via the `detect-changes` job; per-org GitHub App tokens are minted dynamically using `create-github-app-token@v1` with `owner: matrix.org`. No per-org installation ID secrets exist at the repo level.
+#### Mechanism B: GitHub Actions environment gating
 
-#### Mechanism B: GitHub Actions environments (in place)
+- **Current state — in place.** The `apply` job uses the `production` environment, requiring Guardian approval before `tofu apply` runs. Secrets are injected at job-start.
+- **Target state.** Same; possibly tightened by adding per-environment secrets after MN-1.
+- **Gap.** None on the gating itself; gating's value is reduced while the underlying credential is repo-wide (Mechanism A gap).
 
-Production environment gates per-org; secrets injected at job-start, not job-definition. The `production` environment requires Guardian approval for `apply` jobs.
+#### Mechanism C: Per-token Cloudflare scope
 
-#### Mechanism C: Per-token Cloudflare scope (target state per MN-1)
+- **Current state — gap.** A single shared `secret:cf-api-token-shared` authenticates parent zone IaC, Jefahnierocks zone settings IaC, and (transitively) HomeNetOps ACME and Pulumi home/device automation.
+- **Target state.** Per-entity scoped tokens with explicit zone/account/permission boundaries. No account-wide tokens for production use.
+- **Gap closure.** D5 step 1 (MN-1).
 
-Tokens are issued with explicit zone/account/permission boundaries. No account-wide tokens for production use. The single shared `secret:cf-api-token-shared` is retired as MN-1 lands.
+#### Mechanism D: 1Password vault access
 
-#### Mechanism D: 1Password vault access (Phase A: naming; Phase B: per-vault ACLs)
+- **Phase A current state — partial.** The shared `Dev` vault holds all credentials; canonical-path + alias naming (per §2) makes mis-use auditable but not preventable. Anyone with `Dev` vault read access can technically see all entries.
+- **Phase B target state.** Per-entity vaults with explicit ACLs at synthetic council deployment. Cross-vault access requires explicit grant.
+- **Gap.** Phase A is the operating model today; Phase B awaits synthetic council.
 
-Phase A (current): naming convention enforces visibility. Anyone with `Dev` vault read access can technically see all credentials, but the naming convention makes mis-use auditable.
+#### Mechanism E: PaC enforcement
 
-Phase B (synthetic council deployment): per-entity vaults with explicit ACLs. Cross-vault access requires explicit grant.
+- **Current state — not implemented.**
+- **Target state.** OPA policy that rejects plans consuming tokens with cross-entity scope. Plan input includes which credential resolved which workspace; policy fails if the credential's scope set does not match the workspace's expected scope set.
+- **Gap closure.** Not v0.1.0; identified as the natural next step once Mechanisms A and C are at target state.
 
-#### Mechanism E: PaC enforcement (proposed; not v0.1.0)
-
-OPA policy that rejects plans consuming tokens with cross-entity scope. Plan input includes which credential resolved which workspace; policy fails if the credential's scope set does not match the workspace's expected scope set.
-
-**Status: future PaC gate.** Not part of v0.1.0; identified as the natural next step once Mechanisms A–D are operational and the first cross-entity prevention case is exercised.
+**Honest summary of v0.1.0 state:** Mechanism B is operational. Mechanisms A (Cloudflare half), C, D (Phase B), and E are gaps that this spec contracts for; closing them is downstream implementation work tracked in D5. The spec is the **contract** that will govern those closures, not a claim that closures have happened.
 
 ---
 
 ## Out-of-Spec Credentials Registry
 
-Credentials that exist on workstations or in `Dev` but do not yet conform to this spec are tracked in `the-citadel/docs/identity-and-account-management/out-of-spec-credentials.md` (Citadel-side; this spec defines the contract, Citadel maintains the inventory).
+Credentials that exist on workstations or in `Dev` but do not yet conform to this spec **MUST** be tracked in a Citadel-maintained inventory at `the-citadel/docs/identity-and-account-management/out-of-spec-credentials.md`. The inventory does not exist as of spec v0.1.0; **creating it is a required deliverable** of this spec's acceptance — listed in the Acceptance Criteria below and in D5 step 1's preconditions.
 
-Each entry records:
+Each entry MUST record:
 
-- Credential logical name
+- Credential canonical logical path (per §2; Secrets Mgmt §3 namespace)
+- 1Password item alias (if applicable)
 - Current scope vs target scope
 - Migration pathway (replace, rotate-and-narrow, retire)
 - Sunset date (max 90 days per Secrets Management Spec v1.3.0 override rule)
 - Justification for continued existence
 
-The registry decreases over time. v0.1.0 expects entries for: `secret:cf-api-token-shared`, `citadel-hetzner-cloud-rw` (account-wide scope), the OPNsense `monitoring_svc` over-privileged user, and any credentials surfaced by the `secret:cf-tokens-unenumerated` open question.
+The registry decreases over time. Initial expected entries on creation:
+
+- `cloudflare/<account>/api-token-shared` (canonical) / `secret:cf-api-token-shared` (current naming) — repo-wide Cloudflare token retired as MN-1 lands
+- `infra/hetzner/<account>/cloud-rw` (canonical) / `citadel-hetzner-cloud-rw` (current naming) — account-wide Hetzner credential, narrowed when per-entity Hetzner separation lands
+- `homenet/opnsense/monitoring-svc` — over-privileged OPNsense API user (HomeNetOps-scope; tracked here as cross-reference; reduced per D5 MN-3)
+- Any credentials surfaced by the `secret:cf-tokens-unenumerated` open question once a user-scoped read token enumerates `/user/tokens` for the personal-custodied Cloudflare account
 
 ---
 
 ## Implementation Path (v0.1.0)
 
-| Phase | Action | Deliverable |
-|-------|--------|-------------|
-| 1 | Spec accepted by Guardian under standing single-Guardian quorum exception (per ADR-007 governance note) | Status DRAFT → ACTIVE post-MN-1 + first migration |
-| 2 | Citadel issues per-entity Cloudflare scoped tokens replacing `secret:cf-api-token-shared` (MN-1 from D5) | Tokens in `Dev` with naming convention; rotation entry in each entity's audit-rotation-log |
-| 3 | Citadel publishes the parent template for `audit-rotation-log.md` | Template in Citadel docs; each entity creates its own log |
-| 4 | Litecky Editing Services first-real-workload migration (D5 step 7) exercises the spec end-to-end | Empirical evidence; informs v0.2.0 |
-| 5 | Spec updated to v0.2.0 based on first-migration findings | v0.2.0 with refined cadence, verification, and audit shapes |
-| 6 | Happy Patterns LLC migration at activation trigger (D5 step 8) validates v0.2.0 in second context | Second empirical-evidence cycle |
+| Phase | Action | Status transition | Deliverable |
+|-------|--------|--------------------|-------------|
+| 1 | Spec reviewed by Guardian under the documented Covenant-tier single-Guardian quorum exception (per ADR-007 governance note + STATUS.md §Governance Exceptions) | DRAFT → **DRAFT — Accepted for Validation** | Changelog entry recording acceptance; checklist progress |
+| 2 | Citadel creates the out-of-spec credentials registry | (still DRAFT — Accepted for Validation) | `the-citadel/docs/identity-and-account-management/out-of-spec-credentials.md` |
+| 3 | Citadel issues per-entity Cloudflare scoped tokens replacing `secret:cf-api-token-shared` (MN-1 from D5); workflow `env:` blocks rewritten to resolve per matrix entry | (still DRAFT — Accepted for Validation) | Tokens at canonical paths with 1P aliases; rotation entry in each entity's audit-rotation-log; updated `opentofu.yml` |
+| 4 | Citadel publishes the parent template for `audit-rotation-log.md` | (still DRAFT — Accepted for Validation) | Template in Citadel docs; each entity creates its own log |
+| 5 | Litecky Editing Services first-real-workload migration (D5 step 7) exercises the spec end-to-end | DRAFT — Accepted for Validation → **ACTIVE** | Empirical evidence; informs v0.2.0 |
+| 6 | Spec updated to v0.2.0 based on first-migration findings | ACTIVE | v0.2.0 with refined cadence, verification, and audit shapes |
+| 7 | Happy Patterns LLC migration at activation trigger (D5 step 8) validates v0.2.0 in second context | ACTIVE | Second empirical-evidence cycle |
 
-This is the same shape used for ORG-001 ↔ Subsidiary Authority Specification ↔ restatement log: small spec, validate with real work, refine.
+This is the same shape used for ORG-001 ↔ Subsidiary Authority Specification ↔ restatement log: small spec, validate with real work, refine. **The spec does NOT promote to ACTIVE on Guardian acceptance alone — it promotes after first end-to-end migration validation.**
 
 ---
 
 ## Acceptance Criteria
 
-This spec is ready to be promoted from DRAFT to ACTIVE when:
+### Promotion: DRAFT → DRAFT — Accepted for Validation
 
-- [ ] Guardian review completed under single-Guardian quorum exception (recorded in changelog)
+The spec moves from DRAFT to **DRAFT — Accepted for Validation** when:
+
+- [ ] Guardian review completed under the Covenant-tier single-Guardian quorum exception (recorded explicitly in `STATUS.md §Governance Exceptions` and noted in this spec's changelog with date and authority basis)
 - [ ] Cross-references in `the-covenant/policies/README.md` updated to list this spec
-- [ ] First credential issued under this contract: per-entity Cloudflare token replacing `secret:cf-api-token-shared` (MN-1)
-- [ ] First per-entity `audit-rotation-log.md` exists (in any entity scope) with at least one entry
-- [ ] First end-to-end migration validated: Litecky Editing Services Cloudflare workspace operating under per-entity scoped credentials
-- [ ] No regression in cross-entity prevention (Mechanisms A–D operating; Mechanism E identified as planned future work)
+- [ ] D5 references this spec as the foundation for step 1 (MN-1)
+
+Acceptance for validation does **not** authorize the spec as ACTIVE policy. It authorizes implementation work to proceed under the spec's contract, with the explicit understanding that the spec will be refined based on what the work teaches.
+
+### Promotion: DRAFT — Accepted for Validation → ACTIVE
+
+The spec promotes to **ACTIVE** only when ALL of the following hold:
+
+- [ ] Citadel out-of-spec credentials registry exists at `the-citadel/docs/identity-and-account-management/out-of-spec-credentials.md` with at minimum the four expected entries (shared CF token, account-wide Hetzner, OPNsense `monitoring_svc`, unenumerated CF tokens placeholder)
+- [ ] First credential issued under this spec's contract: per-entity Cloudflare token replacing `secret:cf-api-token-shared` (MN-1)
+- [ ] Citadel `opentofu.yml` workflow `env:` blocks rewritten so the Cloudflare token is resolved per matrix entry, not injected repo-wide (closes Mechanism A's Cloudflare gap and Mechanism C)
+- [ ] First per-entity `audit-rotation-log.md` exists (in any entity scope) with at least one entry using canonical logical paths (per §2)
+- [ ] First end-to-end migration validated: Litecky Editing Services Cloudflare workspace operating under per-entity scoped credentials (D5 step 7)
+- [ ] No regression in cross-entity prevention: Mechanism B remains in place; Mechanisms A and C reach target state; Mechanism D Phase A operating; Mechanism E status-recorded as future work
+- [ ] Changelog entry recording the ACTIVE promotion with reference to the validation evidence
 
 ---
 
@@ -295,3 +334,4 @@ This spec is ready to be promoted from DRAFT to ACTIVE when:
 | Date | Author | Summary |
 |------|--------|---------|
 | 2026-05-03 | Agent | Initial DRAFT v0.1.0 — narrow spec answering six questions for multi-entity scoped credentials. Respects D5 sequencing. Reserves synthetic council principal slot. Does not replace `iam-specification.md` REWRITE PENDING work. |
+| 2026-05-03 | Agent | DRAFT v0.1.0 refined pre-acceptance based on consult review: (1) §6 Mechanism A reframed from "in place" to current/target/gap (Citadel `opentofu.yml` injects repo-wide `CLOUDFLARE_API_TOKEN` into every plan/apply matrix job — workspace-scoping covers GitHub identity only); (2) §4 rotation cadences corrected from "annual" to **180 days** to inherit Secrets Management Specification v1.3.0 §5.4 targets (no relaxation); (3) §2 vault structure rewritten with canonical Secrets Mgmt §3 logical paths as authoritative + 1Password item names as aliases; (4) Status wording clarified — DRAFT → "Accepted for Validation" → ACTIVE in two distinct promotions, not one; (5) Out-of-Spec Credentials Registry made an explicit required deliverable rather than described as already existing. |
