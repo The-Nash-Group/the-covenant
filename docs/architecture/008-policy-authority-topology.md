@@ -2,7 +2,7 @@
 
 ## Status
 
-**Proposed** (pending Covenant-tier ratification under the single-Guardian quorum exception per `STATUS.md §Governance Exceptions` and `ADR-007 §Current-state note`; full 2 Watchers + 2 Mentors quorum restored when the synthetic council per FU-1 is operational).
+**Accepted** 2026-05-17 by Guardian (jeffrey) under the Covenant-tier single-Guardian quorum exception (`STATUS.md §Governance Exceptions row 4` + `ADR-007 §Current-state note`). Full 2 Watchers + 2 Mentors quorum restored when the synthetic council per FU-1 is operational. Paired ratification: `the-covenant/policies/specs/identity-and-account-management.md` v0.1.0 → v0.2.0 (§7 Authority Topology added). See Changelog for ratification record.
 
 ## Date
 
@@ -176,3 +176,4 @@ When the Guardian ratifies this ADR (and the paired IAM Spec amendment), record 
 | Date | Author | Summary |
 |------|--------|---------|
 | 2026-05-17 | Agent | Initial DRAFT of ADR-008 — Policy Authority Topology. Articulates the four-domain decomposition (Identity, Resource, Permission-Binding, Runtime Enforcement) and maps each to an owning pillar (Shield, Citadel, Shield contracts consumed by Citadel implementations, runtime). Provider-agnostic; transitional and provider-specific content explicitly delegated to lower layers. Paired with identity-and-account-management.md v0.2.0 amendment for ratification. Awaiting Guardian sign-off under the single-Guardian quorum exception. |
+| 2026-05-17 | Guardian (jeffrey) | **Proposed → Accepted.** Ratified under the Covenant-tier single-Guardian quorum exception (`STATUS.md §Governance Exceptions row 4` + `ADR-007 §Current-state note`). Full 2W+2M quorum restored when the synthetic council per FU-1 is operational. Paired ratification: `identity-and-account-management.md` v0.1.0 → v0.2.0 (§7 Authority Topology added). Downstream work — Shield design baseline absorbing §7, transitional-spec amendments (`cloudflare-ownership-transition.md` and similar), parent standards bridging at `.org/standards/`, and subsidiary restatement where relevant — proceeds under this ratification. |
