@@ -231,7 +231,7 @@ Mechanisms intended to ensure one entity's credentials cannot be used by another
 
 ## 7. Authority Topology for Identity, Resource, and Policy-Binding
 
-**Added in v0.2.0 (2026-05-17). Awaiting Guardian ratification per ADR-008.**
+**Added in v0.2.0 (2026-05-17). Ratified by Guardian via ADR-008 under the Covenant-tier single-Guardian quorum exception.**
 
 This section codifies the foundational framework that §§1–6 implement. It defines four independent authority domains that compose every policy system and maps each to an owning pillar. The framework is provider-agnostic at this layer; provider-specific translation lives in transitional specs at this same directory (e.g., `cloudflare-ownership-transition.md`, `github-machine-identity.md`) and parent standards under `.org/standards/`. ADR-008 (`the-covenant/docs/architecture/008-policy-authority-topology.md`) is the architectural decision record this section implements.
 
