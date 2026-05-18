@@ -1,9 +1,10 @@
 # Identity and Account Management Specification
 
-**Version:** 0.1.0
-**Status:** DRAFT — Accepted for Validation (2026-05-03 by Guardian under Covenant-tier single-Guardian quorum exception per `STATUS.md §Governance Exceptions`)
-**Date:** 2026-05-03
-**Implements:** Principle 5 (Infrastructure as Code), Principle 9 (Zero Trust), Principle 10 (Least Privilege), Principle 15 (Three Circles of Trust)
+**Version:** 0.2.0
+**Status:** DRAFT — Accepted for Validation (§§1–6 since 2026-05-03; §7 awaiting Guardian ratification per ADR-008 under the Covenant-tier single-Guardian quorum exception per `STATUS.md §Governance Exceptions`)
+**Date:** 2026-05-03 (v0.1.0)
+**Last Updated:** 2026-05-17 (v0.2.0 — §7 Authority Topology added; awaiting Guardian ratification per ADR-008)
+**Implements:** Principle 5 (Infrastructure as Code), Principle 9 (Zero Trust), Principle 10 (Least Privilege), Principle 11 (Observability), Principle 15 (Three Circles of Trust)
 **Policies:** SEC-005 (Machine Identity), ORG-001 (Subsidiary Authority and Identity Isolation), GOV-003 (Break-Glass)
 **Specs:** Secrets Management Specification v1.3.0
 **Defers to (broader scope, REWRITE PENDING):** `iam-specification.md`
@@ -228,6 +229,115 @@ Mechanisms intended to ensure one entity's credentials cannot be used by another
 
 ---
 
+## 7. Authority Topology for Identity, Resource, and Policy-Binding
+
+**Added in v0.2.0 (2026-05-17). Awaiting Guardian ratification per ADR-008.**
+
+This section codifies the foundational framework that §§1–6 implement. It defines four independent authority domains that compose every policy system and maps each to an owning pillar. The framework is provider-agnostic at this layer; provider-specific translation lives in transitional specs at this same directory (e.g., `cloudflare-ownership-transition.md`, `github-machine-identity.md`) and parent standards under `.org/standards/`. ADR-008 (`the-covenant/docs/architecture/008-policy-authority-topology.md`) is the architectural decision record this section implements.
+
+### 7.1 The Four Authority Domains
+
+Every policy system — across providers, eras, and technologies — admits the same decomposition:
+
+| Domain | What it owns |
+|--------|--------------|
+| **Identity Domain** | Registry of actors (humans, machines, services, agents, break-glass identities); identity classes; authentication-credential contracts; authority-tier metadata (`parent_l0` / `subsidiary_l1` / `project_l2`); audit contracts. |
+| **Resource Domain** | Resource definitions; scope identifiers (account-level, zone-level, project-level, resource-level); IaC provisioning. |
+| **Permission-Binding Domain** | Permission/role taxonomy; decision-input and decision-output contracts; policy-object schemas that bind actor + scope + permission into a single artifact. |
+| **Runtime Enforcement Domain** | Request-time policy evaluation; provider-runtime evaluators or our own request-path admission where wired. |
+
+These four domains are independent authority surfaces. Each has distinct authoring authority, distinct evidence shapes, distinct review processes, and distinct failure modes. Conflating them — for example, treating runtime enforcement as part of identity registration — has produced concrete misalignments in our recent operational history (see ADR-008 §Context).
+
+### 7.2 The Composition Rule
+
+For any policy in any system: `policy = actor + scope + permission`, where:
+
+- `actor` is exported by the **Identity Domain** (identifier; class; authority-tier metadata)
+- `scope` is exported by the **Resource Domain** (resource identifier; scope boundary)
+- `permission` is exported by the **Permission-Binding Domain** (role/permission-group identifier; decision contract)
+- The composite policy artifact is owned by the **Permission-Binding Domain**
+- Enforcement at request time is owned by the **Runtime Enforcement Domain** (typically the provider runtime; or our own admission layer where we operate the runtime)
+
+The composition rule is testable: for any policy artifact in any system, the four-domain decomposition can be applied and each domain owner can be checked against the pillar mapping below. Misalignment surfaces as a finding in the contamination-scan tradition established by ORG-001.
+
+### 7.3 Pillar Mapping
+
+| Domain | Owning authority | Implementation layer |
+|--------|------------------|----------------------|
+| **Identity Domain** | The Shield (when active); the Citadel transitionally until Shield activates | Identity registry, schemas, audit contracts |
+| **Resource Domain** | The Citadel | OpenTofu workspaces; resource modules |
+| **Permission-Binding Domain** | The Shield (contract layer — role taxonomy, decision contracts, policy-object schemas); the Citadel (implementation layer — consumes Shield contracts via IaC) | OpenTofu artifacts that bind actors to scopes per Shield-published role taxonomy |
+| **Runtime Enforcement Domain** | Provider runtime; the Nexus where wired to enforce our own request-path admission | Provider's own evaluator; our admission-time policy evaluation for our own surfaces |
+
+The Permission-Binding Domain is the only domain split across two pillars by design: contract authorship belongs to identity authority (Shield), implementation belongs to resource authority (Citadel). These two layers are tightly coupled but distinct.
+
+### 7.4 Transitional Posture
+
+The Shield is planned but not yet active. Until the Shield activates, **the Citadel temporarily holds the Identity Domain and the Permission-Binding Domain contract layer in addition to the Resource Domain**. The transitional posture is contractual:
+
+- The Citadel's holdings in the Identity Domain and Permission-Binding Domain contract layer migrate one-way to the Shield on activation.
+- Identifiers are preserved across the migration; the durable identifier of each token, registry entry, or policy artifact is preserved per the relevant transitional spec's identifier-preservation contract.
+- The migration does not require resource recreation; IaC state operations preserve resource identifiers while reauthorizing contract authorship.
+
+On Shield activation:
+
+- Identity registry schemas, authentication contracts, authority-tier metadata, and audit contracts move under Shield authorship.
+- Permission-Binding contracts (role taxonomy, decision contracts, policy-object schemas) move under Shield authorship.
+- The Citadel retains Resource Domain ownership and continues to implement Permission-Binding artifacts via IaC, now consuming Shield's contracts rather than authoring them.
+- Runtime Enforcement remains where it was: provider-runtime for provider resources; Nexus for request-path admission on our own surfaces.
+
+This is a one-way migration; contract authorship does not return to the Citadel except by amendment to ADR-008.
+
+### 7.5 Cross-Domain Dependencies
+
+Dependencies among domains are one-way and explicit:
+
+- **Identity Domain** publishes: identity classes, authority-tier metadata, decision-input shapes (who is asking), audit contracts.
+- **Resource Domain** publishes: resource identifiers, scope boundaries, provisioning outputs.
+- **Permission-Binding Domain** consumes: Identity Domain outputs (actor identifiers, authority-tier metadata); Resource Domain outputs (scope identifiers). Publishes: role taxonomy, decision contracts, policy-object schemas.
+- **Runtime Enforcement Domain** consumes: Permission-Binding Domain outputs (policy artifacts); Identity Domain outputs (authority-tier checks); Resource Domain outputs (scope binding). Publishes: decision logs (audit-feed shape that the Identity Domain audit contracts ingest).
+
+The Identity Domain and Resource Domain are mutually independent — neither directly depends on the other — except that the Identity Domain may reference Resource Domain identifiers when expressing authority-tier metadata (e.g., "this actor is the `parent_l0` owner of the resource at `<scope-id>`").
+
+### 7.6 Application to §§1–6
+
+§§1–6 are concrete contracts that implement this framework:
+
+- §1 (Per-entity provider account model) operates at the **Resource Domain** layer (per-entity accounts are scope boundaries) with Identity Domain authority-tier metadata (each entity is a sovereignty boundary).
+- §2 (Credential vault structure) is **Identity Domain** authoring (vault structure is identity-registry-shaped) implemented across all entities.
+- §3 (Identity principals per credential) is **Identity Domain** publication (principal classes, lifecycle, audit) consumed by §4–6.
+- §4 (Rotation contract) is **Identity Domain** lifecycle authority applied per credential class.
+- §5 (Audit destination per entity) is **Identity Domain** audit contract authoring; the actual audit-log destinations are mostly **Runtime Enforcement Domain** systems (provider audit logs) consumed by Identity Domain audit feeds.
+- §6 (Cross-entity prevention contract) is **Permission-Binding Domain** decision-contract authoring; Mechanisms A–E are the binding-layer policies whose enforcement spans Permission-Binding (contract) and Runtime Enforcement (evaluation).
+
+This framework retrospectively rationalizes §§1–6's structure without changing their content. It prospectively constrains how new sections (§§8+, future amendments) decompose work across domains.
+
+### 7.7 Promotion Conditions for §7
+
+§7 codifies a structural invariant; it does not require runtime evidence to be ACTIVE. §7 promotes from DRAFT to ACTIVE when ALL of the following hold:
+
+- [ ] ADR-008 ratified by the Guardian under the Covenant-tier single-Guardian quorum exception (recorded in ADR-008's changelog and in this spec's changelog with date and authority basis)
+- [ ] This spec's frontmatter reflects v0.2.0 with §7 included (already done in this amendment commit)
+- [ ] The Shield's design baseline (`the-shield/docs/identity-foundation-plan-2026-05-11.md` and `iam-architectural-posture-2026-05-11.md`) references §7 as primary design input (tracked under Shield design phase; deliverable identified, not blocking)
+
+§7's promotion to ACTIVE is **independent** of §§1–6's ACTIVE promotion conditions (which gate on first end-to-end migration validation per the Implementation Path above). §7 may reach ACTIVE before §§1–6 do, and vice versa.
+
+### 7.8 Cross-References for §7
+
+- **ADR-008: Policy Authority Topology** — `the-covenant/docs/architecture/008-policy-authority-topology.md` (the architectural decision record this section implements)
+- **ADR-001: Three-Pillar Repository Architecture** — establishes the pillars this topology maps to
+- **ADR-007: Subsidiary Authority and Identity Isolation** — establishes the authority tiers consumed by Identity Domain metadata
+- **The Shield**: `the-shield/CLAUDE.md` — current scope statement; §7 ratifies the contour the Shield self-describes
+- **The Citadel**: `the-citadel/CLAUDE.md` — Resource Domain owner; transitional Identity / Permission-Binding holder
+- **The Nexus**: `the-nexus/CLAUDE.md` — Runtime Enforcement Domain where we operate the runtime
+- **HUMAN_MANDATE.md** — The Architect implements per this topology; The Judge reviews per pillars; The Philosopher debates extensions
+- **Transitional specs (policies/specs/)** that will absorb §7's translation at the provider layer:
+  - `cloudflare-ownership-transition.md` (provider-named; transitional)
+  - `github-machine-identity.md` (provider-named; transitional)
+  - `iam-specification.md` (REWRITE PENDING; inherits §7 when rewritten)
+
+---
+
 ## Out-of-Spec Credentials Registry
 
 Credentials that exist on workstations or in `Dev` but do not yet conform to this spec **MUST** be tracked in a Citadel-maintained inventory at `the-citadel/docs/identity-and-account-management/out-of-spec-credentials.md`. The inventory does not exist as of spec v0.1.0; **creating it is a required deliverable** of this spec's acceptance — listed in the Acceptance Criteria below and in D5 step 1's preconditions.
@@ -339,3 +449,4 @@ The spec promotes to **ACTIVE** only when ALL of the following hold:
 | 2026-05-03 | Agent | DRAFT v0.1.0 refined pre-acceptance based on consult review: (1) §6 Mechanism A reframed from "in place" to current/target/gap (Citadel `opentofu.yml` injects repo-wide `CLOUDFLARE_API_TOKEN` into every plan/apply matrix job — workspace-scoping covers GitHub identity only); (2) §4 rotation cadences corrected from "annual" to **180 days** to inherit Secrets Management Specification v1.3.0 §5.4 targets (no relaxation); (3) §2 vault structure rewritten with canonical Secrets Mgmt §3 logical paths as authoritative + 1Password item names as aliases; (4) Status wording clarified — DRAFT → "Accepted for Validation" → ACTIVE in two distinct promotions, not one; (5) Out-of-Spec Credentials Registry made an explicit required deliverable rather than described as already existing. |
 | 2026-05-03 | Guardian (jeffrey) | **DRAFT → DRAFT — Accepted for Validation.** Recorded under the Covenant-tier single-Guardian quorum exception (`STATUS.md §Governance Exceptions`, also referenced in ADR-007 §Current-state note). The full Covenant-tier quorum (2 Watchers + 2 Mentors per `the-covenant/GOVERNANCE.md` §Covenant Decisions) is restored when the synthetic council per FU-1 is operational. Acceptance authorizes implementation work to proceed under the spec's contract — including D5 step 1 (MN-1 per-entity Cloudflare token issuance), Citadel out-of-spec credentials registry creation, and the Citadel `opentofu.yml` workflow rewrite to resolve the Cloudflare token per matrix entry. **Acceptance does NOT promote the spec to ACTIVE.** ACTIVE promotion requires the second-stage Acceptance Criteria: Citadel registry exists; MN-1 issues per-entity tokens; workflow `env:` blocks rewritten; first per-entity audit-rotation-log entry recorded using canonical paths; Litecky Editing Services first-real-workload migration (D5 step 7) validates the spec end-to-end. |
 | 2026-05-03 | Agent | Second-stage Acceptance Criterion partially satisfied: Citadel out-of-spec credentials registry created at `the-citadel/docs/identity-and-account-management/out-of-spec-credentials.md` (commit `079f361`) with status ACCEPTED, schema v0.1.0, and four initial entries. Sunsets accelerated below the 90-day default per Guardian directive 2026-05-03: shared CF token 3 weeks, OPNsense monitoring_svc 2 weeks, account-wide Hetzner 6 weeks (with target-scope reframed from "wait for per-entity separation" to "parent-only narrowing now; per-entity on-demand"), unenumerated CF tokens 1 week. Six second-stage boxes remain (MN-1 issuance, workflow rewrite, first audit-rotation-log entry, no-regression on prevention mechanisms, Litecky migration validation, ACTIVE-promotion changelog entry). |
+| 2026-05-17 | Agent | **v0.1.0 → v0.2.0 DRAFT.** Added §7 "Authority Topology for Identity, Resource, and Policy-Binding" — codifies the four-domain decomposition (Identity, Resource, Permission-Binding, Runtime Enforcement) and the pillar mapping (Shield owns Identity Domain + Permission-Binding contract layer; Citadel owns Resource Domain + Permission-Binding implementation layer; runtime layers own enforcement). §7 is the framework underlying §§1–6's implementation contracts. Provider-agnostic at this layer; provider-specific translation belongs in transitional specs (`cloudflare-ownership-transition.md`, `github-machine-identity.md`) and parent standards (`.org/standards/`). §7 promotion is independent of §§1–6's ACTIVE conditions: §7 promotes on ADR-008 ratification plus Shield design baseline absorbing §7 as primary input. Bumped `Implements` to include Principle 11 (Observability) since §7 audit contracts reference it. Awaiting Guardian sign-off under the Covenant-tier single-Guardian quorum exception per `STATUS.md §Governance Exceptions`; paired ratification with ADR-008 (`the-covenant/docs/architecture/008-policy-authority-topology.md`). |
