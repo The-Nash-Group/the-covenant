@@ -5,7 +5,7 @@
 | Field | Value |
 |-------|-------|
 | **Date** | 2025-10-30 |
-| **Last Updated** | 2026-04-26 |
+| **Last Updated** | 2026-05-12 |
 | **Author** | The Watchers, The Mentors |
 | **Governance Level** | Covenant (2 Watchers + 2 Mentors, 72h debate) |
 | **Status** | Accepted |
@@ -40,7 +40,7 @@ Establish a **Three-Pillar Repository Architecture** with semantic naming, exten
 │  (Philosophy)      │   • PRINCIPLES.md (16 core principles)
 └────────────────────┘   • GOVERNANCE.md (who decides what)
          ↓                • HUMAN_MANDATE.md (5 Guardian roles)
-         ↓                • policies/ (policy specifications)
+         ↓                • policies/ (constitutional invariants)
 ┌────────────────────┐
 │  THE CITADEL       │ ← How We Build
 │  (Infrastructure)  │   • OpenTofu/IaC (GitHub, Cloudflare, Hetzner)
@@ -61,10 +61,10 @@ As the architecture matured, two additional repositories emerged to serve specia
 ```
 ┌────────────────────┐
 │  THE SHIELD        │ ← How We Secure
-│  (Identity / IAM)  │   • Authentik on Hetzner (identity provider)
-└────────────────────┘   • IAM framework (Rust/WASM/Rego)
-                         • "Poor Man's Enterprise" auth chain
-                         • Google Workspace → Authentik → GitHub OAuth
+│  (Identity / IAM)  │   • Identity and authorization contracts
+└────────────────────┘   • Future IAM implementation
+                         • Secret-authority metadata contracts
+                         • Provider-portable identity registry shape
 
 ┌────────────────────┐
 │  THE TARTAN        │ ← How We Present
@@ -77,10 +77,10 @@ As the architecture matured, two additional repositories emerged to serve specia
 
 | Repository | Purpose | Contains | Governance |
 |------------|---------|----------|------------|
-| **the-covenant** | Philosophy & policy specifications | PRINCIPLES.md, GOVERNANCE.md, policies/ | Covenant (2 Watchers + 2 Mentors, 72h debate) |
+| **the-covenant** | Philosophy, governance, and constitutional invariants | PRINCIPLES.md, GOVERNANCE.md, policies/ | Covenant (2 Watchers + 2 Mentors, 72h debate) |
 | **the-citadel** | Infrastructure as Code | OpenTofu/IaC, GitHub/Cloudflare/Hetzner config | Citadel (1 Mentor + 1 Watcher) |
 | **the-nexus** | Operational tooling | Apps, services, MCP servers | Stronghold (1 Mentor) |
-| **the-shield** | Identity & Access Management | Authentik config, IAM framework (Rust/WASM/Rego) | Citadel (1 Mentor + 1 Watcher) |
+| **the-shield** | Identity & Access Management | identity contracts, registry schema direction, future IAM implementation | Citadel (1 Mentor + 1 Watcher) |
 | **the-tartan** | Public website & identity | Astro site, Rust/WASM, Cloudflare Pages | Stronghold (1 Mentor) |
 
 ### Multi-Organization Context
@@ -102,11 +102,11 @@ The Nash Group is a holding company with subsidiaries that are separate legal an
 - GitHub Enterprise is deferred; GitHub Team is used where collaboration justifies it, and paid org features are deferred where the practical need has not arrived (see ADR-004)
 - Governance restatement: subsidiaries restate adopted parent specs on their own authority; they do not inherit parent text by pointer
 - the-citadel manages active GitHub and Cloudflare controls through OpenTofu/IaC per subsidiary readiness and explicit ownership placement
-- Identity federation via Authentik (the-shield) rather than GitHub Enterprise SAML
+- Identity foundation via Shield contracts rather than assuming GitHub Enterprise SAML or production Authentik before evidence exists
 
 ### Implementation Plan
 
-1. **Move policy specifications**: the-citadel/policies/*.md → the-covenant/policies/
+1. **Move constitutional policy material**: the-citadel/policies/*.md → the-covenant/policies/ as the historical foundation, with later policy-home classification for provider-specific detail
 2. **Archive old the-citadel**: Preserve history, mark as superseded
 3. **Rename citadel-config**: citadel-config → the-citadel
 4. **Update ORGANIZATION-SPEC.md**: Codify three-pillar architecture
@@ -115,7 +115,7 @@ The Nash Group is a holding company with subsidiaries that are separate legal an
 
 All four original phases are complete:
 
-- **Phase 1: Policy Migration** — COMPLETED 2025-10-30. 41 policy specification files moved to the-covenant/policies/.
+- **Phase 1: Policy Migration** — COMPLETED 2025-10-30. 41 policy files moved to the-covenant/policies/ as the constitutional foundation; provider-specific detail is subject to later policy-home classification.
 - **Phase 2: Archive old the-citadel** — COMPLETED 2025-10-30. ARCHIVE-NOTICE.md added, repository preserved for history.
 - **Phase 3: Rename citadel-config → the-citadel** — COMPLETED 2025-11-01. GitHub rename executed, local directories updated.
 - **Phase 4: Update ORGANIZATION-SPEC.md** — COMPLETED 2025-11-01. Three-pillar architecture codified in organizational standards.
@@ -127,7 +127,7 @@ Post-implementation, the Organizational Consistency Audit (2026-03-01) validated
 ### Positive
 
 1. **Semantic Clarity**: Repository names directly indicate their purpose
-2. **Single Source of Truth**: Policy specifications consolidated in one location (the-covenant/policies/)
+2. **Single Source of Constitutional Intent**: principles, governance, and durable invariants are consolidated in the Covenant; operational standards and implementation bindings live in their owning lower layers
 3. **Eliminates Confusion**: No more "citadel" vs "citadel-config" ambiguity
 4. **Aligns with Principles**: Principle 1 ("There Can Be Only One") and Principle 16 ("Living Law")
 5. **Scales to Multi-Org**: Three-pillar governance backbone supports subsidiary orgs without duplication
@@ -175,3 +175,4 @@ Post-implementation, the Organizational Consistency Audit (2026-03-01) validated
 | 2026-03-02 | Agent | Updated to reflect five-repo architecture (added the-shield, the-tartan), multi-org context, subsidiary governance model. Trimmed completed implementation scripts. Added metadata block per ADR template modernization. |
 | 2026-04-05 | Agent | Corrected local path vs GitHub slug language for the infrastructure repo and aligned the architecture record with the current parent standards. |
 | 2026-04-26 | Codex | Aligned multi-org context with ADR-004/ADR-007: Happy Patterns LLC is active on GitHub Team and owns `scopecam`; Jefahnierocks remains semantic owner for personal projects while paid org features are deferred until justified. |
+| 2026-05-12 | Codex | Clarified policy-home layering: Covenant owns principles, governance, and constitutional invariants; Shield owns identity-contract direction; provider-specific and workflow-specific policy detail belongs in parent standards, Citadel, Nexus, Shield, or subsidiary/project restatement as applicable. |

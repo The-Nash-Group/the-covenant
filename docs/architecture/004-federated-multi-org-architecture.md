@@ -5,7 +5,7 @@
 | Field | Value |
 |-------|-------|
 | **Date** | 2026-03-02 |
-| **Last Updated** | 2026-04-26 |
+| **Last Updated** | 2026-05-13 |
 | **Author** | Agent |
 | **Governance Level** | Covenant (2 Watchers + 2 Mentors, 72h debate) |
 | **Status** | Accepted |
@@ -41,7 +41,7 @@ We need identity federation and entity separation with staged platform spend.
 
 ## Decision
 
-We adopt a **federated multi-org architecture** using Authentik as a self-hosted identity provider to bridge the gap between low-cost GitHub organization boundaries and enterprise-grade identity management.
+We adopt a **federated multi-org architecture** with staged identity controls to bridge the gap between low-cost GitHub organization boundaries and enterprise-grade identity management. Authentik remains a possible future broker, but current production identity formation is Shield-contract-first and evidence-gated.
 
 ### 1. Multi-Org GitHub Structure
 
@@ -70,35 +70,45 @@ This rule matters most for the current subsidiary mix:
 
 Parent or global infrastructure roots must not become shortcuts for subsidiary ownership. If a project is semantically Jefahnierocks-owned or Happy Patterns-owned, its future IaC workspace, GitHub controls, secret boundaries, and audit evidence must converge on that subsidiary boundary when the trigger is met.
 
-### 2. Authentik IS the-shield
+### 2. Shield Identity Foundation
 
-Authentik, self-hosted on Hetzner, serves as the Nash Group's identity provider. It is the instantiation of the-shield repository's IAM architecture.
+Shield is the identity and authorization contract home. It defines identity
+classes, registry shape, authorization-decision contracts, secret-authority
+metadata contracts, and restatement packet shape before any identity runtime is
+implemented.
 
-**The "Poor Man's Enterprise" auth chain**:
+Current state as of 2026-05-12:
 
-```
-Google Workspace (SSoT for identity)
-        ↓ OIDC/SAML
-    Authentik (the-shield, Hetzner)
-        ↓ OAuth Apps (one per GitHub org)
-    GitHub Org 1 ─── GitHub Org 2 ─── GitHub Org 3 ...
-```
+- **Google Workspace** is the current human identity authority.
+- **GitHub** is the current operating substrate, not the permanent identity
+  control plane.
+- **SEC-005 machine identity** governs GitHub App, OIDC, and scoped provider
+  token use.
+- **Authentik** is lab-only. It is not production identity, not repo-owned
+  runtime, and not the default answer for human SSO at the current two-human
+  operating scale.
+- **GitHub Enterprise SAML** remains unavailable and must not be assumed.
 
-- **Google Workspace** is the single source of truth for human identity
-- **Authentik** federates that identity to all downstream services via OAuth/OIDC
-- Each **GitHub org** has its own Authentik OAuth app, providing SSO-like experience without SAML
-- This is OAuth-based, not SAML — GitHub Free tier supports OAuth apps but not SAML enforcement
-
-**Tradeoff**: Users are not *forced* to authenticate via Authentik (no SAML enforcement). The Guardian must maintain discipline. For a single-operator setup, this is acceptable.
+Authentik may become a future broker only after evidence exists for host
+placement, ownership, backup/restore, Docker/socket policy, Cloudflare/Tunnel or
+Access design, break-glass recovery, secret custody, and an actual user,
+contractor, or compliance trigger.
 
 ### 3. Infisical for Secrets Management
 
-Infisical, self-hosted at infisical.jefahnierocks.com, replaces ad-hoc secrets management:
+Infisical is a hosted secret-management service candidate and implementation
+binding. It does not replace every repo's approved backend by Covenant claim
+alone:
 
-- **Primary secrets store**: All API tokens, service credentials, and configuration secrets
+- **Target primary secrets store**: API tokens, service credentials, and
+  configuration secrets migrate only after the owning repo or entity adopts the
+  backend and records evidence
 - **Local vs runtime boundary**: Managed workstations use env vars and/or `op read` for local bootstrap. Runtime and CI continue to use each repo's approved managed backend. Any remaining legacy archive material is non-default.
-- **Eliminates**: Static tokens in `.envrc` files, manually-rotated API keys, secrets scattered across services
-- **Per-org scoping**: Infisical projects map to GitHub orgs, enabling least-privilege secret access
+- **Target reduction**: Static tokens in `.envrc` files, manually rotated API
+  keys, and secrets scattered across services are retired per owning-repo
+  migration evidence
+- **Per-org scoping target**: Infisical projects may map to GitHub orgs,
+  enabling least-privilege secret access where adopted
 - **IaC planning path**: OpenTofu may manage Infisical declaratively through the Infisical provider for projects, identities, approvals, dynamic secrets, rotations, syncs, certificate management, and secret objects; the detailed planning inventory lives in the Secrets Management Specification
 
 ### 4. Subsidiary Governance Model
@@ -119,7 +129,7 @@ Infisical, self-hosted at infisical.jefahnierocks.com, replaces ad-hoc secrets m
 |--------|-------|---------|-------|
 | `thenash.group` | Parent | Organizational identity | Cloudflare-managed |
 | `happy-patterns.com` | Happy Patterns LLC | Primary product domain | Landing page pending; `happy-patterns.co` also owned as secondary |
-| `jefahnierocks.com` | Personal | Personal/creative projects | Hosts Infisical, Authentik |
+| `jefahnierocks.com` | Personal | Personal/creative projects | Hosts Infisical service evidence; Authentik remains lab-only, not production identity |
 | Future subsidiary domains | Per entity | As needed | Follow Cloudflare governance (ADR-003) |
 
 ## Consequences
@@ -129,15 +139,15 @@ Infisical, self-hosted at infisical.jefahnierocks.com, replaces ad-hoc secrets m
 1. **Clean entity separation**: Each legal entity has a named authority boundary, with paid hosting adopted where it creates operational value
 2. **Governance scales**: Parent publishes specs; subsidiaries restate equivalent rules on their own authority
 3. **Staged platform spend**: Happy Patterns can use GitHub Team now while dormant or personal boundaries defer paid features until justified
-4. **Identity federation**: Single login experience across all orgs via Authentik OAuth
-5. **Secrets centralized**: Infisical eliminates secrets sprawl across `.envrc` files and manual rotation
-6. **IaC coverage**: the-citadel manages all orgs via multi-provider OpenTofu/IaC — no ClickOps anywhere
+4. **Identity federation path**: A single-login experience across orgs remains a target once an evidence-backed broker is justified
+5. **Secrets centralization path**: Infisical or another approved backend can reduce secrets sprawl after repo/entity adoption evidence
+6. **IaC coverage path**: the-citadel manages the OpenTofu/IaC control plane where resources are codified; live-provider claims still require current evidence
 
 ### Negative
 
 1. **Uneven GitHub capabilities during bootstrap**: Subsidiaries on different plans have different collaboration, policy, and audit surfaces until paid features are justified
-2. **Authentik maintenance**: Self-hosted identity provider requires uptime monitoring, updates, and backup
-3. **No SAML-enforced login**: OAuth apps are voluntary — a user *could* bypass Authentik and log in directly to GitHub (mitigated by single-operator discipline)
+2. **Future broker maintenance**: Any self-hosted identity provider would require uptime monitoring, updates, backup, and break-glass recovery before production adoption
+3. **No SAML-enforced login**: GitHub Enterprise SAML is unavailable under current plan posture; future OAuth broker designs would remain voluntary unless a stronger control plane is adopted
 4. **Multi-provider OpenTofu/IaC complexity**: the-citadel requires one GitHub provider block per org, increasing configuration surface
 5. **Temporary ownership/hosting split**: Some personal projects may be semantically owned by Jefahnierocks while operationally hosted elsewhere until a migration trigger is met
 
@@ -145,15 +155,15 @@ Infisical, self-hosted at infisical.jefahnierocks.com, replaces ad-hoc secrets m
 
 1. **Per-org billing**: Each org manages its own billing relationship (appropriate for separate legal entities)
 2. **OpenTofu multi-provider**: Adds ~20 lines of provider config per org, manageable for 5 orgs
-3. **Authentik learning curve**: One-time setup cost; Authentik has good documentation and active community
+3. **Identity-broker learning curve**: One-time setup cost if a future broker such as Authentik becomes justified
 4. **Plan upgrades are operational decisions**: Upgrading a subsidiary's GitHub plan is a governance and budget decision, not a change to semantic ownership
 
 ## Compliance
 
 - **Principle #1** (Sacred Timeline / SSoT): Google Workspace is the single source of truth for identity
-- **Principle #5** (Infrastructure as Code): All org configurations managed via OpenTofu/IaC in the-citadel
-- **Principle #9** (Zero Trust): Authentik enforces identity-based access; no shared credentials
-- **Principle #10** (Least Privilege): Per-org OAuth scoping limits blast radius; Infisical projects scope secrets per-org
+- **Principle #5** (Infrastructure as Code): Org configurations in Citadel scope are managed via OpenTofu/IaC in the-citadel
+- **Principle #9** (Zero Trust): identity controls require explicit authentication, authorization, and audit evidence; Authentik is not production enforcement today
+- **Principle #10** (Least Privilege): Per-org OAuth and per-backend scoping are target mechanisms for limiting blast radius where adopted and evidenced
 - **Principle #16** (Living Law): This architecture evolved from experience — single-org was tried, found wanting, and replaced
 
 ## References
@@ -182,3 +192,5 @@ Infisical, self-hosted at infisical.jefahnierocks.com, replaces ad-hoc secrets m
 | 2026-04-20 | Agent | Refined §4 Subsidiary Governance Model in place per ADR-007: replaced inheritance language ("inherits all 16") with restatement model ("restates equivalent rules on own authority"); updated §5 Domain Architecture entry for Happy Patterns LLC (primary domain is happy-patterns.com, happy-patterns.co also owned as secondary); corrected §1 GitHub Organization table to reference happy-patterns-org (the actual GitHub org slug, now on a two-seat teams plan); added ADR-007 to Related ADRs and References. Original decision preserved; refinement scope limited to authority-layer semantics and factual corrections. |
 | 2026-04-26 | Agent | Aligned current-state IaC wording with ADR-005: replaced active Terraform implementation language with OpenTofu/IaC terminology without changing the multi-org architecture decision. |
 | 2026-04-26 | Codex | Clarified staged GitHub plan adoption: Happy Patterns LLC is active on GitHub Team and owns `scopecam`; Jefahnierocks remains the semantic owner for personal projects while paid org hosting is deferred until justified. |
+| 2026-05-12 | Codex | Clarified Shield identity foundation: Authentik is lab-only, Shield is the identity-contract home, Google Workspace remains current human authority, GitHub is current substrate, and SEC-005 governs machine identity. |
+| 2026-05-13 | Codex | Qualified Infisical, Authentik, identity federation, secret centralization, and IaC coverage language so ADR-004 does not read as proof of current live enforcement beyond owning-repo evidence. |

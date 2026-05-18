@@ -3,7 +3,7 @@
 **Policy ID:** SEC-005
 **Category:** Security
 **Effective Date:** 2026-03-02
-**Last Updated:** 2026-04-26
+**Last Updated:** 2026-05-13
 
 ## Statement
 
@@ -144,6 +144,10 @@ resource "google_iam_workload_identity_pool_provider" "github" {
 
 ### Automated Validation
 
+The checks below are required evidence targets for implementation and audit.
+They are not Covenant-local proof that every scan, dashboard, webhook, or
+provider setting is currently live in every organization.
+
 **Identity Registry Audit:**
 - All GitHub Apps registered in `the-citadel/terraform/github/apps.tf` (IaC-managed)
 - Monthly automated scan for Classic PATs across all orgs
@@ -234,3 +238,4 @@ Each GitHub organization **must** have its own GitHub App installation:
 - **2026-03-02** - Initial creation implementing Principles 5, 6, 9, 10 for GitHub and cross-platform machine identities
 - **2026-04-15** - Clarified the boundary between machine identities and human interactive workstation identities, including explicit exclusion of 1Password SSH agent flows for unattended automation
 - **2026-04-26** - Aligned GitHub organization names and current IaC wording with the OpenTofu and subsidiary authority model
+- **2026-05-13** - Clarified that automated validation bullets are required evidence targets, not Covenant-local proof that every scan, dashboard, webhook, or provider setting is live.

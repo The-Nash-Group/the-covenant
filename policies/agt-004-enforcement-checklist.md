@@ -5,7 +5,12 @@
 ## 🛡️ MASTER VERIFICATION CHECKLIST
 
 ### Critical Context
-This checklist verifies that The Covenant principles are not just documented but ENFORCED through unbreakable technical controls. Missing even one item means our defenses have a hole.
+This checklist is a verification instrument for translating Covenant principles
+into Citadel, Shield, Nexus, or repo-local controls. An unchecked box is not
+itself proof of a live gap, and a scenario line is not proof of current
+live-blocking enforcement. Current control class must be read from the owning
+repo's evidence, such as Citadel CI results, native GitHub controls, Nexus
+request-path evidence, or report-only/source-tested audit records.
 
 ---
 
@@ -276,14 +281,16 @@ This checklist verifies that The Covenant principles are not just documented but
 **Owner:** Architects | **Frequency:** Weekly | **Criticality:** CRITICAL
 
 ### End-to-End Flow Tests
-- [ ] PR without labels → Rejected ✓
-- [ ] Non-conventional commit → Blocked ✓
-- [ ] No peer review → Cannot merge ✓
-- [ ] Failed tests → Deployment blocked ✓
-- [ ] Manual infra change → Detected & alerted ✓
-- [ ] Unlabeled K8s resource → Admission denied ✓
-- [ ] Expired token → Access denied ✓
-- [ ] Excessive permissions → Request rejected ✓
+Expected outcomes below require current evidence before being described as live.
+
+- [ ] PR without labels -> rejected by the owning control
+- [ ] Non-conventional commit -> blocked by the owning control
+- [ ] No peer review -> cannot merge where native review gates are active
+- [ ] Failed tests -> deployment blocked where required checks are wired
+- [ ] Manual infra change -> detected and alerted where drift evidence exists
+- [ ] Unlabeled runtime resource -> admission denied where runtime admission is wired
+- [ ] Expired token -> access denied where the identity provider enforces expiry
+- [ ] Excessive permissions -> request rejected where PaC/native control is blocking
 
 ### Cross-System Validation
 - [ ] GitHub labels → Terraform tags
@@ -356,4 +363,6 @@ Rating:
 
 *"The price of security is eternal vigilance. The cost of complacency is catastrophe."*
 
-**Remember:** This checklist is not complete until The Citadel is impenetrable.
+**Remember:** This checklist is complete only for items personally verified
+against current evidence in the owning layer. Target-state items remain
+target-state until that evidence exists.

@@ -14,7 +14,7 @@ Our core values, principles, and sacred laws. The philosophical foundation that 
 The responsibilities and roles of the Guardians who interpret our principles and operate our systems. The bridge between philosophy and implementation.
 
 ### 3. **[The Citadel](https://github.com/The-Nash-Group/citadel-config)** - The "How"
-The technical engine of enforcement. OpenTofu-backed Infrastructure as Code and Policy as Code translate our principles into reality.
+The technical engine for infrastructure enforcement. OpenTofu-backed Infrastructure as Code and Policy as Code translate principles into reality where current Citadel evidence proves the control is live.
 
 This is `the-covenant` - the philosophical foundation, where human wisdom guides machine execution.
 
@@ -82,7 +82,7 @@ We treat every event, especially failure, as a source of power. We are zealous a
 
 ## The Workflow: From Philosophy to Reality
 
-The Covenant defines the **why**. The Citadel implements the **how**. Here is the sacred workflow:
+The Covenant defines the **why**. The owning lower layer implements the **how**: Citadel for infrastructure enforcement, Shield for identity contracts, Nexus for runtime admission once wired, and subsidiaries/projects for local restatements. Here is the sacred workflow:
 
 ### 1. The Philosophical Debate
 A change in principle is proposed via Pull Request to `the-covenant`. This might be:
@@ -97,10 +97,13 @@ The PR is debated openly. All Immortals may voice their wisdom. The proposal mus
 Once approved and merged, the principle becomes law. The document is updated, the chronicle recorded.
 
 ### 4. The Translation
-A Mentor opens a PR in `the-citadel`, translating the ratified principle into OpenTofu/IaC and policy code:
-- A governance change becomes a `github_repository_ruleset`
-- A security principle becomes a `cloudflare_ruleset`
-- An access policy becomes team permissions and CODEOWNERS
+A Mentor opens a PR in the owning lower-layer repo, translating the ratified
+principle without changing its meaning:
+- A governance change may become a `github_repository_ruleset` in Citadel
+- A security principle may become a `cloudflare_ruleset` in Citadel
+- An identity invariant may become a Shield contract and Citadel/Nexus consumer
+  evidence
+- A subsidiary rule becomes a local restatement in that subsidiary's own voice
 
 ### 5. The Scrying
 The OpenTofu/IaC plan reveals exactly what will change in our infrastructure. No surprises, no hidden consequences.
@@ -117,7 +120,7 @@ Defines the clans, their powers, and the rituals of change. Who may propose, who
 Our technical playbook. Specific, actionable standards for how we build. Each principle includes:
 - **The Law**: The rule itself
 - **The Lesson**: The hard-fought wisdom behind it
-- **The Implementation**: How it's enforced in `the-citadel`
+- **The Implementation**: How it maps to enforcement or evidence in the owning lower layer
 
 ### `REFERENCE/`
 The archives of our journey. Historical context, deprecated practices, and the evolution of our thinking. Not a graveyard, but a museum.
@@ -128,7 +131,7 @@ This Covenant is living law. It evolves through structured debate and careful co
 
 1. **Changes to philosophy precede changes to implementation**
    - First we agree on the principle
-   - Then we encode it in OpenTofu/IaC, Policy as Code, or another Citadel enforcement artifact
+   - Then we encode it in OpenTofu/IaC, Policy as Code, Shield/Nexus contracts, or local restatements in the owning lower layer
    - Never the reverse
 
 2. **Documentation is prophecy**
@@ -163,10 +166,11 @@ The Covenant is maintained by the collective wisdom of The Nash Group, with spec
 
 ## The Bridge to Implementation
 
-While this repository holds no technical enforcement, it maintains a sacred link to `the-citadel`:
+While this repository holds no technical enforcement, it maintains a sacred link to the owning implementation layers:
 
-- Every principle here should map to an enforcement artifact there
-- Every OpenTofu/IaC resource or policy rule there should trace back to a principle here
+- Every principle here should map to an enforcement or evidence home
+- Every OpenTofu/IaC resource, policy rule, runtime-admission claim, identity
+  contract, or local restatement should trace back to a principle here
 - Regular audits ensure alignment between philosophy and implementation
 
 ## The Ancient Wisdom
@@ -177,6 +181,6 @@ While this repository holds no technical enforcement, it maintains a sacred link
 
 ---
 
-*For the technical implementation of these principles, see [`the-citadel`](https://github.com/The-Nash-Group/citadel-config)*
+*For infrastructure implementation of these principles, see [`the-citadel`](https://github.com/The-Nash-Group/citadel-config)*
 
 *For questions about this governance model, raise an issue or consult the archives in `REFERENCE/`*
