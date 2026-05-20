@@ -4,6 +4,8 @@
 **Purpose**: Covenant policy context for OPA enforcement of IaC plans (SEC-003)
 
 > **Ownership boundary:** This document is retained as Covenant policy context and historical implementation shape. Exact commands, Make targets, workflow files, tool versions, and runnable enforcement code are owned by `the-citadel`. Do not treat command snippets in this guide as the current Citadel runbook unless Citadel's repo contract confirms them.
+>
+> **Current-state note (2026-05-13):** The guide describes the intended and historical SEC-003 enforcement pattern. Current live-blocking coverage is determined by Citadel evidence. Other Shield, Nexus, or runtime examples here remain conceptual, source-tested, report-only, or target-state unless the owning repo provides current deny-path evidence.
 
 ---
 
@@ -23,13 +25,17 @@
 
 ## Overview
 
-**The Shield** enforces SEC-003 (Least Privilege Access) policy through **OPA (Open Policy Agent)** using the `conftest` CLI. This creates an "Iron Gate" that prevents policy violations from ever leaving your local machine.
+The current SEC-003 enforcement pattern is Citadel-owned OPA/conftest over
+OpenTofu plan evidence. This guide explains the "Iron Gate" model, but it does
+not by itself prove local, CI, Shield, Nexus, or runtime blocking behavior.
 
 ### Key Principle
 
 > "The System Will Enforce Invariantly. The Guardians Will Exercise Judgment."
 
-**Machine enforces**: No wildcard IAM, no admin roles for services, strict tenant isolation
+**Machine enforcement target**: No wildcard IAM, no admin roles for services,
+and strict tenant isolation where the owning enforcement surface is wired and
+evidenced.
 **Human reviews**: IaC plans, approves changes, exercises break-glass when needed
 
 ---
@@ -620,9 +626,9 @@ make emergency-bypass WORKSPACE_DIR=terraform/organization
 
 ---
 
-**Last Updated**: 2026-04-26
-**Version**: 1.0.1
+**Last Updated**: 2026-05-13
+**Version**: 1.0.2
 
 ---
 
-*"The Iron Gate stands. No violation shall pass. This is The Nash Group way."*
+*"The Iron Gate stands only where current evidence proves it is wired."*

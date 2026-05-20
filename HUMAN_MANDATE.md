@@ -207,6 +207,11 @@ Synthetic agents map to Guardian archetypes, operating as assistants to humans w
 
 For decisions at **Citadel level or above**, agents form a Synthetic Council that debates before proposing recommendations to humans:
 
+> **Current-state note (2026-05-13):** This section defines the target
+> governance pattern. The Synthetic Council is not current live quorum
+> restoration or an automated approval gate until the FU-1 implementation and
+> evidence exist. Council outputs remain recommendations for human Guardians.
+
 ```
 ┌─────────────────────────────────────────────────────────────┐
 │                    SYNTHETIC COUNCIL                         │

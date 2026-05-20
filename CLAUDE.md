@@ -7,11 +7,12 @@
 
 **The Covenant** is the constitutional foundation of The Nash Group infrastructure. It contains:
 - **GOVERNANCE.md** - The Laws of the Clans (who decides what)
-- **PRINCIPLES.md** - 16 core technical standards (our engineering philosophy)
+- **PRINCIPLES.md** - 16 core principles (our engineering philosophy)
 - **HUMAN_MANDATE.md** - The five archetypal Guardian roles
+- **policies/** - constitutional invariants, policy-status semantics, and transitional specifications pending layer classification
 - **REFERENCE/** - Historical decisions and migration artifacts
 
-**Critical Principle**: Changes to philosophy PRECEDE changes to implementation. Never implement in `the-citadel` before defining in `the-covenant`.
+**Critical Principle**: Changes to philosophy and durable invariants PRECEDE changes to implementation. Do not implement in `the-citadel`, `the-shield`, `the-nexus`, or subsidiary/project repos before the owning authority layer is clear.
 
 ## The Three-Pillar Architecture
 
@@ -175,7 +176,7 @@ ADRs are **living documents** — they should reflect current architectural trut
 2. **Is rationale clear?** - Why is this necessary?
 3. **Is implementation path defined?** - How will this be enforced?
 4. **Are consequences documented?** - What becomes easier/harder?
-5. **Is it actionable?** - Can The Architect translate this to OpenTofu/IaC, Policy as Code, or another Citadel enforcement artifact?
+5. **Is it actionable?** - Can the owning lower layer translate this to OpenTofu/IaC, Policy as Code, Shield/Nexus contracts, subsidiary restatements, or another evidence-backed enforcement artifact?
 
 ### Validation Commands
 
@@ -196,19 +197,21 @@ ADRs are **living documents** — they should reflect current architectural trut
 ## Important Files & Their Purposes
 
 - **GOVERNANCE.md** - Complete governance rules and decision authority
-- **PRINCIPLES.md** - All 16 technical standards with implementation details
+- **PRINCIPLES.md** - All 16 principles with philosophy and implementation-impact notes
 - **HUMAN_MANDATE.md** - The five Guardian roles and Human/Machine Creed
 - **CONTRIBUTING.md** - How to propose changes
 - **REFERENCE/** - Historical context and legacy configurations
-- **docs/architecture/** - Architecture Decision Records (ADRs)
+- **docs/architecture/** - Architecture Decision Records (ADRs); ADR-007 (2026-04-20) defines the three-tier authority model that refines ADR-004 §4; ADR-008 (2026-05-17) defines the policy authority topology for Identity, Resource, Permission-Binding, and Runtime Enforcement domains.
+- **policies/org-001-subsidiary-authority.md** - Subsidiary authority and identity isolation policy (the three invariants: identity isolation, authority restatement, spec flow)
+- **policies/specs/** - Constitutional and transitional specifications (subsidiary-authority, secrets-management, github-machine-identity, cloudflare-ownership-transition, iam-specification, organizational-design-quality). Provider-specific and workflow-specific sections are candidates for parent-standard, Shield, Citadel, Nexus, or subsidiary restatement homes.
 
 ## Constraints & Guidelines
 
 **YOU MUST adhere to these rules**:
 
 1. **This repo has NO automation** - No GitHub Actions, no CI/CD by design
-2. **Changes here are DIRECTIVES** - They become automation in `the-citadel`
-3. **Every principle must be ACTIONABLE** - The Architect must be able to implement it
+2. **Changes here are CONSTITUTIONAL** - They become standards, contracts, automation, or restatements in the owning lower layer
+3. **Every principle must be ACTIONABLE** - The Architect, Shield, Citadel, Nexus, or a subsidiary must be able to translate it without changing its meaning
 4. **Documentation is PROPHECY** - What we write shapes what we build
 5. **Conventional Commits REQUIRED** - `docs|feat|chore(scope): description`
 6. **ADRs are LIVING DOCUMENTS** - May be updated when facts change, but changes require Guardian approval
@@ -222,16 +225,16 @@ ADRs are **living documents** — they should reflect current architectural trut
 - Modify ADRs without Guardian approval (these are governance documents)
 - Propose principles that can't be enforced in code
 - Skip the Ritual of Amendment for governance changes
-- Implement in `the-citadel` before defining here
+- Implement in `the-citadel`, `the-shield`, `the-nexus`, or a subsidiary/project repo before the owning authority layer is clear
 
 ## Integration with Other Repositories
 
-### From Covenant → Citadel
+### From Covenant → Owning Lower Layer
 
 **Standard workflow**:
 1. Principle proposed and ratified in `the-covenant`
-2. Implementation PR created in `the-citadel` referencing the principle
-3. OpenTofu/IaC and policy code translate philosophy into enforcement
+2. Implementation PR created in the owning lower-layer repository referencing the principle
+3. Evidence-backed contracts, OpenTofu/IaC, policy code, runtime admission, or restatements translate philosophy into enforcement
 4. Example reference: "Implements Covenant Principle 5: Infrastructure as Code"
 
 ## Working with Pre-commit Hooks
@@ -297,4 +300,4 @@ See `../CLAUDE.md` for full organizational context and the three-pillar architec
 
 **Remember**: The Covenant without the Citadel is mere words. The Citadel without the Covenant is mere machinery. Together, they are civilization.
 
-*Last Updated: 2026-03-03*
+*Last Updated: 2026-05-02*

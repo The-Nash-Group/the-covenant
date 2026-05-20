@@ -15,6 +15,13 @@ Each principle follows the sacred format:
 - **The Implementation**: How it's enforced in `the-citadel`
 - **The Guardian**: Which role from the Human Mandate owns this principle
 
+> **Layering note (2026-05-12):** The Law and Lesson are the durable Covenant
+> content. Implementation blocks are illustrative translation targets or
+> historical examples unless current Citadel, Shield, Nexus, or subsidiary
+> evidence proves the specific control is live. Future amendments should keep
+> provider-specific and workflow-specific detail in the owning implementation
+> layer.
+
 ---
 
 ## Source Control & Git Workflow

@@ -1,12 +1,26 @@
 # The Nash Group Policies
 
-*Comprehensive policy framework implementing The Nash Group's governance principles*
+*Constitutional policy framework implementing The Nash Group's governance principles*
 
 ## Overview
 
-This directory contains the complete formal policy framework for The Nash Group, transforming philosophical principles into enforceable, traceable, and auditable organizational policies. These policies provide multi-layer technical enforcement through Infrastructure as Code, automated validation, and human governance processes.
+This directory contains the constitutional policy framework for The Nash Group,
+transforming philosophical principles into durable invariants, governance
+constraints, status semantics, and policy intent that lower layers can enforce.
+It is not the long-term home for changing provider bindings, workflow paths,
+credential names, or repo-local implementation procedures.
 
-> **Current-state note:** ADR-005 makes OpenTofu the active IaC engine in `the-citadel`. Some older policy examples still use historical Terraform wording or `terraform/` path names; read active implementation guidance as OpenTofu/IaC unless the reference is explicitly historical, product-specific, or a literal file path.
+Operational examples and provider-specific specifications may remain here as
+transitional buildout material until the policy-home correction work classifies
+and moves or restates them into the proper layer: parent `.org` standards,
+Shield identity contracts, Citadel infrastructure enforcement, Nexus runtime
+admission, or subsidiary/project-local restatements.
+
+> **Current-state note:** ADR-005 makes OpenTofu the active IaC engine in
+> `the-citadel`. Some older policy examples still use historical Terraform
+> wording or `terraform/` path names. Treat implementation snippets as
+> illustrative translation targets unless current Citadel, Shield, Nexus, or
+> subsidiary evidence proves they are live.
 
 ## Policy Categories
 
@@ -65,13 +79,17 @@ This directory contains the complete formal policy framework for The Nash Group,
 - **[AGT-003: Citadel Audit Framework](./agt-003-citadel-audit-framework.md)** - Systematic verification that Covenant principles are enforced
 - **[AGT-004: Enforcement Checklist](./agt-004-enforcement-checklist.md)** - Master verification checklist for Citadel enforcement
 
+### Organizational Authority (ORG)
+- **[ORG-001: Subsidiary Authority and Identity Isolation](./org-001-subsidiary-authority.md)** - Three-tier authority model invariants (identity isolation, authority restatement, spec flow); operational rule for the boundary between parent and subsidiary
+
 ### Specifications
-- **[Cloudflare Ownership Transition](./specs/cloudflare-ownership-transition.md)** - Transitional stewardship and placement rules for Cloudflare resources
-- **[GitHub Machine Identity](./specs/github-machine-identity.md)** - GitHub App architecture and credential lifecycle for machine identities
-- **[IAM Specification](./specs/iam-specification.md)** - Strategic and historical IAM architecture reference
-- **[Secrets Management](./specs/secrets-management.md)** - Secret classification, lifecycle, ownership, distribution, and rotation model
-- **[Subsidiary Authority](./specs/subsidiary-authority.md)** - Operational model for parent, subsidiary, and project authority boundaries
-- **[Organizational Design Quality](./specs/organizational-design-quality.md)** - Draft anchor quality bar for control-surface classification, ownership, review, evidence, and subsidiary restatement
+- **[Cloudflare Ownership Transition](./specs/cloudflare-ownership-transition.md)** (ACCEPTED v1.1.0) - Transitional stewardship and placement rules for Cloudflare resources; provider-specific sections should be classified for parent-standard or Citadel home.
+- **[GitHub Machine Identity](./specs/github-machine-identity.md)** - GitHub App architecture and credential lifecycle for machine identities; provider-specific sections should be classified for Shield/Citadel home.
+- **[Identity and Account Management](./specs/identity-and-account-management.md)** (v0.2.0; §§1-6 DRAFT — Accepted for Validation since 2026-05-03; §7 ratified 2026-05-17 via ADR-008) - Multi-entity identity contract plus the accepted policy authority topology; durable invariants remain here while identity-contract detail moves to Shield or parent standards.
+- **[IAM Specification](./specs/iam-specification.md)** (PARTIALLY HISTORICAL — REWRITE PENDING) - Pre-ADR-005 IAM architecture reference.
+- **[Secrets Management](./specs/secrets-management.md)** (ACTIVE v1.3.0) - Secret classification, lifecycle, ownership, distribution, and rotation model; provider-neutral invariants remain here while backend-specific bindings belong to owning implementation layers.
+- **[Subsidiary Authority](./specs/subsidiary-authority.md)** (ACTIVE v1.0.3) - Operational model for parent, subsidiary, and project authority boundaries.
+- **[Organizational Design Quality](./specs/organizational-design-quality.md)** (DRAFT v0.1.0) - Anchor quality bar for control-surface classification, ownership, review, evidence, and subsidiary restatement; not active policy.
 
 > **Note**: GOV-009 was intentionally reserved for future use. The policy ID gap between GOV-008 and GOV-010 is deliberate.
 
@@ -140,11 +158,11 @@ Each policy follows a standardized template:
 **Applies To:** [Specific resources/processes]
 **Exceptions:** [Documented exceptions]
 
-## Implementation
-### Technical Enforcement
-[OpenTofu/IaC and Policy as Code examples]
-### Automated Validation
-[CI/CD, monitoring, automation]
+## Implementation Impact
+### Enforcement Home
+[Citadel, Shield, Nexus, parent standard, subsidiary restatement, or project-local]
+### Validation or Evidence
+[CI/CD, monitoring, audit evidence, native control, manual review, or advisory status]
 ### Human Process
 [Procedures, workflows, approvals]
 
@@ -164,11 +182,20 @@ Each policy follows a standardized template:
 
 ## Implementation Status
 
-### Technical Enforcement
-- ✅ **OpenTofu/IaC Examples**: Policies include implementable IaC examples for Citadel translation
-- ✅ **GitHub Configurations**: Repository settings, rulesets, and workflows
-- ✅ **Cloudflare Settings**: Access policies, DNS, and WAF configurations
-- ✅ **CI/CD Integration**: Automated validation and enforcement pipelines
+### Translation and Enforcement
+- **Covenant invariants**: Policies define durable rules and status semantics.
+- **Implementation examples**: Older policies may contain OpenTofu, GitHub,
+  Cloudflare, CI/CD, or workflow examples. These are translation targets or
+  historical references unless backed by current evidence in the owning layer.
+- **Citadel enforcement**: Provider bindings, OpenTofu/IaC, CI gates, and native
+  controls are owned by Citadel.
+- **Shield contracts**: IAM, identity registry, authorization-decision, and
+  secret-authority metadata contracts are Shield/parent-standard work until
+  implementation is authorized.
+- **Nexus runtime admission**: Runtime policy loading and service-facing
+  operational checks belong to Nexus once wired.
+- **Subsidiary/project execution**: Local restatement and project-specific
+  implementation belong to the owning entity or project.
 
 ### Human Processes
 - ✅ **Role Definitions**: Clear responsibilities for Immortals, Mentors, Watchers
@@ -176,11 +203,15 @@ Each policy follows a standardized template:
 - ✅ **Escalation Paths**: Clear conflict resolution procedures
 - ✅ **Cultural Practices**: Daily, weekly, and quarterly rituals
 
-### Compliance and Auditing
-- ✅ **Automated Monitoring**: Real-time compliance checking
-- ✅ **Manual Audit Procedures**: Human verification processes
-- ✅ **Reporting Requirements**: Metrics, dashboards, and trends
-- ✅ **Violation Response**: Clear remediation procedures
+### Compliance and Auditing Intent
+- **Automated monitoring target**: Real-time compliance checking belongs in the
+  owning enforcement layer when evidence proves the check is live.
+- **Manual audit procedures**: Human verification processes remain valid even
+  where automated controls are advisory, report-only, or source-tested only.
+- **Reporting requirements**: Metrics, dashboards, and trends are expected
+  evidence surfaces; current availability is determined by the owning repo.
+- **Violation response**: Remediation procedures are defined here at the policy
+  level and executed by the owning operational layer.
 
 ## Usage Guidelines
 
@@ -204,14 +235,17 @@ Each policy follows a standardized template:
 
 - **Coverage**: 100% of PRINCIPLES.md, GOVERNANCE.md, and HUMAN_MANDATE.md formalized
 - **Traceability**: Every policy traces to source documents with specific sections
-- **Enforceability**: All policies include technical and procedural enforcement
-- **Completeness**: 28 policies covering all organizational domains
+- **Enforceability**: Every policy maps to an intended enforcement or evidence
+  home; not every Covenant policy should embed implementation detail.
+- **Completeness**: 38 numbered policies (SC, SEC, INF, OPS, DOC, DEP, GOV, COM, AGT, ORG) plus 6 specifications under `specs/`
 - **Consistency**: Standardized template and cross-referencing throughout
+
+> **Frontmatter currency note (2026-05-02)**: Most policies still carry their original `Last Updated: 2024-09-30` stamp because they have not been substantively revised since. Files with newer stamps (SEC-005, AGT-001, ORG-001, COM-001, INF-001, SEC-004) reflect intentional revisions. The original stamp is therefore truthful — not bulk-refreshed dishonestly — but readers should consult the linked Covenant ADRs (especially ADR-005 OpenTofu, ADR-007 Subsidiary Authority) and the active specifications for current enforcement detail.
 
 ---
 
-*"These policies transform The Nash Group's philosophical foundation into executable organizational reality, ensuring our principles are not just aspirations but lived practice."*
+*"These policies preserve The Nash Group's philosophical foundation as durable organizational reality; lower layers turn that foundation into evidence, automation, and operation."*
 
 **Source Documents**: PRINCIPLES.md, GOVERNANCE.md, HUMAN_MANDATE.md
-**Implementation**: [The Citadel](https://github.com/The-Nash-Group/citadel-config) - OpenTofu/IaC and Policy as Code enforcement
+**Implementation**: [The Citadel](https://github.com/The-Nash-Group/citadel-config) - OpenTofu/IaC and Policy as Code enforcement where current Citadel evidence proves the control is live
 **Change Process**: [GOV-002 Amendment Process](./gov-002-amendment-process.md)

@@ -4,7 +4,12 @@
 
 ## ⚠️ CRITICAL CONTEXT FOR AGENTS
 
-You are auditing **The Citadel** - the enforcement layer for **The Covenant**. This is not routine validation. This is ensuring our philosophical principles are transformed into unbreakable technical reality. Every missed policy is a broken promise. Every unenforced rule is a door left open to chaos.
+You are auditing **The Citadel** and related enforcement/evidence layers for
+**The Covenant**. This is not routine validation. Classify each control by its
+current evidence: live-blocking, report-only, source-tested, native control,
+manual audit, procedural, design target, or not currently enforced. Do not
+assume every policy must become OPA/Rego, and do not describe target-state
+controls as live until the owning repo provides current evidence.
 
 ## Workflow 1: Covenant-Policy Traceability Verification
 
@@ -20,8 +25,10 @@ You are auditing **The Citadel** - the enforcement layer for **The Covenant**. T
 
 def audit_covenant_traceability():
     """
-    Verify every Covenant principle has policy enforcement.
-    CRITICAL: Missing mappings are FAILURES, not warnings.
+    Verify every Covenant principle has policy mapping and an enforcement or
+    evidence class.
+    CRITICAL: Missing mappings are findings, not automatic proof of a live
+    enforcement failure.
     """
 
     # Step 1: Extract principles
@@ -93,7 +100,7 @@ def audit_covenant_traceability():
 ## Workflow 2: OPA Policy Implementation Verification
 
 ### Agent Identity
-**Role:** Policy Enforcement Validator
+**Role:** Policy Enforcement Classifier
 **Tools Required:** OPA CLI v1.9.0+, jq, git
 **Execution Environment:** CI/CD pipeline or local with repo access
 
@@ -101,7 +108,7 @@ def audit_covenant_traceability():
 
 ```bash
 #!/bin/bash
-# AGENT TASK 2: Verify every policy has executable OPA enforcement
+# AGENT TASK 2: Classify policy enforcement evidence and identify OPA gaps
 
 set -euo pipefail
 
@@ -181,7 +188,7 @@ coverage=$((implemented * 100 / total_policies))
 
 jq --arg cov "$coverage" '.coverage = ($cov + "%")' $REPORT_FILE > tmp.json && mv tmp.json $REPORT_FILE
 
-# Step 4: Final verdict
+# Step 4: Legacy OPA-only verdict
 if [ "$coverage" -lt 100 ]; then
     jq '.verdict = "FAIL: Incomplete OPA coverage"' $REPORT_FILE > tmp.json && mv tmp.json $REPORT_FILE
     echo "❌ AUDIT FAILED: Only ${coverage}% OPA coverage"

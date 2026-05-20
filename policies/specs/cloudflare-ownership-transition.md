@@ -1,8 +1,10 @@
 # Cloudflare Ownership Transition Specification
 
+**Version:** 1.1.0
 **Status:** ACCEPTED
 **Date:** 2026-04-08
 **Accepted:** 2026-04-10
+**Last Updated:** 2026-05-02
 **Authority:** Ratified Covenant specification; parent directive is binding for current execution
 **Implements:** Principle 5 (Infrastructure as Code), Principle 9 (Zero Trust), Principle 10 (Least Privilege), ADR-004, ADR-005
 
@@ -141,19 +143,22 @@ This transition specification must be reviewed:
 
 ## Near-Term Application
 
-The recommended first implementation slice is:
+The first implementation slice is delivered.
 
-- `thenash.group`
-- DNS records
-- DNSSEC
-- Cloudflare Pages project and Pages domain for the public site
+- `thenash.group` DNS records and DNSSEC landed via PR #7 (squash-merged as `c4d3775` on 2026-04-10); Forge run `24227740498` applied 10 imports with zero drift.
+- The Cloudflare Pages project and Pages custom domain landed via PR #8 on 2026-04-25; the live site at `thenash.group` is the first public POC under the Nash-managed Cloudflare path.
+- Stage 5 security-claims inventory and the future-controls menu (WAF, OWASP, custom rules, rate limiting, geographic, Access, Workers, tunnels, Zero Trust) are recorded under `.claude/orchestration/cloudflare-resource-management/`.
 
-These resources belong in:
+All of these resources live in `the-citadel/terraform/orgs/the-nash-group/`, not in `the-citadel/terraform/global/`, per the placement rule above.
 
-- `the-citadel/terraform/orgs/the-nash-group/`
+The more heterogeneous `jefahnierocks.com` zone is explicitly deferred until after a per-suborg separation trigger justifies migration; per-suborg separation criteria are documented under `.claude/orchestration/cloudflare-resource-management/PER-SUBORG-CLOUDFLARE-SEPARATION-EXIT-CRITERIA-2026-04-26.md`.
 
-They do **not** belong in:
+---
 
-- `the-citadel/terraform/global/`
+## Changelog
 
-The more heterogeneous `jefahnierocks.com` zone is explicitly deferred until after the Nash public-delivery slice is stable.
+| Date | Author | Summary |
+|------|--------|---------|
+| 2026-04-08 | Agent | Initial acceptance of the transitional stewardship model and placement rule. |
+| 2026-04-10 | Agent | Recorded acceptance with first delivery slice landing for `thenash.group` DNS+DNSSEC. |
+| 2026-05-02 | Agent | Updated §Near-Term Application to reflect full POC 5 foundation delivery (PR #7 + PR #8) and added Version 1.1.0 + last_updated frontmatter for parity with sibling specs. |

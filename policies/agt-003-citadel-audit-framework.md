@@ -1,12 +1,22 @@
 # The Citadel Audit Framework
 
-*Systematic verification that The Covenant principles are enforced through policy and code*
+*Systematic verification of how Covenant principles are classified, evidenced, and enforced through policy and code*
+
+> **Current-state note (2026-05-13):** This framework is an audit guide, not a
+> current proof that every policy has OPA/Rego or live-blocking enforcement. The
+> current PaC denominator is explicit control-class evidence per policy:
+> live-blocking, report-only, source-tested, native control, manual audit,
+> procedural, design target, or not currently enforced.
 
 ## Critical Mission Statement
 
 **This is not bureaucracy. This is the shield wall.**
 
-Every audit task below represents a potential breach in our defenses. A single unenforced principle is a door left open to chaos. This framework ensures that what we believe (The Covenant) becomes what we enforce (The Citadel) through systematic, repeatable verification.
+Every audit task below represents a potential place to verify, classify, or
+route enforcement evidence. A single unclassified principle is a status risk.
+This framework helps ensure that what we believe (The Covenant) is translated
+into the correct Citadel, Shield, Nexus, native-control, manual-audit, or
+procedural lane through systematic, repeatable verification.
 
 ## Master Audit Architecture
 
@@ -87,7 +97,8 @@ graph TD
 ## Phase 2: Policy-to-OPA Implementation Audit
 
 ### Agent Instructions
-**Mission:** Ensure every policy has executable OPA/Rego enforcement.
+**Mission:** Classify every policy's current enforcement class and identify
+where executable OPA/Rego is actually the right enforcement surface.
 
 **Execution Steps:**
 
@@ -128,9 +139,11 @@ graph TD
    ```
 
 **Success Criteria:**
-- Every policy has OPA implementation
-- All OPA rules pass tests with >90% coverage
-- Bundle builds without errors
+- Every policy has a current enforcement class.
+- Policies that require OPA/Rego have implementation and tests in the owning
+  repo.
+- Policies enforced by native controls, manual audit, or procedure are recorded
+  without being misreported as missing Rego.
 
 ## Phase 3: Labeling Framework Audit (GOV-010)
 
