@@ -1,9 +1,9 @@
 # Identity and Account Management Specification
 
-**Version:** 0.2.0
-**Status:** DRAFT — Accepted for Validation (§§1–6 since 2026-05-03; §7 ratified 2026-05-17 via ADR-008 under the Covenant-tier single-Guardian quorum exception per `STATUS.md §Governance Exceptions`)
+**Version:** 0.2.1
+**Status:** DRAFT — Accepted for Validation (§§1–6 since 2026-05-03; §7 ratified 2026-05-17 via ADR-008; v0.2.1 E/C additive amendment ratified 2026-05-25; both under the Covenant-tier single-Guardian quorum exception per `STATUS.md §Governance Exceptions`)
 **Date:** 2026-05-03 (v0.1.0)
-**Last Updated:** 2026-05-17 (v0.2.0 — §7 Authority Topology added; ratified via ADR-008 under single-Guardian quorum exception)
+**Last Updated:** 2026-05-25 (v0.2.1 — §1 family-home sovereignty extension and §6 Mechanism F resource tagging added; DRAFT-additive; §§1–6 not promoted to ACTIVE)
 **Implements:** Principle 5 (Infrastructure as Code), Principle 9 (Zero Trust), Principle 10 (Least Privilege), Principle 11 (Observability), Principle 15 (Three Circles of Trust)
 **Policies:** SEC-005 (Machine Identity), ORG-001 (Subsidiary Authority and Identity Isolation), GOV-003 (Break-Glass)
 **Specs:** Secrets Management Specification v1.3.0
@@ -59,6 +59,20 @@ Each entity has a defined relationship with each provider. The following table r
 | `seven-springs` | shared (pedagogical exception per Subsidiary Authority Spec §7.4); no live resources | n/a | `seven-springs-org` Free | n/a | n/a |
 
 **Rule:** Account separation pressure is *owner-driven* (LLC formation, customer transactions, regulated-data classification, revenue), not parent-driven. The parent does not initiate per-entity account moves; it provides the contract, the placement rule (`cloudflare-ownership-transition.md`), and the implementation slice when the entity owner is ready.
+
+#### Family-home sovereignty category (v0.2.1 extension)
+
+**Family-home sovereignty** is a category within the Nash Group parent authority, not a separate entity and not a subsidiary. It covers resources in the Nash Group parent Cloudflare account that serve the operator's family network: Cloudflare One DNS filtering, family device profiles, home Workers, managed-network beacon infrastructure, Pulumi-managed Gateway / Access / profile / list resources in `cloudflare-dns` or `family-cloudflare`, Worker KV namespaces, and family-home Worker secret bindings.
+
+Family-home resources may be Jefahnierocks-flagged for operational context, but they are not Jefahnierocks-business resources and are not governed by Jefahnierocks-subsidiary authority. Family-home is the operator's personal/family life intersecting with parent-operated infrastructure; the family-home to Jefahnierocks-subsidiary boundary remains operator-customized and is not prescribed by this specification.
+
+Within the shared parent account, family-home sovereignty is enforced by credential scope plus the resource classification convention in §6 Mechanism F:
+
+- `home-cloudflare-*` tokens reach only family-home resources.
+- Subsidiary-scoped tokens reach only that subsidiary's resources.
+- Parent-scoped tokens reach only parent resources.
+
+When future §3.5 family-home human identity entries are authored, they use the sovereignty label `family_home_within_parent_account`. This v0.2.1 amendment does not author §3.5 entries, does not provision identities, and does not create Cloudflare Access groups.
 
 ### 2. Credential vault structure
 
@@ -129,7 +143,7 @@ Per-credential principal sets are recorded in:
 
 #### Synthetic council principal slot
 
-The `nash-synthetic-council-readonly` principal is reserved but not yet defined. When the council is deployed, this spec receives a v0.2.0 update defining:
+The `nash-synthetic-council-readonly` principal is reserved but not yet defined. When the council is deployed, this spec receives a future update defining:
 
 - The council's read scope per entity
 - The quorum rule for council read access (e.g., does a single council member read suffice, or does a multi-member quorum apply?)
@@ -156,7 +170,7 @@ Cadences are inherited from **Secrets Management Specification v1.3.0 §5.4** (t
 
 **Evidence requirement:** Every rotation produces a non-secret entry in the per-entity audit-rotation-log naming the credential's canonical logical path (per §2), principal set, rotation date, rotation reason, and verification step. **Secret values are never logged.** Logical paths and rotation dates only.
 
-**Cadence rationale:** 180 days is the Secrets Management v1.3.0 target for long-lived material secrets (Cloudflare API tokens, GitHub App PEMs, Hetzner cloud/S3 credentials). Quarterly (90 days) applies where credential blast radius or principal turnover is higher (DNS-01 affects zone-level cert renewal; OPNsense API users gate LAN admin access). State encryption passphrase rotates only on suspected compromise per the Secrets Management v1.3.0 exception. This spec inherits these targets — it does NOT relax them. v0.2.0 may tighten cadence if first-cycle evidence supports it.
+**Cadence rationale:** 180 days is the Secrets Management v1.3.0 target for long-lived material secrets (Cloudflare API tokens, GitHub App PEMs, Hetzner cloud/S3 credentials). Quarterly (90 days) applies where credential blast radius or principal turnover is higher (DNS-01 affects zone-level cert renewal; OPNsense API users gate LAN admin access). State encryption passphrase rotates only on suspected compromise per the Secrets Management v1.3.0 exception. This spec inherits these targets — it does NOT relax them. A future ACTIVE-promotion amendment may tighten cadence if first-cycle evidence supports it.
 
 ### 5. Audit destination per entity
 
@@ -225,7 +239,19 @@ Mechanisms intended to ensure one entity's credentials cannot be used by another
 - **Target state.** OPA policy that rejects plans consuming tokens with cross-entity scope. Plan input includes which credential resolved which workspace; policy fails if the credential's scope set does not match the workspace's expected scope set.
 - **Gap closure.** Not v0.1.0; identified as the natural next step once Mechanisms A and C are at target state.
 
-**Honest summary of v0.1.0 state:** Mechanism B is operational. Mechanisms A (Cloudflare half), C, D (Phase B), and E are gaps that this spec contracts for; closing them is downstream implementation work tracked in D5. The spec is the **contract** that will govern those closures, not a claim that closures have happened.
+#### Mechanism F: Resource sovereignty tagging and naming
+
+- **Current state — advisory convention added in v0.2.1.** The spec now defines the resource classification convention that later IaC and audit tooling consume, but this amendment does not apply tags, mutate provider resources, or create policy enforcement.
+- **Target state.** Every Cloudflare resource crossing sovereignty boundaries within the parent account carries enough metadata to identify its sovereignty, owning IaC surface, and operationally responsible entity without inspecting Pulumi or OpenTofu state.
+- **Required classification fields.**
+  - `sovereignty`: one of `parent_the_nash_group`, `subsidiary_jefahnierocks`, `subsidiary_happy_patterns`, `subsidiary_litecky_editing`, `subsidiary_seven_springs`, `family_home_within_parent_account`, or `delegated_external_vendor`.
+  - `owner_repo`: the canonical IaC repository or source surface for the resource, such as `the-citadel`, `cloudflare-dns`, or `family-cloudflare`.
+  - `entity`: the Nash entity operationally responsible for the resource.
+- **Audit query.** A parent audit or delegated agent can answer sovereignty-scoped questions such as "show all family-home resources" or "show all Litecky resources" by tag or classification field, without reverse-engineering IaC state.
+- **Provider tag-surface caveat.** Use native Cloudflare resource tags where the provider surface supports them, including Workers, KV namespaces, R2 buckets, D1 databases, and Pages projects. Where the provider surface has limited or no native tag support, including Access applications, Tunnels, and Gateway policies, use deterministic resource-name prefixes such as `family-`, `subsidiary-jefahnierocks-`, or `delegated-vendor-` as the classification evidence.
+- **Gap closure.** Advisory now; PaC-promotable later. A future OPA/Rego rule MAY require the classification fields or accepted prefix surrogate once the relevant IaC inputs and provider tag surfaces are available.
+
+**Honest summary of v0.2.1 state:** Mechanism B is operational. Mechanisms A (Cloudflare half), C, D (Phase B), and E are gaps that this spec contracts for; closing them is downstream implementation work tracked in D5. Mechanism F is an advisory resource-classification convention that supports audit and future PaC enforcement; it is not yet enforced. The spec is the **contract** that will govern those closures, not a claim that closures have happened.
 
 ---
 
@@ -303,12 +329,12 @@ The Identity Domain and Resource Domain are mutually independent — neither dir
 
 §§1–6 are concrete contracts that implement this framework:
 
-- §1 (Per-entity provider account model) operates at the **Resource Domain** layer (per-entity accounts are scope boundaries) with Identity Domain authority-tier metadata (each entity is a sovereignty boundary).
+- §1 (Per-entity provider account model) operates at the **Resource Domain** layer (per-entity accounts are scope boundaries, and family-home is a sovereignty category within the parent account) with Identity Domain authority-tier metadata (each entity or category is a sovereignty boundary).
 - §2 (Credential vault structure) is **Identity Domain** authoring (vault structure is identity-registry-shaped) implemented across all entities.
 - §3 (Identity principals per credential) is **Identity Domain** publication (principal classes, lifecycle, audit) consumed by §4–6.
 - §4 (Rotation contract) is **Identity Domain** lifecycle authority applied per credential class.
 - §5 (Audit destination per entity) is **Identity Domain** audit contract authoring; the actual audit-log destinations are mostly **Runtime Enforcement Domain** systems (provider audit logs) consumed by Identity Domain audit feeds.
-- §6 (Cross-entity prevention contract) is **Permission-Binding Domain** decision-contract authoring; Mechanisms A–E are the binding-layer policies whose enforcement spans Permission-Binding (contract) and Runtime Enforcement (evaluation).
+- §6 (Cross-entity prevention contract) is **Permission-Binding Domain** decision-contract authoring; Mechanisms A–F are the binding-layer policies whose enforcement spans Permission-Binding (contract), Resource Domain classification, and Runtime Enforcement (evaluation).
 
 This framework retrospectively rationalizes §§1–6's structure without changing their content. It prospectively constrains how new sections (§§8+, future amendments) decompose work across domains.
 
@@ -317,7 +343,7 @@ This framework retrospectively rationalizes §§1–6's structure without changi
 §7 codifies a structural invariant; it does not require runtime evidence to be ACTIVE. §7 promotes from DRAFT to ACTIVE when ALL of the following hold:
 
 - [ ] ADR-008 ratified by the Guardian under the Covenant-tier single-Guardian quorum exception (recorded in ADR-008's changelog and in this spec's changelog with date and authority basis)
-- [ ] This spec's frontmatter reflects v0.2.0 with §7 included (already done in this amendment commit)
+- [ ] This spec's frontmatter reflects a version at or after v0.2.0 with §7 included (already done in the §7 amendment and preserved in later amendments)
 - [ ] The Shield's design baseline (`the-shield/docs/identity-foundation-plan-2026-05-11.md` and `iam-architectural-posture-2026-05-11.md`) references §7 as primary design input (tracked under Shield design phase; deliverable identified, not blocking)
 
 §7's promotion to ACTIVE is **independent** of §§1–6's ACTIVE promotion conditions (which gate on first end-to-end migration validation per the Implementation Path above). §7 may reach ACTIVE before §§1–6 do, and vice versa.
@@ -368,9 +394,9 @@ The registry decreases over time. Initial expected entries on creation:
 | 2 | Citadel creates the out-of-spec credentials registry | (still DRAFT — Accepted for Validation) | `the-citadel/docs/identity-and-account-management/out-of-spec-credentials.md` |
 | 3 | Citadel issues per-entity Cloudflare scoped tokens replacing `secret:cf-api-token-shared` (MN-1 from D5); workflow `env:` blocks rewritten to resolve per matrix entry | (still DRAFT — Accepted for Validation) | Tokens at canonical paths with 1P aliases; rotation entry in each entity's audit-rotation-log; updated `opentofu.yml` |
 | 4 | Citadel publishes the parent template for `audit-rotation-log.md` | (still DRAFT — Accepted for Validation) | Template in Citadel docs; each entity creates its own log |
-| 5 | Litecky Editing Services first-real-workload migration (D5 step 7) exercises the spec end-to-end | DRAFT — Accepted for Validation → **ACTIVE** | Empirical evidence; informs v0.2.0 |
-| 6 | Spec updated to v0.2.0 based on first-migration findings | ACTIVE | v0.2.0 with refined cadence, verification, and audit shapes |
-| 7 | Happy Patterns LLC migration at activation trigger (D5 step 8) validates v0.2.0 in second context | ACTIVE | Second empirical-evidence cycle |
+| 5 | Litecky Editing Services first-real-workload migration (D5 step 7) exercises the spec end-to-end | DRAFT — Accepted for Validation → **ACTIVE** | Empirical evidence; informs the ACTIVE-promotion refinement |
+| 6 | Spec updated based on first-migration findings | ACTIVE | Refined cadence, verification, and audit shapes |
+| 7 | Happy Patterns LLC migration at activation trigger (D5 step 8) validates the ACTIVE spec in second context | ACTIVE | Second empirical-evidence cycle |
 
 This is the same shape used for ORG-001 ↔ Subsidiary Authority Specification ↔ restatement log: small spec, validate with real work, refine. **The spec does NOT promote to ACTIVE on Guardian acceptance alone — it promotes after first end-to-end migration validation.**
 
@@ -407,7 +433,7 @@ The spec promotes to **ACTIVE** only when ALL of the following hold:
 ## Compliance with Higher-Authority Specs
 
 - **Principle 5 (IaC)**: All credential structure is recorded as code (registry, naming convention, audit-rotation-log template). No silent runtime configuration.
-- **Principle 9 (Zero Trust)**: Cross-entity credential reach is explicitly prevented (Mechanisms A–E). No implicit trust between workspaces.
+- **Principle 9 (Zero Trust)**: Cross-entity credential reach is explicitly prevented (Mechanisms A–F). No implicit trust between workspaces.
 - **Principle 10 (Least Privilege)**: Tokens are zone-scoped, account-scoped, or workspace-scoped; account-wide tokens for production use are retired.
 - **Principle 15 (Three Circles of Trust)**: Per-entity boundaries enforced at credential level; cross-entity access requires explicit attribution.
 - **SEC-005 (Machine Identity)**: This spec extends SEC-005's machine identity types to the multi-entity case; no new identity types are introduced.
@@ -419,9 +445,10 @@ The spec promotes to **ACTIVE** only when ALL of the following hold:
 
 ## What This Spec Leaves Explicit (For Future Work)
 
-- **Synthetic council credential model** — slot reserved (§3); details land at v0.2.0 when council is deployed.
+- **Synthetic council credential model** — slot reserved (§3); details land in a future amendment when council is deployed.
 - **Per-entity Hetzner credential separation** — naming convention defined (§2); separation timing is per-entity (LLC trigger-driven).
-- **Mechanism E (PaC for cross-entity prevention)** — identified as natural next step; not v0.1.0.
+- **Mechanism E (PaC for cross-entity prevention)** — identified as natural next step; not yet implemented.
+- **Mechanism F PaC promotion** — resource classification is advisory in v0.2.1; future PaC can require tags or accepted prefix surrogates.
 - **`iam-specification.md` REWRITE PENDING** — unaffected; this spec is narrower. The broader rewrite covers AWS IAM Identity Center, GCP IAM, federated SSO, agent sandbox cages, and break-glass alerting infrastructure.
 - **POC 3 (Authentik) human SSO** — deferred per D5; not addressed here.
 
@@ -451,3 +478,4 @@ The spec promotes to **ACTIVE** only when ALL of the following hold:
 | 2026-05-03 | Agent | Second-stage Acceptance Criterion partially satisfied: Citadel out-of-spec credentials registry created at `the-citadel/docs/identity-and-account-management/out-of-spec-credentials.md` (commit `079f361`) with status ACCEPTED, schema v0.1.0, and four initial entries. Sunsets accelerated below the 90-day default per Guardian directive 2026-05-03: shared CF token 3 weeks, OPNsense monitoring_svc 2 weeks, account-wide Hetzner 6 weeks (with target-scope reframed from "wait for per-entity separation" to "parent-only narrowing now; per-entity on-demand"), unenumerated CF tokens 1 week. Six second-stage boxes remain (MN-1 issuance, workflow rewrite, first audit-rotation-log entry, no-regression on prevention mechanisms, Litecky migration validation, ACTIVE-promotion changelog entry). |
 | 2026-05-17 | Agent | **v0.1.0 → v0.2.0 DRAFT.** Added §7 "Authority Topology for Identity, Resource, and Policy-Binding" — codifies the four-domain decomposition (Identity, Resource, Permission-Binding, Runtime Enforcement) and the pillar mapping (Shield owns Identity Domain + Permission-Binding contract layer; Citadel owns Resource Domain + Permission-Binding implementation layer; runtime layers own enforcement). §7 is the framework underlying §§1–6's implementation contracts. Provider-agnostic at this layer; provider-specific translation belongs in transitional specs (`cloudflare-ownership-transition.md`, `github-machine-identity.md`) and parent standards (`.org/standards/`). §7 promotion is independent of §§1–6's ACTIVE conditions: §7 promotes on ADR-008 ratification plus Shield design baseline absorbing §7 as primary input. Bumped `Implements` to include Principle 11 (Observability) since §7 audit contracts reference it. Awaiting Guardian sign-off under the Covenant-tier single-Guardian quorum exception per `STATUS.md §Governance Exceptions`; paired ratification with ADR-008 (`the-covenant/docs/architecture/008-policy-authority-topology.md`). |
 | 2026-05-17 | Guardian (jeffrey) | **v0.2.0 §7 ratified (Proposed → Accepted).** Ratified under the Covenant-tier single-Guardian quorum exception (`STATUS.md §Governance Exceptions row 4` + `ADR-007 §Current-state note`); paired with ADR-008 ratification of same date. §7 transitions from DRAFT to ACTIVE on Shield design baseline absorbing §7 as primary input (tracked as Shield design phase deliverable; not blocking). §§1–6 promotion path remains independent per the existing Implementation Path. Downstream work — transitional-spec amendments (`cloudflare-ownership-transition.md` and similar), parent standards bridging at `.org/standards/`, subsidiary restatement where relevant — proceeds under this ratification. |
+| 2026-05-25 | Guardian (jeffrey) | **v0.2.0 → v0.2.1 DRAFT-additive (Amendments E + C).** Ratified under the Covenant-tier single-Guardian quorum exception (`STATUS.md §Governance Exceptions row 4` + `ADR-007 §Current-state note`). Added §1 family-home sovereignty as a category within the Nash parent account, not a subsidiary, and added §6 Mechanism F for Cloudflare resource sovereignty tagging / prefix classification. This amendment does **not** promote §§1–6 to ACTIVE; ACTIVE promotion remains gated on D5 step 7. Amendments A/B/D remain deferred to FU-21 Phase 1; Amendment F / §3.9 remains deferred to Authentik. No identity provisioning, Access-group creation, provider mutation, resource tagging application, family PII, or secret values are authorized by this amendment. |
