@@ -1,0 +1,17 @@
+spec_version: 0.1
+project:
+  id: the-covenant
+  display_name: The Covenant
+  owner_entity: The-Nash-Group
+role: component
+canonical: the-nash-group
+status:
+  posture: published-artifact
+  local_phase: "ratified policy corpus; live IAM spec v0.2.1 DRAFT-accepted-for-validation"
+  as_of: "2026-06-11"
+authority:
+  status_of_record: policies/README.md
+presentation:
+  visibility: internal
+  public_alias: null
+  link_policy: no-link
