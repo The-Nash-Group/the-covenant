@@ -439,7 +439,8 @@ This specification must be reviewed:
 - **Policy:** [GOV-003: Emergency Break-Glass](../gov-003-break-glass.md) — emergency access authorization
 - **Specification:** [GitHub Machine Identity](./github-machine-identity.md) — GitHub App PEM lifecycle
 - **Specification:** [Cloudflare Ownership Transition](./cloudflare-ownership-transition.md) — shared token exception
-- **Specification:** [IAM Specification](./iam-specification.md) — identity hierarchy
+- **Specification:** [Identity and Account Management](./identity-and-account-management.md) — live multi-entity identity contract and identity hierarchy (v0.2.1)
+- **Specification (historical):** [IAM Specification](./iam-specification.md) — earlier identity hierarchy (v1.1.0, historical — do not treat as current)
 - **Citadel-owned implementation reference:** `the-citadel/.envrc.template` — local workstation injection pattern
 - **Citadel-owned implementation reference:** `the-citadel/BREAK_GLASS.md` — emergency credential retrieval paths
 - **Citadel-owned implementation reference:** `the-citadel/.github/workflows/opentofu.yml` — CI secrets consumption
