@@ -203,7 +203,7 @@ ADRs are **living documents** — they should reflect current architectural trut
 - **REFERENCE/** - Historical context and legacy configurations
 - **docs/architecture/** - Architecture Decision Records (ADRs); ADR-007 (2026-04-20) defines the three-tier authority model that refines ADR-004 §4; ADR-008 (2026-05-17) defines the policy authority topology for Identity, Resource, Permission-Binding, and Runtime Enforcement domains.
 - **policies/org-001-subsidiary-authority.md** - Subsidiary authority and identity isolation policy (the three invariants: identity isolation, authority restatement, spec flow)
-- **policies/specs/** - Constitutional and transitional specifications (subsidiary-authority, secrets-management, github-machine-identity, cloudflare-ownership-transition, iam-specification, organizational-design-quality). Provider-specific and workflow-specific sections are candidates for parent-standard, Shield, Citadel, Nexus, or subsidiary restatement homes.
+- **policies/specs/** - Constitutional and transitional specifications (subsidiary-authority, secrets-management, github-machine-identity, cloudflare-ownership-transition, identity-and-account-management (v0.2.1 — the LIVE IAM contract), iam-specification (v1.1.0 PARTIALLY HISTORICAL — do not treat as current), organizational-design-quality). Provider-specific and workflow-specific sections are candidates for parent-standard, Shield, Citadel, Nexus, or subsidiary restatement homes.
 
 ## Constraints & Guidelines
 
@@ -300,4 +300,4 @@ See `../AGENTS.md` for full organizational context and the three-pillar architec
 
 **Remember**: The Covenant without the Citadel is mere words. The Citadel without the Covenant is mere machinery. Together, they are civilization.
 
-*Last Updated: 2026-05-02*
+*Last Updated: 2026-06-28*
