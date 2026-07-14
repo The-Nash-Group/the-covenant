@@ -2,7 +2,7 @@ spec_version: 0.1
 project:
   id: the-covenant
   display_name: The Covenant
-  owner_entity: The-Nash-Group
+  owner_entity: the-nash-group
 role: component
 canonical: the-nash-group
 status:
