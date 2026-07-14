@@ -1,13 +1,13 @@
 # Identity and Account Management Specification
 
-**Version:** 0.2.1
-**Status:** DRAFT — Accepted for Validation (§§1–6 since 2026-05-03; §7 ratified 2026-05-17 via ADR-008; v0.2.1 E/C additive amendment ratified 2026-05-25; both under the Covenant-tier single-Guardian quorum exception per `STATUS.md §Governance Exceptions`)
+**Version:** 0.3.0 (PROPOSED; v0.2.1 remains the effective ratified baseline)
+**Status:** PROPOSED — Covenant amendment under the Ritual of Amendment; the effective v0.2.1 contract remains DRAFT — Accepted for Validation (§§1–6 since 2026-05-03; §7 ratified 2026-05-17 via ADR-008; E/C additive amendment ratified 2026-05-25) until the 72-hour debate and consensus review by 2 Watchers + 2 Mentors from different clans complete
 **Date:** 2026-05-03 (v0.1.0)
-**Last Updated:** 2026-05-25 (v0.2.1 — §1 family-home sovereignty extension and §6 Mechanism F resource tagging added; DRAFT-additive; §§1–6 not promoted to ACTIVE)
-**Implements:** Principle 5 (Infrastructure as Code), Principle 9 (Zero Trust), Principle 10 (Least Privilege), Principle 11 (Observability), Principle 15 (Three Circles of Trust)
-**Policies:** SEC-005 (Machine Identity), ORG-001 (Subsidiary Authority and Identity Isolation), GOV-003 (Break-Glass)
+**Last Updated:** 2026-07-14 (v0.3.0 proposed — narrow human GitHub principal binding, parent-visible subsidiary currentness, and GitHub App scope-axis clarification; no ACTIVE promotion or runtime activation)
+**Implements:** Principle 3 (Required Reviews), Principle 5 (Infrastructure as Code), Principle 9 (Zero Trust), Principle 10 (Least Privilege), Principle 11 (Measure Everything), Principle 15 (Three Circles of Trust), Principle 16 (Living Law)
+**Policies:** SEC-005 (Machine Identity), ORG-001 (Subsidiary Authority and Identity Isolation), GOV-002 (Amendment Process), GOV-003 (Break-Glass), GOV-006 (Decision Quorum), GOV-007 (Review Cycles)
 **Specs:** Secrets Management Specification v1.3.0
-**Defers to (broader scope, REWRITE PENDING):** `iam-specification.md`
+**Defers to (broader scope, PARTIALLY HISTORICAL — REWRITE PENDING):** `iam-specification.md`
 
 ---
 
@@ -18,6 +18,8 @@ Define how identity and credentials map to The Nash Group's multi-entity case �
 This specification is intentionally narrow. It answers exactly what is needed for per-entity scoped credentials to be issuable, used, rotated, audited, and revoked without creating cross-entity drift. It does **not** replace the `iam-specification.md` REWRITE PENDING work; that broader rewrite covers AWS IAM Identity Center, GCP IAM, federated SSO, agent sandbox cages, and break-glass alerting infrastructure — most of which does not apply at the current operational scale.
 
 > **Current-state note (2026-05-03):** This spec lands as **DRAFT**. Guardian review may move it to **DRAFT — Accepted for Validation** (recorded in the changelog and acceptance-criteria checklist). It does NOT promote to **ACTIVE** until the first credential issuance under its contract (per-entity Cloudflare token in MN-1) AND the first end-to-end migration validation (Litecky Editing Services workload per `D5: CREDENTIAL-STRATEGY-RECOMMENDATION-2026-05-02`) both complete. Until then, treat this as the design contract that those steps will validate.
+
+> **Proposed-amendment note (2026-07-14):** v0.3.0 is proposal text only. The ratified v0.2.1 baseline remains authoritative while debate is open. Ratification requires the full Covenant process in `GOVERNANCE.md`: at least 72 hours of debate, 2 Watchers, 2 Mentors from different clans, and consensus with no blocking objection. Opening or approving this proposal does not promote §§1–6 to ACTIVE, activate a human or machine identity, alter a provider account or GitHub App installation, or create subsidiary law.
 
 > **Ownership boundary:** This specification defines the multi-entity identity contract (principals, vault structure, rotation cadence, audit destinations, cross-entity prevention). Exact Citadel files, workflow names, commands, and live backend wiring are Citadel-owned implementation details; references below are current-state evidence or expected contracts, not Covenant-run implementation.
 
@@ -30,6 +32,7 @@ This specification is intentionally narrow. It answers exactly what is needed fo
 - Per-entity provider account model (Cloudflare, Hetzner, GitHub, 1Password, Infisical-when-deployed)
 - Credential vault structure and naming convention
 - Identity principals per credential (CI principal, owner break-glass principal, audit principal, future synthetic council principal)
+- Narrow human account-to-principal and role bindings where a parent governance path depends on more than one provider account
 - Rotation cadence, triggers, and evidence requirements
 - Audit log destinations per entity
 - Cross-entity prevention contract (mechanisms that ensure one entity's credentials cannot be used by another entity's workflows)
@@ -60,6 +63,18 @@ Each entity has a defined relationship with each provider. The following table r
 
 **Rule:** Account separation pressure is *owner-driven* (LLC formation, customer transactions, regulated-data classification, revenue), not parent-driven. The parent does not initiate per-entity account moves; it provides the contract, the placement rule (`cloudflare-ownership-transition.md`), and the implementation slice when the entity owner is ready.
 
+#### Parent-visible subsidiary current-state record (2026-07-14)
+
+This is a value-blind parent record of locators and status, not subsidiary-authored law and not authority for parent operation inside a subsidiary. A subsidiary adopts or declines parent specifications through its own restatement, in its own scope and voice; it does not inherit the parent's expected tier or this current-state record.
+
+| Entity | Parent-visible current fact | Authority and identity boundary |
+|--------|-----------------------------|---------------------------------|
+| Happy Patterns LLC | Active subsidiary at GitHub organization `happy-patterns-org`; its parent-expected tier is **Citadel**. No current installation of `tng-citadel-automation` is claimed in that organization. | Citadel is a parent expectation, not inherited Happy Patterns law. The absence of the App means the parent MUST NOT describe current Happy Patterns control as App-mediated. Any installation, source correction, or restatement requires the owning lower layer and Happy Patterns' own authority. |
+| Litecky Editing Services | GitHub organization `litecky-editing` exists. Its subsidiary-authored restatement dated 2026-07-13 is the current restatement known to the parent. | The parent records the locator and receipt only. Litecky's restatement governs Litecky scope; this specification neither replaces it nor grants routine parent access. |
+| Seven Springs | GitHub organization locator `seven-springs-org` is reserved for the entity, which remains a dormant future placeholder under its owner's recorded scope decline. | No subsidiary activation, implementation lane, App footprint, runtime identity, or new restatement clock follows from this record. |
+
+Parent records under this section MUST remain value-blind: organization locators, expected-tier labels, installation present/absent status, named permission classes, repository-selection mode, and restatement status/date are permitted; credential values, private keys, tokens, private provider identifiers, and sensitive business metadata are prohibited. Refresh this record on a material boundary change and review it at least semi-annually; reviewing the parent record does not create a subsidiary restatement clock.
+
 #### Family-home sovereignty category (v0.2.1 extension)
 
 **Family-home sovereignty** is a category within the Nash Group parent authority, not a separate entity and not a subsidiary. It covers resources in the Nash Group parent Cloudflare account that serve the operator's family network: Cloudflare One DNS filtering, family device profiles, home Workers, managed-network beacon infrastructure, Pulumi-managed Gateway / Access / profile / list resources in `cloudflare-dns` or `family-cloudflare`, Worker KV namespaces, and family-home Worker secret bindings.
@@ -72,7 +87,7 @@ Within the shared parent account, family-home sovereignty is enforced by credent
 - Subsidiary-scoped tokens reach only that subsidiary's resources.
 - Parent-scoped tokens reach only parent resources.
 
-When future §3.5 family-home human identity entries are authored, they use the sovereignty label `family_home_within_parent_account`. This v0.2.1 amendment does not author §3.5 entries, does not provision identities, and does not create Cloudflare Access groups.
+Future family-home human identity entries under §3.5 use the sovereignty label `family_home_within_parent_account`. The proposed v0.3.0 §3.5 authors only the narrow parent GitHub binding below; it does not inventory family identities, provision identities, or create Cloudflare Access groups.
 
 ### 2. Credential vault structure
 
@@ -119,7 +134,7 @@ Migration trigger: synthetic council first session of operation. Migration mecha
 
 **Why the Phase A → Phase B sequence:** Phase A is fast (naming convention) and lets the first migration happen. Phase B is structurally cleaner (vault-level isolation) but requires the synthetic council's principal model to be defined before per-vault access boundaries can be specified. Doing both at once would over-engineer ahead of the council's design.
 
-### 3. Identity principals per credential
+### 3. Identity principals and human account bindings
 
 Every credential issued under this specification MUST define its named principals. No credential lacks a defined principal set.
 
@@ -132,6 +147,7 @@ Every credential issued under this specification MUST define its named principal
 | `<entity>-audit-readonly` | Read-only metadata / rotation-evidence audit principal; never holds the rotating token, only the rotation-evidence channel | `litecky-audit-readonly` |
 | `nash-synthetic-council-readonly` | (Reserved for synthetic council deployment) Read-only audit across entities under documented quorum rules; never write | (slot reserved) |
 | `<entity>-mcp-readonly` | Per-entity MCP / agent read principal | `jefahnierocks-mcp-readonly` (current `cloudflare-mcp-jefahnierocks` token) |
+| `nash-operator` | Parent human principal with explicit provider-account and role bindings; records no credential values | `verlyn13` author/operator + `happy-patterns` parent-PR approval-only (see §3.5) |
 
 #### Recording
 
@@ -140,6 +156,8 @@ Per-credential principal sets are recorded in:
 - The credential's 1Password notes field (logical principal names only; never private identifiers)
 - The entity's parent-side registry entry under `principals:` (extension to `subsidiaries.yaml` proposed for v2.8)
 - The per-entity audit-rotation-log (see §4)
+
+Human account bindings are recorded separately from per-credential principal sets. The §3.5 record is parent Identity Domain metadata and an eventual Shield/parent-registry projection; it is not a credential record, a provider seat grant, or a subsidiary restatement.
 
 #### Synthetic council principal slot
 
@@ -151,6 +169,35 @@ The `nash-synthetic-council-readonly` principal is reserved but not yet defined.
 - The council's break-glass exception (if any)
 
 Until then, the slot exists in the principal model so future credential entries leave room for it without retrofitting.
+
+#### 3.5 Narrow human GitHub principal binding
+
+The following terms are distinct and MUST NOT be used as synonyms:
+
+| Term | Contract meaning |
+|------|------------------|
+| **Account** | A provider-specific login or identity locator, such as a GitHub user account. An account is a binding surface; by itself it does not define governance authority. |
+| **Principal** | The governed actor to whom actions are attributed. One human principal may bind more than one provider account without becoming more than one human or more than one Council member. |
+| **Seat** | A granted membership, licensed place, or addressable mandate in an organization or governance surface. A seat records placement or capacity; it is neither a principal nor a credential. |
+| **Credential** | Authentication material or a session proving control of an account. Credential values remain in the owning secret authority and MUST NOT appear in this specification or its parent-visible evidence. |
+| **Role** | The bounded actions a principal may perform in a named scope. A role requires an explicit principal/account binding and an authorized execution path; its label alone grants no provider or runtime capability. |
+
+The parent human principal `nash-operator` represents one natural person and has two GitHub account bindings for the current parent governance path:
+
+| GitHub account binding | Parent role | Permitted use | Prohibited use |
+|------------------------|-------------|---------------|----------------|
+| `verlyn13` | `parent-author-operator` | Author and push parent proposal source; perform operator work only when a separate governing artifact, credential, and execution path authorize that work. | The role label alone MUST NOT be treated as provider authority, secret access, runtime identity, or a governance bypass. |
+| `happy-patterns` | `parent-pr-approver-only` | Read, comment on, request changes to, or approve a parent pull request. | MUST NOT author or push parent proposal commits, merge parent PRs, perform routine parent operation, administer parent repositories or organizations, mutate providers, access parent secret values or credentials, write parent infrastructure, or act as a machine, automation, or runtime principal. |
+
+The `happy-patterns` account name does not identify Happy Patterns LLC and does not confer parent authority over `happy-patterns-org`. This binding does not make the account a Mentor, Watcher, independent Guardian, routine parent operator, or provider administrator. Any role that account holds inside a subsidiary is separate, subsidiary-governed, and outside this parent binding.
+
+**Reason for the exception-scoped binding:** the single-Guardian transition required a technical non-self-approval reviewer while the synthetic council was unavailable; the second GitHub account supplied that review path. Formalizing the binding records and constrains the existing arrangement. It does not continue, restore, or broaden a quorum exception.
+
+**Governance-matrix invariant:** this binding does not amend `GOVERNANCE.md`. The two accounts are bound to one human principal and MUST NOT be counted as two humans, two independent Council members, or duplicate quorum positions. A Covenant amendment still requires 2 Watchers + 2 Mentors from different clans, at least 72 hours of debate, consensus, and no blocking objection. The approval-only account may satisfy a technical non-self-approval check only where a separately ratified governance rule explicitly permits that use; it cannot satisfy the full Covenant quorum by itself.
+
+**Review and sunset:** the binding MUST be reassessed at least quarterly, with the first reassessment due no later than 2026-10-14, and immediately after any account, membership, role, credential-custody, governance-quorum, or compromise event. Each reassessment MUST record one value-blind disposition: retain with rationale and next-review date, narrow, suspend, or retire. Use of `happy-patterns` for new parent approvals is suspended if the reassessment deadline passes without a recorded disposition; suspension is a governance status and does not authorize provider mutation.
+
+The parent approval-only binding MUST retire when an independently governed human reviewer path or a ratified programmatic-review path makes it unnecessary, or immediately if the role cannot remain approval-only. It expires no later than 2027-01-14 unless a new Covenant amendment explicitly re-ratifies and time-bounds it. Shield activation, synthetic-council operational acceptance, restoration of durable multi-human review capacity, or any observed use outside the permitted column triggers reassessment; none of those events authorizes automatic account deletion, membership change, credential operation, or runtime activation.
 
 ### 4. Rotation contract
 
@@ -181,6 +228,7 @@ Per-entity audit destinations:
 | Cloudflare API token use | Cloudflare audit log per entity scope (account-level for accounts; zone-level for zone-scoped tokens) | Entity owner + `<entity>-audit-readonly` principal |
 | Cloudflare resource changes | Cloudflare audit log + Citadel workspace apply log | Entity owner + parent (audit-only via ORG-001) |
 | GitHub App use | GitHub Actions logs per workspace + GitHub audit log for the org | Entity GitHub owner + parent (audit-only) |
+| Parent human GitHub PR review | GitHub PR review history + value-blind §3.5 reassessment record | Council reviewers and the parent governance audit surface |
 | Hetzner API use | Hetzner activity log | Entity owner + `<entity>-audit-readonly` principal |
 | 1Password reads | 1Password activity log per vault | Vault owner; cross-vault read requires explicit grant |
 | OPNsense API use | OPNsense reporting + repo `homenetops` evidence | HomeNetOps subsidiary scope |
@@ -251,7 +299,14 @@ Mechanisms intended to ensure one entity's credentials cannot be used by another
 - **Provider tag-surface caveat.** Use native Cloudflare resource tags where the provider surface supports them, including Workers, KV namespaces, R2 buckets, D1 databases, and Pages projects. Where the provider surface has limited or no native tag support, including Access applications, Tunnels, and Gateway policies, use deterministic resource-name prefixes such as `family-`, `subsidiary-jefahnierocks-`, or `delegated-vendor-` as the classification evidence.
 - **Gap closure.** Advisory now; PaC-promotable later. A future OPA/Rego rule MAY require the classification fields or accepted prefix surrogate once the relevant IaC inputs and provider tag surfaces are available.
 
-**Honest summary of v0.2.1 state:** Mechanism B is operational. Mechanisms A (Cloudflare half), C, D (Phase B), and E are gaps that this spec contracts for; closing them is downstream implementation work tracked in D5. Mechanism F is an advisory resource-classification convention that supports audit and future PaC enforcement; it is not yet enforced. The spec is the **contract** that will govern those closures, not a claim that closures have happened.
+#### Mechanism G: GitHub App permission and repository-selection scope
+
+- **Invariant.** A GitHub App permission and an installation's repository selection are independent scope axes. For the shared `tng-citadel-automation` App, `organization_administration: write` is an App-level permission required by managed organization-settings resources. Repository selection is an installation-level resource boundary (`all` or selected repositories) that can be narrowed independently. Neither axis may be inferred from the other.
+- **Least-privilege rule.** Every installation contract MUST justify both axes independently. Requiring `organization_administration: write` for organization settings does not justify all-repository selection; selecting repositories does not remove or weaken the organization permission carried by the App. Installation presence, permission shape, and repository selection remain separate evidence fields.
+- **Current parent-visible state.** Happy Patterns has no current `tng-citadel-automation` installation and therefore no App-mediated parent path is claimed there. Litecky's organization and own-authority restatement are current; any repository-selection disposition remains a lower-layer implementation and subsidiary-authority concern. Seven Springs remains dormant and receives no activation or App-installation implication from this mechanism.
+- **No-action boundary.** This amendment defines the contract only. It does not install an App, change App permissions, broaden or narrow repository selection, mutate organization settings, issue an installation token, or authorize a provider write.
+
+**Honest summary of proposed v0.3.0 state:** Mechanism B is operational. Mechanisms A (Cloudflare half), C, D (Phase B), and E are gaps that this spec contracts for; closing them is downstream implementation work tracked in D5. Mechanism F is an advisory resource-classification convention that supports audit and future PaC enforcement; it is not yet enforced. Mechanism G distinguishes two GitHub App scope axes without claiming or mutating an installation. The spec is the **contract** that will govern those closures after ratification, not a claim that closures have happened.
 
 ---
 
@@ -331,10 +386,10 @@ The Identity Domain and Resource Domain are mutually independent — neither dir
 
 - §1 (Per-entity provider account model) operates at the **Resource Domain** layer (per-entity accounts are scope boundaries, and family-home is a sovereignty category within the parent account) with Identity Domain authority-tier metadata (each entity or category is a sovereignty boundary).
 - §2 (Credential vault structure) is **Identity Domain** authoring (vault structure is identity-registry-shaped) implemented across all entities.
-- §3 (Identity principals per credential) is **Identity Domain** publication (principal classes, lifecycle, audit) consumed by §4–6.
+- §3 (Identity principals and human account bindings) is **Identity Domain** publication (principal classes, account bindings, lifecycle, audit) consumed by §4–6. The §3.5 approval-only role is a **Permission-Binding Domain** contract over a parent-PR scope; GitHub remains the provider runtime that enforces the account-level review action.
 - §4 (Rotation contract) is **Identity Domain** lifecycle authority applied per credential class.
 - §5 (Audit destination per entity) is **Identity Domain** audit contract authoring; the actual audit-log destinations are mostly **Runtime Enforcement Domain** systems (provider audit logs) consumed by Identity Domain audit feeds.
-- §6 (Cross-entity prevention contract) is **Permission-Binding Domain** decision-contract authoring; Mechanisms A–F are the binding-layer policies whose enforcement spans Permission-Binding (contract), Resource Domain classification, and Runtime Enforcement (evaluation).
+- §6 (Cross-entity prevention contract) is **Permission-Binding Domain** decision-contract authoring; Mechanisms A–G are the binding-layer policies whose enforcement spans Permission-Binding (contract), Resource Domain classification, and Runtime Enforcement (evaluation).
 
 This framework retrospectively rationalizes §§1–6's structure without changing their content. It prospectively constrains how new sections (§§8+, future amendments) decompose work across domains.
 
@@ -400,6 +455,16 @@ The registry decreases over time. Initial expected entries on creation:
 
 This is the same shape used for ORG-001 ↔ Subsidiary Authority Specification ↔ restatement log: small spec, validate with real work, refine. **The spec does NOT promote to ACTIVE on Guardian acceptance alone — it promotes after first end-to-end migration validation.**
 
+### Proposed v0.3.0 governance and downstream gates
+
+| Owning layer | Implication after Covenant ratification | Explicit non-effect of this proposal |
+|--------------|------------------------------------------|--------------------------------------|
+| Covenant | Publish the `nash-operator` binding, current-state/value-blind boundaries, and independent GitHub App scope-axis invariant after the Ritual of Amendment completes. | Opening the PR is debate, not ratification; no automatic status promotion or merge. |
+| Shield / parent identity registry | Project one human principal with two account bindings and distinct roles into the eventual human-principal schema; record only value-blind account locators, role, review disposition, and evidence dates. | No credential value, runtime token, provider identity, or active Shield principal is created by this text. |
+| Citadel / parent implementation registries | Represent App installation presence, App permission, and repository selection as independent fields; remove any parent claim that Happy Patterns is currently App-mediated; consume subsidiary acceptance before any Happy Patterns source or provider work. | No IaC edit, plan, apply, App mutation, account mutation, or credential operation is authorized here. |
+| Subsidiaries | Receive parent facts or later ratified changes only as intake for optional own-authority restatement; preserve local voice, precedence, and acceptance/decline decisions. | Parent text is not inherited subsidiary law and creates no automatic restatement or provider action. |
+| Seven Springs | Preserve the dormant-placeholder and owner-side scope-decline record until its owner explicitly activates a future lane. | No activation, App footprint, runtime identity, or new restatement clock. |
+
 ---
 
 ## Acceptance Criteria
@@ -420,6 +485,8 @@ Acceptance for validation does **not** authorize the spec as ACTIVE policy. It a
 
 The spec promotes to **ACTIVE** only when ALL of the following hold:
 
+> **2026-07-14 currentness clarification:** Creation of the `litecky-editing` GitHub organization and receipt of Litecky's subsidiary restatement do not complete any unchecked ACTIVE-promotion criterion below. This specification claims no per-entity Cloudflare credential activation, workflow credential-resolution closure, first audit-rotation entry, or end-to-end Litecky Cloudflare migration from those governance facts.
+
 - [x] Citadel out-of-spec credentials registry exists at `the-citadel/docs/identity-and-account-management/out-of-spec-credentials.md` with at minimum the four expected entries (shared CF token, account-wide Hetzner, OPNsense `monitoring_svc`, unenumerated CF tokens placeholder) — completed 2026-05-03 (the-citadel commit `079f361`); status ACCEPTED with accelerated Guardian-directed sunsets (1, 2, 3, 6 weeks respectively)
 - [ ] First credential issued under this spec's contract: per-entity Cloudflare token replacing `secret:cf-api-token-shared` (MN-1)
 - [ ] Citadel `opentofu.yml` workflow `env:` blocks rewritten so the Cloudflare token is resolved per matrix entry, not injected repo-wide (closes Mechanism A's Cloudflare gap and Mechanism C)
@@ -428,16 +495,29 @@ The spec promotes to **ACTIVE** only when ALL of the following hold:
 - [ ] No regression in cross-entity prevention: Mechanism B remains in place; Mechanisms A and C reach target state; Mechanism D Phase A operating; Mechanism E status-recorded as future work
 - [ ] Changelog entry recording the ACTIVE promotion with reference to the validation evidence
 
+### Ratification: v0.2.1 baseline → proposed v0.3.0 amendment
+
+The proposed v0.3.0 text becomes the ratified DRAFT baseline only when all Covenant amendment gates complete:
+
+- [ ] At least 72 hours of debate have elapsed from the governed PR's opening time
+- [ ] 2 Watchers have approved
+- [ ] 2 Mentors from different clans have approved
+- [ ] Council consensus is recorded with no unresolved blocking objection
+- [ ] The proposal status is replaced with the ratified status and a Council ratification row is added to this changelog before merge
+
+Ratification of v0.3.0 does not satisfy or alter the independent ACTIVE-promotion checklist above.
+
 ---
 
 ## Compliance with Higher-Authority Specs
 
 - **Principle 5 (IaC)**: All credential structure is recorded as code (registry, naming convention, audit-rotation-log template). No silent runtime configuration.
-- **Principle 9 (Zero Trust)**: Cross-entity credential reach is explicitly prevented (Mechanisms A–F). No implicit trust between workspaces.
+- **Principle 9 (Zero Trust)**: Cross-entity credential reach is explicitly prevented (Mechanisms A–G). No implicit trust between workspaces.
 - **Principle 10 (Least Privilege)**: Tokens are zone-scoped, account-scoped, or workspace-scoped; account-wide tokens for production use are retired.
+- **Principle 11 (Measure Everything)**: Human-account bindings, reassessments, installation presence, permission scope, and repository-selection scope are recorded as value-blind evidence rather than inferred from account names or desired state.
 - **Principle 15 (Three Circles of Trust)**: Per-entity boundaries enforced at credential level; cross-entity access requires explicit attribution.
-- **SEC-005 (Machine Identity)**: This spec extends SEC-005's machine identity types to the multi-entity case; no new identity types are introduced.
-- **ORG-001 (Subsidiary Authority)**: The `<entity>-audit-readonly` principal does not violate ORG-001's audit-only parent access — parent retains read access for contamination scans, but per-entity audit logs are entity-scoped.
+- **SEC-005 (Machine Identity)**: SEC-005 continues to govern nonhuman identity. §3.5 adds a human-interactive account binding and does not convert either GitHub account into a machine identity, credential, or runtime principal.
+- **ORG-001 (Subsidiary Authority)**: The `<entity>-audit-readonly` principal does not violate ORG-001's audit-only parent access — parent retains read access for contamination scans, but per-entity audit logs are entity-scoped. Parent-visible subsidiary facts and expected tiers remain locators/intake; they do not replace subsidiary restatement or create inherited authority.
 - **GOV-003 (Break-Glass)**: The `<entity>-owner-break-glass` principal is the per-entity application of GOV-003; cross-entity break-glass remains 24-hour reconciliation per GOV-003.
 - **Secrets Management Specification v1.3.0**: This spec inherits classification, lifecycle, and storage rules from Secrets Management. No re-statement of those rules; this spec only adds the per-entity organizational layer.
 
@@ -446,10 +526,13 @@ The spec promotes to **ACTIVE** only when ALL of the following hold:
 ## What This Spec Leaves Explicit (For Future Work)
 
 - **Synthetic council credential model** — slot reserved (§3); details land in a future amendment when council is deployed.
+- **Family-home human inventory** — §3.5 now defines only the narrow `nash-operator` GitHub binding; future family-home entries remain unbound and MUST preserve `family_home_within_parent_account` sovereignty without recording credential values.
+- **Shield and registry projection** — the human-principal schema and parent `principals:` projection remain downstream work; this proposal creates neither runtime identity nor credential material.
+- **Subsidiary current-state projections** — parent registries and the Subsidiary Authority Specification require their own governed current-state reconciliation. Subsidiaries receive any ratified change only through own-authority intake/restatement; this one-file amendment does not edit or activate those surfaces.
 - **Per-entity Hetzner credential separation** — naming convention defined (§2); separation timing is per-entity (LLC trigger-driven).
 - **Mechanism E (PaC for cross-entity prevention)** — identified as natural next step; not yet implemented.
 - **Mechanism F PaC promotion** — resource classification is advisory in v0.2.1; future PaC can require tags or accepted prefix surrogates.
-- **`iam-specification.md` REWRITE PENDING** — unaffected; this spec is narrower. The broader rewrite covers AWS IAM Identity Center, GCP IAM, federated SSO, agent sandbox cages, and break-glass alerting infrastructure.
+- **`iam-specification.md` PARTIALLY HISTORICAL — REWRITE PENDING** — unaffected and not current for this amendment; this spec is narrower. The broader rewrite covers AWS IAM Identity Center, GCP IAM, federated SSO, agent sandbox cages, and break-glass alerting infrastructure.
 - **POC 3 (Authentik) human SSO** — deferred per D5; not addressed here.
 
 ---
@@ -458,11 +541,18 @@ The spec promotes to **ACTIVE** only when ALL of the following hold:
 
 - **SEC-005 — Machine Identity** — `../sec-005-machine-identity.md` (machine identity types this spec extends to multi-entity)
 - **ORG-001 — Subsidiary Authority and Identity Isolation** — `../org-001-subsidiary-authority.md` (entity boundary rules)
+- **GOV-002 — Covenant Amendment Process** — `../gov-002-amendment-process.md` (proposal, debate, Council review, and proclamation phases)
+- **GOV-006 — Council Decision Quorum** — `../gov-006-decision-quorum.md` (2 Watchers + 2 Mentors, different-clan, consensus requirement)
+- **GOV-007 — Governance Review Cycles** — `../gov-007-review-cycles.md` (quarterly membership and permission review)
 - **GOV-003 — Break-Glass Procedures** — `../gov-003-break-glass.md` (emergency credential access)
 - **Secrets Management Specification** v1.3.0 — `secrets-management.md` (lifecycle and storage rules inherited)
-- **Subsidiary Authority Specification** v1.0.3 — `subsidiary-authority.md` (per-entity authority model)
+- **Subsidiary Authority Specification** v1.0.3 — `subsidiary-authority.md` (authority/restatement model; its dated current-state rows are not evidence for the 2026-07-14 record and remain a separate governed reconciliation)
+- **GOVERNANCE.md** — `../../GOVERNANCE.md` (Covenant authority matrix and Ritual of Amendment)
 - **Cloudflare Ownership Transition Specification** v1.1.0 — `cloudflare-ownership-transition.md` (provider account placement rule)
-- **iam-specification.md** (REWRITE PENDING) — `iam-specification.md` (broader IAM rewrite, deferred)
+- **iam-specification.md** (PARTIALLY HISTORICAL — REWRITE PENDING) — `iam-specification.md` (broader IAM rewrite, deferred; not the live contract for this amendment)
+- **Identity Structure Parent Orientation** — `.claude/orchestration/IDENTITY-STRUCTURE-PARENT-ORIENTATION-2026-06-18.md` (Guardian-ruling source for the narrow dual-account binding; parent context, not runtime authority)
+- **FU-37** — `.claude/orchestration/FOLLOW-UP-ITEMS.md` (parent defect and downstream reconciliation tracker)
+- **NASH-DIR-COVENANT-IAM-SUBSIDIARY-CURRENT-STATE-2026-07-14** — `.claude/orchestration/directives/directive-2026-07-14-covenant-iam-and-subsidiary-current-state.md` (proposal authority and stop rules)
 - **D5: Credential Strategy Recommendation** — `.claude/orchestration/cloudflare-resource-management/CREDENTIAL-STRATEGY-RECOMMENDATION-2026-05-02.md` (sequencing this spec implements)
 - **DIRECTIVE-2026-05-02-routing-inventory-categorization** — `.claude/orchestration/directives/DIRECTIVE-2026-05-02-routing-inventory-categorization.md` (parent directive that produced D5)
 
@@ -479,3 +569,4 @@ The spec promotes to **ACTIVE** only when ALL of the following hold:
 | 2026-05-17 | Agent | **v0.1.0 → v0.2.0 DRAFT.** Added §7 "Authority Topology for Identity, Resource, and Policy-Binding" — codifies the four-domain decomposition (Identity, Resource, Permission-Binding, Runtime Enforcement) and the pillar mapping (Shield owns Identity Domain + Permission-Binding contract layer; Citadel owns Resource Domain + Permission-Binding implementation layer; runtime layers own enforcement). §7 is the framework underlying §§1–6's implementation contracts. Provider-agnostic at this layer; provider-specific translation belongs in transitional specs (`cloudflare-ownership-transition.md`, `github-machine-identity.md`) and parent standards (`.org/standards/`). §7 promotion is independent of §§1–6's ACTIVE conditions: §7 promotes on ADR-008 ratification plus Shield design baseline absorbing §7 as primary input. Bumped `Implements` to include Principle 11 (Observability) since §7 audit contracts reference it. Awaiting Guardian sign-off under the Covenant-tier single-Guardian quorum exception per `STATUS.md §Governance Exceptions`; paired ratification with ADR-008 (`the-covenant/docs/architecture/008-policy-authority-topology.md`). |
 | 2026-05-17 | Guardian (jeffrey) | **v0.2.0 §7 ratified (Proposed → Accepted).** Ratified under the Covenant-tier single-Guardian quorum exception (`STATUS.md §Governance Exceptions row 4` + `ADR-007 §Current-state note`); paired with ADR-008 ratification of same date. §7 transitions from DRAFT to ACTIVE on Shield design baseline absorbing §7 as primary input (tracked as Shield design phase deliverable; not blocking). §§1–6 promotion path remains independent per the existing Implementation Path. Downstream work — transitional-spec amendments (`cloudflare-ownership-transition.md` and similar), parent standards bridging at `.org/standards/`, subsidiary restatement where relevant — proceeds under this ratification. |
 | 2026-05-25 | Guardian (jeffrey) | **v0.2.0 → v0.2.1 DRAFT-additive (Amendments E + C).** Ratified under the Covenant-tier single-Guardian quorum exception (`STATUS.md §Governance Exceptions row 4` + `ADR-007 §Current-state note`). Added §1 family-home sovereignty as a category within the Nash parent account, not a subsidiary, and added §6 Mechanism F for Cloudflare resource sovereignty tagging / prefix classification. This amendment does **not** promote §§1–6 to ACTIVE; ACTIVE promotion remains gated on D5 step 7. Amendments A/B/D remain deferred to FU-21 Phase 1; Amendment F / §3.9 remains deferred to Authentik. No identity provisioning, Access-group creation, provider mutation, resource tagging application, family PII, or secret values are authorized by this amendment. |
+| 2026-07-14 | Codex (proposal) | **v0.2.1 → v0.3.0 PROPOSED.** Adds the exception-scoped `nash-operator` human GitHub principal binding (`verlyn13` author/operator; `happy-patterns` parent-PR approval-only), separates account/principal/seat/credential/role, preserves the full Covenant authority matrix, and defines quarterly reassessment plus explicit sunset triggers. Reconciles value-blind parent-visible facts for Happy Patterns, Litecky, and dormant Seven Springs; adds Mechanism G separating GitHub App `organization_administration` permission from installation repository selection. Opens the governed 72-hour debate only: no ratification, ACTIVE promotion, subsidiary restatement, provider/App/account/credential mutation, or runtime activation. |
