@@ -145,7 +145,7 @@ Parent seats in subsidiary GitHub orgs are held only where required by shared in
 | Cross-entity audit artifacts | Parent audit of subsidiary compliance requires referencing both entities by name | Quarterly; move any such artifact out of subsidiary-scoped paths |
 | Legal documents inside subsidiary directories | Operating agreements, formation receipts, and tax filings legally name both entities | Always; these artifacts must live in paths not traversed by dev-agent sessions |
 | `subsidiaries.yaml` registry | Parent's view of its subsidiaries is Nash-scoped by design | N/A — registry is not read by subsidiary agents |
-| Guardian-exception approvals | Current single-Guardian approval path (per STATUS.md governance exceptions) may reference both entities in decision records | Restore 2W+2M quorum when synthetic council (FU-1) is operational |
+| Structural single-Guardian approvals | Current single-natural-person path under GOV-006 may reference both entities in decision records; multiple accounts count once | No expiry or synthetic-council trigger; multi-human mode requires a later Covenant amendment based on distinct natural persons |
 
 ## Related Documents
 

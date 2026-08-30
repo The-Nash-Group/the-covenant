@@ -65,7 +65,7 @@ admission, or subsidiary/project-local restatements.
 - **[GOV-003: Emergency Break-Glass Procedures](./gov-003-break-glass.md)** - Watchers can bypass normal process during critical emergencies
 - **[GOV-004: Team Authority Matrix](./gov-004-team-authority.md)** - Immortals propose, Mentors approve domains, Watchers control infrastructure
 - **[GOV-005: Conflict Resolution Process](./gov-005-conflict-resolution.md)** - Technical → Mentors, Cross-clan → Council, Governance → Watchers
-- **[GOV-006: Council Decision Quorum](./gov-006-decision-quorum.md)** - 4-member quorum (2 Watchers + 2 Mentors), consensus required
+- **[GOV-006: Council Decision Quorum](./gov-006-decision-quorum.md)** - Natural-person independence, permanent structural single-Guardian mode, and unavailable operations
 - **[GOV-007: Governance Review Cycles](./gov-007-review-cycles.md)** - Quarterly team review, bi-annual governance assessment, annual Covenant refresh
 - **[GOV-008: The Binding Oath](./gov-008-binding-oath.md)** - All contributors accept governance model, participate constructively
 - **[GOV-010: Organizational Labeling Standard](./gov-010-labeling-standard.md)** - All resources require standard organizational labels for traceability

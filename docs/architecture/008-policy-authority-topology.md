@@ -2,7 +2,7 @@
 
 ## Status
 
-**Accepted** 2026-05-17 by Guardian (jeffrey) under the Covenant-tier single-Guardian quorum exception (`STATUS.md §Governance Exceptions row 4` + `ADR-007 §Current-state note`). Full 2 Watchers + 2 Mentors quorum restored when the synthetic council per FU-1 is operational. Paired ratification: `the-covenant/policies/specs/identity-and-account-management.md` v0.1.0 → v0.2.0 (§7 Authority Topology added). See Changelog for ratification record.
+**Accepted** 2026-05-17 by Guardian (jeffrey) under the then-documented Covenant-tier single-Guardian quorum exception (`STATUS.md §Governance Exceptions row 4` + `ADR-007 §Current-state note`). GOV-006 superseded the former synthetic-council restoration condition on 2026-08-29 with permanent structural single-Guardian mode. This does not rewrite the historical acceptance as independent review. Paired ratification: `the-covenant/policies/specs/identity-and-account-management.md` v0.1.0 → v0.2.0 (§7 Authority Topology added). See Changelog for ratification record.
 
 ## Date
 
@@ -155,9 +155,9 @@ This ADR is principle-language. It does not name providers, technologies, or spe
 
 This ADR proposes a Covenant-tier change. Per `GOVERNANCE.md §Covenant Decisions`, the default ratification path requires 2 Watchers + 2 Mentors and a 72-hour debate period minimum.
 
-Per `STATUS.md §Governance Exceptions row 4` and `ADR-007 §Current-state note`, the standing single-Guardian quorum exception applies until the synthetic council per FU-1 is operational. The Guardian ratifies under that exception with the following acknowledgments:
+Per `STATUS.md §Governance Exceptions row 4` and `ADR-007 §Current-state note`, the then-standing single-Guardian quorum exception applied. The Guardian ratified under that exception with the following acknowledgments recorded at the time:
 
-- The full 2W+2M quorum is restored when the synthetic council per FU-1 is operational.
+- The original record anticipated restoration when FU-1 became operational; GOV-006 superseded that future condition on 2026-08-29.
 - Each Covenant-tier change under the exception is recorded with date and authority basis in the document's changelog.
 - Changes ratified under the exception are eligible for re-ratification through the council when the council operates per the FU-1 operational definition (Synthetic Council restoration trigger).
 
@@ -168,7 +168,7 @@ Ratification of this ADR carries the corresponding `identity-and-account-managem
 When the Guardian ratifies this ADR (and the paired IAM Spec amendment), record under the changelog table below:
 
 ```
-| 2026-MM-DD | Guardian (jeffrey) | **Proposed → Accepted.** Ratified under the Covenant-tier single-Guardian quorum exception (STATUS.md §Governance Exceptions row 4 + ADR-007 §Current-state note). Full 2W+2M quorum restored when FU-1 synthetic council is operational. Paired ratification: identity-and-account-management.md v0.1.0 → v0.2.0 (§7 Authority Topology added). |
+| 2026-MM-DD | Guardian (jeffrey) | **Proposed → Accepted.** Ratified under the Covenant-tier single-Guardian quorum exception (STATUS.md §Governance Exceptions row 4 + ADR-007 §Current-state note). Record the authority basis current on the decision date; GOV-006 governs any later current-state interpretation. Paired ratification: identity-and-account-management.md v0.1.0 → v0.2.0 (§7 Authority Topology added). |
 ```
 
 ## Changelog
@@ -176,4 +176,4 @@ When the Guardian ratifies this ADR (and the paired IAM Spec amendment), record 
 | Date | Author | Summary |
 |------|--------|---------|
 | 2026-05-17 | Agent | Initial DRAFT of ADR-008 — Policy Authority Topology. Articulates the four-domain decomposition (Identity, Resource, Permission-Binding, Runtime Enforcement) and maps each to an owning pillar (Shield, Citadel, Shield contracts consumed by Citadel implementations, runtime). Provider-agnostic; transitional and provider-specific content explicitly delegated to lower layers. Paired with identity-and-account-management.md v0.2.0 amendment for ratification. Awaiting Guardian sign-off under the single-Guardian quorum exception. |
-| 2026-05-17 | Guardian (jeffrey) | **Proposed → Accepted.** Ratified under the Covenant-tier single-Guardian quorum exception (`STATUS.md §Governance Exceptions row 4` + `ADR-007 §Current-state note`). Full 2W+2M quorum restored when the synthetic council per FU-1 is operational. Paired ratification: `identity-and-account-management.md` v0.1.0 → v0.2.0 (§7 Authority Topology added). Downstream work — Shield design baseline absorbing §7, transitional-spec amendments (`cloudflare-ownership-transition.md` and similar), parent standards bridging at `.org/standards/`, and subsidiary restatement where relevant — proceeds under this ratification. |
+| 2026-05-17 | Guardian (jeffrey) | **Proposed → Accepted.** Ratified under the Covenant-tier single-Guardian quorum exception (`STATUS.md §Governance Exceptions row 4` + `ADR-007 §Current-state note`). The record then anticipated full-quorum restoration at FU-1; GOV-006 superseded that future condition on 2026-08-29. Paired ratification: `identity-and-account-management.md` v0.1.0 → v0.2.0 (§7 Authority Topology added). Downstream work — transitional-spec amendments and subsidiary restatement where relevant — proceeds under this ratification. |
