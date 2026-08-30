@@ -5,13 +5,37 @@ project:
   owner_entity: the-nash-group
 role: component
 canonical: the-nash-group
+peers: []
 status:
   posture: published-artifact
-  local_phase: "ratified policy corpus; live IAM spec v0.2.1 DRAFT-accepted-for-validation"
-  as_of: "2026-06-11"
+  local_phase: "mixed-status constitutional policy corpus; live IAM spec v0.2.1 DRAFT-accepted-for-validation; active, transitional, and partially historical materials remain explicitly labeled by their owning indexes"
+  as_of: "2026-08-25"
 authority:
   status_of_record: policies/README.md
 presentation:
   visibility: internal
   public_alias: null
   link_policy: no-link
+nash_state:
+  extension_version: "1"
+  repository:
+    github: The-Nash-Group/the-covenant
+    lifecycle: active
+  ownership:
+    authority_tier: parent_l0
+    governance_level: covenant
+    owner: the-nash-group
+    owner_kind: authority_tier
+  capabilities:
+    - id: constitutional-governance-source
+      kind: governance
+      state: ready
+      source_refs:
+        - PRINCIPLES.md
+        - GOVERNANCE.md
+        - HUMAN_MANDATE.md
+        - policies/README.md
+      claim:
+        as_of: "2026-08-25"
+        review_by: "2026-09-30"
+  dependencies: []
