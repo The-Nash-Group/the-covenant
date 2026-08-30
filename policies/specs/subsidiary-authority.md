@@ -323,7 +323,7 @@ The migration campaign produces the first authoritative router template and trac
 | Cross-entity audit artifacts under `.claude/orchestration/` | Parent audit of subsidiary compliance requires referencing both entities by name | Quarterly; confirm they remain in `.claude/orchestration/` and not in subsidiary paths |
 | Legal records inside subsidiary directories | Operating agreements, tax filings, formation receipts legally name both entities | Always; these must live in paths not traversed by dev-agent sessions (e.g., `business/`) |
 | `subsidiaries.yaml` registry | Parent's view of its subsidiaries is Nash-scoped | N/A — registry is not read by subsidiary agents |
-| Guardian-exception approvals | Current single-Guardian approval path may reference both entities in decision records | Restore 2W+2M quorum when synthetic council (FU-1) is operational |
+| Structural single-Guardian approvals | Current single-natural-person path under GOV-006 may reference both entities in decision records; multiple accounts count once | No expiry or synthetic-council trigger; multi-human mode requires a later Covenant amendment based on distinct natural persons |
 | Seven Springs sandbox pedagogical references | Sandbox purpose permits mixed references for teaching | Annual; if Seven Springs becomes production-bearing, the exception is revoked |
 | Cloudflare stewardship account | Transitional parent control plane per the Cloudflare Ownership Transition spec | Per that spec's review cadence; long-term goal is per-subsidiary account separation |
 
@@ -337,7 +337,7 @@ The migration campaign produces the first authoritative router template and trac
 | Restatement drift review | Semi-annually | Parent orchestration |
 | Router integrity check | On every Nash-side template change | Parent orchestration |
 | Per-subsidiary isolation audit | Annually or upon subsidiary onboarding/major change | Parent audit |
-| This specification's own review | Semi-annually, or upon Covenant-level amendment | Guardian (or synthetic council when operational) |
+| This specification's own review | Semi-annually, or upon Covenant-level amendment | Guardian |
 
 ---
 

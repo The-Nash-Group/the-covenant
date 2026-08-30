@@ -5,14 +5,18 @@
 | Field | Value |
 |-------|-------|
 | **Date** | 2026-04-20 |
-| **Last Updated** | 2026-05-02 |
+| **Last Updated** | 2026-08-29 |
 | **Author** | Agent |
 | **Governance Level** | Covenant (2 Watchers + 2 Mentors, 72h debate) |
 | **Status** | Accepted |
 | **Related ADRs** | ADR-001, ADR-002, ADR-004 (amended in place) |
 | **Supersedes** | Inheritance-by-pointer language in ADR-004 §4 |
 
-> **Current-state note (2026-04-20):** Approval is proceeding under the documented Guardian-exception path tracked in STATUS.md (single-Guardian quorum while the synthetic council per FU-1 is not yet operational). This ADR restates the approval basis explicitly rather than silently relaxing the Covenant-level rule.
+> **Current-state note (updated 2026-08-29):** This ADR was accepted through
+> the then-documented single-Guardian exception. GOV-006 now makes the
+> single-natural-person path a permanent structural operating mode with no
+> synthetic-council restoration trigger. That later rule does not rewrite the
+> historical acceptance event as independent review.
 
 ## Context
 

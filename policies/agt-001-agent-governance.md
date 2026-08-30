@@ -122,7 +122,8 @@ All Citadel decisions require:
 All Covenant decisions require:
 1. Synthetic Council debate
 2. Council verdict of APPROVED
-3. Human approval: 2 Watchers + 2 Mentors
+3. Human approval: current GOV-006 structural single-Guardian mode; the normal
+   2-Watcher + 2-Mentor model remains dormant until separately activated
 4. 72-hour debate period
 
 Agent role: Advisory only. Agents may research, summarize, and propose, but all governance decisions are human decisions.
@@ -271,7 +272,8 @@ Per Principle AGT-2, all agent actions must:
 ### Change Authority
 
 Changes to agent governance require:
-- **Covenant Level**: 2 Watchers + 2 Mentors, 72h debate
+- **Covenant Level**: GOV-006 structural single-Guardian mode; multi-human
+  Council timing and quorum apply only if that mode is separately activated
 - **ADR Required**: Document rationale in Architecture Decision Record
 - **Phased Rollout**: Test in seven-springs before production
 

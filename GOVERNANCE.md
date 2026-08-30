@@ -74,40 +74,71 @@ Different decisions require different levels of authority and consensus:
 - **Scope**: Changes to this repository - our principles, governance, or standards
 - **Authority**: The Council (collective of senior Mentors and Watchers)
 - **Process**: The Ritual of Amendment (see below)
-- **Required Approvals**: 2 Watchers + 2 Mentors from different clans
+- **Normal Multi-Human Approvals**: 2 Watchers + 2 Mentors from different clans
+- **Current Operating Mode**: One natural-person Guardian under the permanent
+  structural exception in [GOV-006](policies/gov-006-decision-quorum.md)
+
+### Structural Single-Guardian Mode
+
+The Nash Group currently has one natural-person Guardian. That Guardian may
+make recorded governance decisions without pretending that multiple GitHub
+accounts, role hats, seats, or synthetic agents are independent humans.
+
+`verlyn13` and `happy-patterns` are two account bindings of the same human
+principal. Their author/approval split is operator dual-account continuity and
+may satisfy technical merge mechanics; it is not independent review or
+quorum. The exception is permanent and has no expiry, synthetic-council
+restoration trigger, or evaluator obligation. A later Covenant amendment may
+activate multi-human Council mode only after distinct natural persons accept
+the relevant authority.
+
+Operations whose safety contract requires distinct natural persons remain
+unavailable. This includes independent human review, multi-human consensus,
+two-person provider or credential ceremonies, second-person break-glass, and
+independent-human recovery custody. The exception authorizes none of them and
+does not turn their absence into an open implementation queue. See GOV-006 for
+the complete rule.
 
 ## The Ritual of Amendment
 
 Changing the Covenant is a sacred act. It requires deliberation, consensus, and ceremony.
 
 ### 1. The Proposal
-- Fork the repository and create a branch named `proposal/[brief-description]`
+- Create a descriptive branch and keep the change reviewable
 - Make your changes with clear commits
 - Write a comprehensive PR description using the template
 - Your proposal must include:
   - **The Change**: What principle or governance rule is being modified?
   - **The Rationale**: Why is this change necessary?
   - **The Impact**: How will this affect our daily operations?
-  - **The Implementation**: What changes will be needed in `the-citadel`?
+  - **The Implementation**: Is any concrete `the-citadel` action needed?
 
 ### 2. The Debate Period
-- **Minimum Duration**: 72 hours for minor changes, 1 week for major changes
+- **Normal Multi-Human Duration**: 72 hours for minor changes, 1 week for major
+  changes. In structural single-Guardian mode these are deliberation defaults,
+  not elapsed-time gates.
 - **Participation**: All Immortals may comment and suggest modifications
 - **Revisions**: The proposer may amend their proposal based on feedback
 - **Blocking Concerns**: Any Mentor or Watcher may raise a blocking concern that must be addressed
 
 ### 3. The Council Review
-- **Quorum**: At least 4 members (2 Watchers + 2 Mentors)
+- **Normal Multi-Human Quorum**: At least 4 distinct natural persons
+  (2 Watchers + 2 Mentors)
 - **Voting**: Approval requires consensus (no blocking objections)
 - **Veto Power**: Any Watcher may veto changes that violate core values
 - **Documentation**: All decisions must be recorded in the PR discussion
 
+When structural single-Guardian mode applies, the Guardian records the decision
+and the absence of independent human review. Account approvals do not become
+Council votes.
+
 ### 4. The Proclamation
 Upon approval and merge:
-- The change is announced in `#engineering-announcements`
-- A corresponding issue is automatically created in `the-citadel` for implementation
-- The merge commit includes all approvers as co-authors
-- The decision is recorded in `REFERENCE/decisions/`
+- The pull request and merged source are the durable publication record
+- A corresponding implementation issue is created only when the decision leaves
+  a concrete executable obligation
+- Account events are attributed accurately and never presented as independent
+  human review when they are operator dual-account continuity
 
 ## Emergency Powers
 

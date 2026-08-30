@@ -254,7 +254,7 @@ For decisions at **Citadel level or above**, agents form a Synthetic Council tha
 |----------------|-------------------|----------------|
 | **Stronghold** (routine) | No | 1 Mentor (async) |
 | **Citadel** (infrastructure) | Yes | 1 Mentor + 1 Watcher |
-| **Covenant** (governance) | Yes | 2 Watchers + 2 Mentors + 72h debate |
+| **Covenant** (governance) | Advisory synthetic debate only | Current: one natural-person Guardian under GOV-006 structural mode; normal multi-human model: 2 Watchers + 2 Mentors |
 
 ### Governance as a Function of Risk
 
@@ -272,7 +272,9 @@ Agent roles and authority are defined in:
 - `governance/agent-roles.yaml` - Role definitions and capabilities
 - `governance/config/governance-config.yaml` - Authority matrix and decision routing
 
-Changes to agent configuration require **Covenant-level governance** (2 Watchers + 2 Mentors, 72h debate).
+Changes to agent configuration require **Covenant-level governance** under the
+current GOV-006 structural mode. Synthetic review remains advisory and does not
+create independent human quorum.
 
 ---
 
