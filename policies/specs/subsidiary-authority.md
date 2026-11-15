@@ -94,7 +94,7 @@ Some concerns legitimately span tiers. The spec names them explicitly to prevent
 | The Citadel GitHub App automation identity | Parent (L0) by registration; installed in each subsidiary's GitHub org | SEC-005 defines the single-app, multi-installation pattern; parent holds the app, subsidiaries accept the installation |
 | Billing labels | Parent (L0) defines the taxonomy; subsidiaries (L1) apply to their own cloud resources | Taxonomy published as a Nash-authored standard; subsidiaries cite it, or restate it where they change it, and apply |
 | Cloudflare zones | Parent controls the transitional stewardship account (per the Cloudflare Ownership Transition spec); workspace root owns per-zone resources | Transitional; long-term goal is per-subsidiary Cloudflare account separation |
-| Reading, review and merge across organizations | Any organization's agent, in any organization's repository except Litecky's | Under the merge rule of ORG-001: gates green on the exact head, and a recorded read by an agent that did not author it. Authoring stays with the owning organization's sessions. Break-glass under GOV-003 is unchanged |
+| Reading, review and merge across organizations | A parent agent in a subsidiary's repository, and an agent of one subsidiary in another subsidiary's. Never in Litecky's | Under the merge rule of ORG-001: gates green on the exact head, and a recorded read by an agent that did not author it. Authoring stays with the owning organization's sessions. A subsidiary's agent may read parent files and comment on a parent pull request; it does not author, push to or merge in the parent's repositories. Break-glass under GOV-003 is unchanged |
 
 The last row replaces the version 1.0 row "Audit and drift detection", under which the parent could read a subsidiary's repositories for audit and could not write to them except by break-glass.
 
@@ -166,7 +166,7 @@ A session started inside a subsidiary may read, and must not write:
 - `.claude/orchestration/` within the Nash repo
 - The parent router at `~/Organizations/CLAUDE.md`
 
-"Write" is read as "author": a subsidiary session makes no commit and opens no pull request there. It may review and merge a parent pull request under the merge rule (§1.3).
+"Write" is read conservatively, and this is the reading taken: a subsidiary session does not author, push to or merge in the parent's repositories. It may read and comment on a parent pull request.
 
 Reading does not reach what Boundaries 3 and 4 keep out of agent-readable files: credential values, customers' and third parties' data, and legal-entity records.
 
@@ -227,15 +227,15 @@ The five requirements of version 1.0 are retired for every organization except L
 
 (Formerly "Drift Detection".)
 
-The parent keeps no restatement log and runs no drift review, except as both stand for Litecky. Whether a cited version is behind the parent's current one is read from the two files.
+The parent runs no drift review for any organization, Litecky included: it does not read into Litecky to audit it. It keeps no restatement log, except Litecky's rows. Whether a cited version is behind the parent's current one is read from the two files.
 
 The existing log at `.claude/orchestration/subsidiary-authority-migration/restatement-log.md` is a parent record. This specification no longer requires it for any organization except Litecky; what becomes of its other rows is the parent's to record.
 
-For Litecky, as in version 1.0:
+For Litecky:
 
-- Each row: parent spec, parent version, subsidiary, subsidiary's restated policy identifier, restated-from version, last review date
-- Reviewed semi-annually
-- A finding is taken up in Litecky's own repository, as in version 1.0 and within what Litecky's own contract allows. The administrator decides it
+- Each row, as in version 1.0: parent spec, parent version, subsidiary, subsidiary's restated policy identifier, restated-from version, last review date
+- The semi-annual parent review of version 1.0 is retired. The parent fills Litecky's rows only from what Litecky's own session reports
+- A finding is taken up in Litecky's own repository by its own session. The administrator decides it
 
 ### 3.4 What Happens When a Subsidiary Does Not Adopt
 
@@ -339,16 +339,17 @@ As of 2026-04-20, the state of each subsidiary against version 1.0 of this speci
 
 ### 7.3 Litecky Editing Services
 
-Rewritten 2026-11-15 from the Guardian's correction of 2026-11-14. The correction supersedes every earlier record of Litecky's ownership, including the "co-owned" entry in the parent's registry and the Litecky paragraph of his answer on the decision issue named in ADR-009. His standing word is kept in the parent's `OWNER-DIRECTIONS.md`; check for the entry there.
+Rewritten 2026-11-15 from the Guardian's correction of 2026-11-14. The correction supersedes every earlier record of Litecky's ownership, including the "co-owned" entry in the parent's registry and the Litecky paragraph of his answer on the decision issue named in ADR-009. His standing word is kept in the parent's `OWNER-DIRECTIONS.md`; check for the entry there. Personal names are not recorded in this repository. The parent's registry holds them.
 
 | Aspect | Record |
 |--------|--------|
 | Legal form | Sole proprietorship. It is not co-owned |
-| Owner | Ahnie Litecky, sole proprietor |
-| Administrator | Jeffrey Johnson, with full authority over all technical and administrative decisions for Litecky |
+| Owner | Its owner, a sole proprietor, who is another person |
+| Administrator | The estate's owner, as its administrator, with full authority over all technical and administrative decisions for Litecky |
 | Decisions | The administrator decides. For agents, every Litecky decision comes to him. No agent contacts the owner, asks for her approval, or waits on it. What is hers to decide as the business owner (her money, her clients, her legal records, her name) he takes to her himself and brings back the answer |
 | Owner governance role | A place is held open for it in the parent's registry. It is unassigned. Nothing may assume it is filled |
-| Boundary | Real, in both directions (ORG-001). Litecky is another person's business and a separate legal entity from the rest of the estate. Its records, credentials and client data stay separate. None of the version 2.0.0 retirements applies; the version 1.0 rules stand |
+| Boundary | Real, in both directions (ORG-001). Litecky is another person's business and a separate legal entity from the rest of the estate. Its records, credentials and client data stay separate. None of the version 2.0.0 retirements applies, except that of the audit series; the version 1.0 rules stand |
+| Check | The parent does not read into Litecky to audit it. Litecky's part of the one check of the five real things is run from inside Litecky by its own session, for its administrator, and reported value-blind |
 | GitHub organization | `litecky-editing` (own org) |
 | Primary domain | **Stale.** This row said "TBD per ADR-004". The parent's registry is the record of Litecky's domains |
 | Subsidiary shell artifacts | **Stale.** This row said "Not yet assessed in this cycle", and finding F-C2 records that as contradicted. The Identity and Account Management Specification records a Litecky-authored restatement dated 2026-07-13 as the one known to the parent. Not re-read here: no session from another organization reads into Litecky beyond what its own contract already allows |
@@ -386,7 +387,7 @@ The router must:
 The router must not:
 
 1. Tell a subsidiary session, other than Litecky's, that it may not read parent files.
-2. Tell any subsidiary session that it may write parent files.
+2. Tell any subsidiary session that it may author, push to or merge in the parent's repositories.
 3. Tell a session of another organization that it may read into, write to, review or merge in Litecky.
 
 Requirements 1 to 4 of version 1.0 are replaced by these. The router is an instruction file: it delivers context to a session and refuses nothing. The standing diff of the deployed router against its template on every template change is retired with the rest of the audit series (ORG-001, One Check of the Five Real Things).
@@ -397,12 +398,12 @@ Requirements 1 to 4 of version 1.0 are replaced by these. The router is an instr
 
 | Exception | Reason | Review Trigger |
 |-----------|--------|----------------|
-| Litecky Editing Services | Another person's business. None of the version 2.0.0 retirements applies; the version 1.0 rules stand | A change to Litecky's own contract, which the administrator decides |
+| Litecky Editing Services | Another person's business. None of the version 2.0.0 retirements applies, except that of the audit series; the version 1.0 rules stand | A change to Litecky's own contract, which the administrator decides |
 | Legal records inside subsidiary directories | Operating agreements, tax filings, formation receipts legally name both entities | Always; these must live in paths that agents do not read (e.g., `business/`) |
 | Structural single-Guardian approvals | Current single-natural-person path under GOV-006 may reference both entities in decision records; multiple accounts count once | No expiry or synthetic-council trigger; multi-human mode requires a later Covenant amendment based on distinct natural persons |
 | Cloudflare stewardship account | Transitional parent control plane per the Cloudflare Ownership Transition spec | Per that spec's review cadence; long-term goal is per-subsidiary account separation |
 
-Three exceptions of version 1.0 are gone because the rule they excepted is retired: cross-entity audit artifacts under `.claude/orchestration/`, the registry not being read by subsidiary agents, and the Seven Springs sandbox pedagogical references. The first two stand for Litecky.
+Three exceptions of version 1.0 are gone because the rule they excepted is retired: cross-entity audit artifacts under `.claude/orchestration/`, the registry not being read by subsidiary agents, and the Seven Springs sandbox pedagogical references. The second stands for Litecky.
 
 ---
 
@@ -411,10 +412,10 @@ Three exceptions of version 1.0 are gone because the rule they excepted is retir
 | Review | Frequency | Responsible |
 |--------|-----------|-------------|
 | One check of the five real things (ORG-001) | Set by the parent's operating standards | Parent orchestration |
-| For Litecky only, the version 1.0 reviews: contamination scan, restatement drift review, isolation audit | As in version 1.0: quarterly, semi-annually, annually | Parent orchestration |
+| Litecky's part of the one check | As its administrator decides. Run from inside Litecky and reported value-blind | Litecky's own session, for its administrator |
 | This specification's own review | Semi-annually, or upon Covenant-level amendment | Guardian |
 
-The check replaces, for every organization except Litecky, the four reviews of version 1.0: the quarterly contamination scan, the semi-annual restatement drift review, the router integrity check on every template change, and the annual per-subsidiary isolation audit. Nothing mechanical runs the check or any of the reviews.
+The check replaces, for every organization, Litecky included, the four reviews of version 1.0: the quarterly contamination scan, the semi-annual restatement drift review, the router integrity check on every template change, and the annual per-subsidiary isolation audit. Nothing mechanical runs the check or any of the reviews.
 
 ---
 
@@ -463,4 +464,4 @@ The check replaces, for every organization except Litecky, the four reviews of v
 | 2026-05-02 | Codex | v1.0.2 — Recorded the Jefahnierocks GitHub Free organization boundary as created, kept paid/team automation deferred, and updated the Jefahnierocks shell/public-metadata current-state rows after the local-authority cleanup. |
 | 2026-05-02 | Codex | v1.0.3 — Recorded the private Jefahnierocks shell repository publication and preserved child-project independence. |
 | 2026-08-29 | Guardian | Unversioned edit in the pull request that made single-Guardian mode structural: the single-Guardian rows of Known Exceptions and Review Cadence were reconciled to GOV-006. No version or changelog row was recorded then; it is recorded here. |
-| 2026-11-15 | Agent, recording the Guardian's decision | v2.0.0 — Brought into agreement with ORG-001 version 2.0 per ADR-009, decided by the Guardian under GOV-006 structural single-Guardian mode. §1: a subsidiary's contract may cite a parent standard by version; reading, review and merge across organizations under the merge rule, with authoring kept to the owning organization. §2: the name list applies only to public, customer-facing and legal material; a subsidiary session may read parent files and must not write them. §3: adoption by citation or restatement, with no clock and no parent-side log. §4: onboarding without a migration packet. §7.3: Litecky recorded as a sole proprietorship with an owner and an administrator, not co-owned; other §7 rows marked stale without new facts. §8: router requirements replaced. Review cadence replaced by one check of the five real things. None of the retirements applies to Litecky. §5 and §6 unchanged. |
+| 2026-11-15 | Agent, recording the Guardian's decision | v2.0.0 — Brought into agreement with ORG-001 version 2.0 per ADR-009, decided by the Guardian under GOV-006 structural single-Guardian mode. §1: a subsidiary's contract may cite a parent standard by version; a parent agent, or an agent of another subsidiary, may read, review and merge in a subsidiary's repository under the merge rule, with authoring kept to the owning organization. §2: the name list applies only to public, customer-facing and legal material; a subsidiary session may read parent files and comment on a parent pull request, and does not author, push to or merge in the parent's repositories. §3: adoption by citation or restatement, with no clock and no parent-side log. §4: onboarding without a migration packet. §7.3: Litecky recorded by role, without personal names, as a sole proprietorship with an owner and an administrator, not co-owned; other §7 rows marked stale without new facts. §8: router requirements replaced. Review cadence replaced by one check of the five real things for every organization; Litecky's part is run from inside Litecky and reported value-blind. No other retirement applies to Litecky. §5 and §6 unchanged. |

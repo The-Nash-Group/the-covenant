@@ -93,7 +93,7 @@ A boundary is worth an agent's care where it separates something real: another p
 - Parent agents author only in parent repositories. Nothing mechanical refuses otherwise: the parent's Agentic Workflow Standard records that sessions act through one GitHub login. The readback is the authoring session named on the pull request and the review record on it
 - A merge in a subsidiary's repository carries both conditions of the merge rule on the pull request
 - Credential values never cross between organizations and agents hold no provider credential (ORG-001 Boundary 3; SEC-005 is unchanged)
-- Contamination findings are no longer tracked, except for Litecky, where the rules of ORG-001 version 1.0 stand
+- Contamination findings are no longer tracked for any organization. The parent does not read into Litecky to audit it; Litecky's part of the check of the five real things is run from inside Litecky by its own session and reported value-blind
 - Break-glass cross-entity writes are logged and reconciled per GOV-003 within 24 hours
 
 ## Agent Authority Matrix

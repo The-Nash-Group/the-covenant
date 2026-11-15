@@ -4,7 +4,7 @@
 
 **Accepted** 2026-05-17 by Guardian (jeffrey) under the then-documented Covenant-tier single-Guardian quorum exception (`STATUS.md §Governance Exceptions row 4` + `ADR-007 §Current-state note`). GOV-006 superseded the former synthetic-council restoration condition on 2026-08-29 with permanent structural single-Guardian mode. This does not rewrite the historical acceptance as independent review. Paired ratification: `the-covenant/policies/specs/identity-and-account-management.md` v0.1.0 → v0.2.0 (§7 Authority Topology added). See Changelog for ratification record.
 
-**Currentness note (2026-11-15):** ADR-009 and ORG-001 version 2.0 retired the restatement obligation, its cadence and the contamination scan for every organization except Litecky Editing Services. Where this ADR says a subsidiary restates the topology, read: a subsidiary may cite it by version, and restates it only where it changes it. Where it cites the restatement cadence or the contamination-scan tradition, read ORG-001 version 2.0. The four domains and the pillar mapping are unchanged.
+**Currentness note (2026-11-15):** ADR-009 and ORG-001 version 2.0 retired the restatement obligation and its cadence for every organization except Litecky Editing Services, and the contamination scan for every organization. Where this ADR says a subsidiary restates the topology, read: a subsidiary may cite it by version, and restates it only where it changes it. Where it cites the restatement cadence or the contamination-scan tradition, read ORG-001 version 2.0. The four domains and the pillar mapping are unchanged.
 
 ## Date
 

@@ -96,7 +96,9 @@ Six rules protected only separation of text between the Guardian's own agents.
 
 ### 5. One Change to an Existing Rule
 
-An agent from one organization may read, review and merge in another organization's repository under the merge rule: gates green on the exact head, and a recorded read by an agent that did not author it. Authoring stays with the owning organization's sessions. Parent agents do not author in a subsidiary's repository.
+A parent agent may read, review and merge in a subsidiary's repository, and an agent of one subsidiary may do the same in another subsidiary's, under the merge rule: gates green on the exact head, and a recorded read by an agent that did not author it. Authoring stays with the owning organization's sessions. Parent agents do not author in a subsidiary's repository.
+
+A subsidiary session does not merge in the parent's repositories. That follows from the first condition (§7, reading 2).
 
 This does not apply to Litecky.
 
@@ -111,15 +113,15 @@ The Guardian corrected the record on 2026-11-14, after his answer on the issue. 
 - Litecky stays a real boundary: it is a separate legal entity and another person's business. Its records, credentials and client data stay separate from the rest of the estate.
 - The registry keeps a place for an owner governance role, unassigned. He intends to involve her later. Nothing may assume it now.
 
-The Subsidiary Authority Specification §7.3 holds the names.
+The Subsidiary Authority Specification §7.3 holds the record, by role. Personal names are kept in the parent's registry, not in this repository.
 
 ### 7. Readings Taken
 
 Three places in the decision needed a reading. Each is stated so that the Guardian can correct it in one sentence.
 
-1. **"In both directions."** None of the retirements in §3, and not the change in §5, applies to Litecky. No session from another organization reads into, writes to, reviews or merges in Litecky beyond what Litecky's own contract already allows. Litecky's sessions keep their present rules. This is the conservative reading.
-2. **"Not write."** It is read as "not author". A subsidiary session makes no commit and opens no pull request in the parent's repositories. Under §5 it may still review and merge a parent pull request.
-3. **The audits, for Litecky.** Because no retirement applies to Litecky, the audit series of version 1.0 stands for Litecky as it stood. The one check replaces it for the other organizations.
+1. **"In both directions."** None of the retirements in §3, and not the change in §5, applies to Litecky, except the retirement of the audits (reading 3). No session from another organization reads into, writes to, reviews or merges in Litecky beyond what Litecky's own contract already allows. Litecky's sessions keep their present rules. This is the conservative reading.
+2. **"Not write."** It is read conservatively. A subsidiary session may read the parent's files, and may read and comment on a parent pull request. It does not author, push to or merge in the parent's repositories. Parent sessions, and sessions of the other organizations among themselves, may read, review and merge across organizations under the merge rule, except in Litecky.
+3. **The audits, for Litecky.** A real boundary in both directions means the parent does not read into Litecky to audit it. So the audit series is retired for every organization, Litecky included. Litecky's part of the one check is run from inside Litecky by its own session, for its administrator, and reported value-blind.
 
 ## Consequences
 
@@ -127,8 +129,8 @@ Three places in the decision needed a reading. Each is stated so that the Guardi
 
 1. **One set of directions can be read everywhere.** A subsidiary session can read the Guardian's standing directions and the parent's standards where they are, without a relay.
 2. **Sessions hand off directly.** The Guardian is no longer the path between two of his own agents.
-3. **The audit series and the restatement clock end** for every organization except Litecky. One check asks about the five things that matter.
-4. **A pull request in one organization can be read and merged by an agent of another.** Review no longer waits for a session of the owning organization.
+3. **The audit series ends** for every organization, and the restatement clock ends for every organization except Litecky. One check asks about the five things that matter.
+4. **A subsidiary's pull request can be read and merged by a parent agent or by an agent of another subsidiary.** Review no longer waits for a session of the owning organization. The parent's own pull requests are still merged only by parent sessions.
 5. **The boundaries that protect something are named.** Another person's interest, money, credentials, data and records, and public identity are stated as the reasons, so a later rule can be tested against them.
 
 ### Negative
@@ -136,7 +138,7 @@ Three places in the decision needed a reading. Each is stated so that the Guardi
 1. **Parent text is now readable by subsidiary sessions,** including the parent's records about other organizations. What must not be read has to be kept out of agent-readable files, as Boundaries 3 and 4 already require.
 2. **The structural correlate of legal separation in agent-facing files is gone.** ADR-007 counted it as a benefit for Happy Patterns LLC. What remains is the separation of records, money, credentials and public identity.
 3. **A citation can fall behind.** With no clock and no log, nothing notices a subsidiary that cites an old version.
-4. **Two regimes run side by side.** Litecky keeps the version 1.0 rules while the other organizations do not. An agent has to know which organization it is in.
+4. **Two regimes run side by side.** Litecky keeps the version 1.0 rules while the other organizations do not, and its part of the check is reported from inside, not read by the parent. An agent has to know which organization it is in.
 5. **The cross-organization merge rests on a declared control.** The parent's Agentic Workflow Standard records that sessions act through one GitHub login, so the provider cannot tell an author from a reviewer or one organization's session from another's.
 
 ### Neutral
@@ -204,4 +206,4 @@ Until each of these merges, that file still carries the earlier rule. This recor
 
 | Date | Author | Summary |
 |------|--------|---------|
-| 2026-11-15 | Agent, recording the Guardian's decision | Initial creation. Records the Guardian's decision on parent issue 368 under GOV-006 structural single-Guardian mode: a boundary is real only where it separates one of five things; six text-only rules are retired or cut back; reading, review and merge are allowed across organizations under the merge rule; Litecky Editing Services is another person's sole proprietorship that the Guardian administers and stays a real boundary in both directions. Supersedes ADR-007 §2 and the session-scoping purpose of §4 in part. No independent human review. |
+| 2026-11-15 | Agent, recording the Guardian's decision | Initial creation. Records the Guardian's decision on parent issue 368 under GOV-006 structural single-Guardian mode: a boundary is real only where it separates one of five things; six text-only rules are retired or cut back, the audit series for every organization; a parent agent, or an agent of another subsidiary, may read, review and merge in a subsidiary's repository under the merge rule, and a subsidiary session does not author, push to or merge in the parent's repositories; Litecky Editing Services is another person's sole proprietorship that the Guardian administers and stays a real boundary in both directions. Supersedes ADR-007 §2 and the session-scoping purpose of §4 in part. No independent human review. |
