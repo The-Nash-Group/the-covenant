@@ -44,7 +44,7 @@ This specification is intentionally narrow. It answers exactly what is needed fo
 
 ### Out of scope (and why)
 
-- **Human SSO / Authentik / POC 3** — paused per D5; at the current 2-human scale (Guardian + Litecky co-owner Ahnie), human SSO is over-engineered until a third user, contractor, or compliance trigger emerges.
+- **Human SSO / Authentik / POC 3** — paused per D5; at the current scale (one Guardian, who is also the administrator of Litecky Editing Services, a sole proprietorship that belongs to its owner and is not co-owned), human SSO is over-engineered until another user, contractor, or compliance trigger emerges.
 - **AWS IAM Identity Center / GCP IAM tenant model** — covered by `iam-specification.md` REWRITE PENDING; not currently operational at the multi-tenant scale that spec describes.
 - **Federated OIDC for CI → cloud** — defer until 5+ workspaces or a non-trivial AWS/GCP footprint exists; neither true today.
 - **Synthetic council credential model details** — slot reserved (see §3 Identity Principals); details land when the council is deployed and its operating model is defined.
@@ -132,7 +132,7 @@ When the synthetic council comes online to manage Nash Group governance, the str
 - `Dev-nash-group` — parent credentials only
 - `Dev-jefahnierocks` — Jefahnierocks personal/family credentials
 - `Dev-happy-patterns` — Happy Patterns LLC credentials (or a fully separate 1Password account owned by the LLC)
-- `Dev-litecky-editing` — Litecky Editing credentials (or a fully separate 1Password account owned by Ahnie)
+- `Dev-litecky-editing` — Litecky Editing credentials (or a fully separate 1Password account owned by Litecky's owner)
 - `Dev-seven-springs` — sandbox
 
 Migration trigger: synthetic council first session of operation. Migration mechanism: 1Password Connect cross-vault references or service-account tokens with per-vault scope. Until then, strict naming in `Dev` is the operating model.
@@ -148,7 +148,7 @@ Every credential issued under this specification MUST define its named principal
 | Principal type | Purpose | Example |
 |----------------|---------|---------|
 | `<entity>-citadel-ci` | Workflow execution principal; receives token at job start via GitHub Actions secret resolution from `workspace-registry.json` | `litecky-citadel-ci` |
-| `<entity>-owner-break-glass` | Emergency manual operations by entity owner via 1Password | `litecky-owner-break-glass` (Ahnie) |
+| `<entity>-owner-break-glass` | Emergency manual operations by entity owner via 1Password | `litecky-owner-break-glass` (Litecky's owner) |
 | `<entity>-audit-readonly` | Read-only metadata / rotation-evidence audit principal; never holds the rotating token, only the rotation-evidence channel | `litecky-audit-readonly` |
 | `nash-synthetic-council-readonly` | (Reserved for synthetic council deployment) Read-only audit across entities under documented quorum rules; never write | (slot reserved) |
 | `<entity>-mcp-readonly` | Per-entity MCP / agent read principal | `jefahnierocks-mcp-readonly` (current `cloudflare-mcp-jefahnierocks` token) |
@@ -595,3 +595,4 @@ ACTIVE-promotion checklist above.
 | 2026-05-25 | Guardian (jeffrey) | **v0.2.0 → v0.2.1 DRAFT-additive (Amendments E + C).** Ratified under the Covenant-tier single-Guardian quorum exception (`STATUS.md §Governance Exceptions row 4` + `ADR-007 §Current-state note`). Added §1 family-home sovereignty as a category within the Nash parent account, not a subsidiary, and added §6 Mechanism F for Cloudflare resource sovereignty tagging / prefix classification. This amendment does **not** promote §§1–6 to ACTIVE; ACTIVE promotion remains gated on D5 step 7. Amendments A/B/D remain deferred to FU-21 Phase 1; Amendment F / §3.9 remains deferred to Authentik. No identity provisioning, Access-group creation, provider mutation, resource tagging application, family PII, or secret values are authorized by this amendment. |
 | 2026-07-14 | Codex (proposal) | **v0.2.1 → v0.3.0 PROPOSED.** Adds the exception-scoped `nash-operator` human GitHub principal binding (`verlyn13` author/operator; `happy-patterns` parent-PR approval-only), separates account/principal/seat/credential/role, preserves the full Covenant authority matrix, and defines quarterly reassessment plus explicit sunset triggers. Reconciles value-blind parent-visible facts for Happy Patterns, Litecky, and dormant Seven Springs; adds Mechanism G separating GitHub App `organization_administration` permission from installation repository selection. Opens the governed 72-hour debate only: no ratification, ACTIVE promotion, subsidiary restatement, provider/App/account/credential mutation, or runtime activation. |
 | 2026-08-29 | Guardian | **v0.3.0 prospectively ratified as DRAFT — Accepted for Validation under GOV-006 structural single-Guardian mode.** The decision recognizes `verlyn13` and `happy-patterns` as two account bindings of one natural-person principal; technical approval is operator continuity, not independent review or quorum. It removes the binding's synthetic-council dependency, review clock, and sunset. The premature 2026-07-14 merge remains procedurally invalid at that time and is not cured retroactively. No ACTIVE promotion, subsidiary restatement, provider/App/account/credential mutation, identity activation, or runtime action is authorized. |
+| 2026-11-15 | Agent, recording the Guardian's correction | **Factual correction; no version or status change.** The "Out of scope" sentence that described a "2-human scale" with a Litecky co-owner is corrected to the administrator model recorded in ADR-009 and the Subsidiary Authority Specification §7.3: Litecky Editing Services is a sole proprietorship that is not co-owned, and the Guardian is its administrator. At two further places a given name is replaced by the role "Litecky's owner"; the account and principal those lines describe are unchanged. Nothing else in this specification is changed, including its references to restatement and contamination scans. No ACTIVE promotion and no credential, principal, vault, provider or runtime change. |

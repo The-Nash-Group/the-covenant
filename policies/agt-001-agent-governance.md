@@ -2,10 +2,10 @@
 
 *Policy ID: AGT-001*
 *Status: Active*
-*Last Updated: 2026-04-20*
+*Last Updated: 2026-11-15*
 *Covenant Principle: Human Mandate Extension*
 *Guardian Ownership: Watchers*
-*Related: ORG-001 (Subsidiary Authority and Identity Isolation), Subsidiary Authority Specification*
+*Related: ORG-001 (Subsidiary Authority and Real Boundaries), Subsidiary Authority Specification*
 
 > "Agents are tools that humans delegate tasks to, not decision-makers."
 
@@ -82,15 +82,18 @@ Adversarial debate improves decision quality but cannot replace human judgment o
 ### Principle AGT-5: Agents Respect Entity Boundaries
 
 **The Law**
-Parent-scope agents must not impose parent identity, archetypes, or governance terminology on subsidiary repositories. Parent agents may read subsidiary repositories for audit and may author migration guidance for human-relay handoff, but must not modify subsidiary files directly (except break-glass per GOV-003) and must not frame subsidiary rules as parent-derived in subsidiary-facing artifacts.
+Parent-scope agents must not author in a subsidiary's repository (except break-glass per GOV-003). They may read a subsidiary's repository, and may review and merge there under the merge rule of ORG-001: the repository's gates green on the exact head being merged, and a recorded read of that head by an agent that did not author it. They hand off to a subsidiary's session directly, and a record is kept only across one of the five real boundaries of ORG-001.
+
+None of this applies to Litecky Editing Services. No parent-scope agent reads into, writes to, reviews or merges in Litecky beyond what Litecky's own contract already allows.
 
 **The Lesson**
-Subsidiaries of The Nash Group are legally distinct entities with their own governance authority. Treating them as pass-through children of the parent conflates legal, operational, and agent-context boundaries. The correct model is asynchronous spec delivery (parent publishes, subsidiary adopts on its own authority), not runtime authority extension.
+A boundary is worth an agent's care where it separates something real: another person's interest or a separate legal entity, money, credentials, customers' data and legal-entity records, public identity. Separation of text between one Guardian's own agents protected none of these. Authoring stays with the owning organization's sessions because an organization's record is its own.
 
 **Enforcement**
-- Parent agents operate only within `~/Organizations/the-nash-group/` during normal operation
-- Cross-entity artifacts authored by parent live under `.claude/orchestration/`, never inside a subsidiary repo
-- Contamination findings (parent identifiers in subsidiary-scope artifacts) are tracked per ORG-001 §Compliance Verification and the Subsidiary Governance Standard
+- Parent agents author only in parent repositories. Nothing mechanical refuses otherwise: the parent's Agentic Workflow Standard records that sessions act through one GitHub login. The readback is the authoring session named on the pull request and the review record on it
+- A merge in a subsidiary's repository carries both conditions of the merge rule on the pull request
+- Credential values never cross between organizations and agents hold no provider credential (ORG-001 Boundary 3; SEC-005 is unchanged)
+- Contamination findings are no longer tracked for any organization. The parent does not read into Litecky to audit it; Litecky's part of the check of the five real things is run from inside Litecky by its own session and reported value-blind
 - Break-glass cross-entity writes are logged and reconciled per GOV-003 within 24 hours
 
 ## Agent Authority Matrix
@@ -176,29 +179,31 @@ reasoning_trace:
 
 > **Scope note**: This section records what *parent* orchestration agents must be aware of when their work touches subsidiary-adjacent concerns. It does not prescribe subsidiary-internal agent governance — per ORG-001, each subsidiary authors its own agent governance on its own authority. The rules below govern parent behavior at the entity boundary.
 
-The subsidiary registry at `.org/iam/federation/subsidiaries.yaml` records each subsidiary's `governance_level` and any `governance_override` the parent has agreed to recognize for cross-entity coordination. When a parent-scope agent acts adjacent to a subsidiary (for example, publishing a spec that will require the subsidiary to adopt, authoring a migration guide, or running an audit), the agent must:
+The subsidiary registry at `.org/iam/federation/subsidiaries.yaml` records each subsidiary's `governance_level` and any `governance_override` the parent has agreed to recognize for cross-entity coordination. When a parent-scope agent acts adjacent to a subsidiary (for example, publishing a standard that a subsidiary may cite, reviewing or merging a subsidiary's pull request, or running the check of the five real things), the agent must:
 
 ### Happy Patterns LLC (own GitHub org: `happy-patterns-org`)
 
 - Recognize that cross-entity financial coordination (billing reconciliation, shared infrastructure cost allocation) involves a separate LLC with its own legal and tax treatment
-- Escalate any parent-initiated change that would affect Happy Patterns' customer-facing artifacts to human-relay handoff
-- Treat Happy Patterns' own governance as authoritative within its own GitHub org; do not prescribe parent archetypes in migration guidance authored for Happy Patterns
+- Leave any change that would affect Happy Patterns' customer-facing artifacts to Happy Patterns' own session: it crosses the public-identity boundary and is recorded in Happy Patterns' own repository
+- Treat Happy Patterns' own contract as authoritative within its own GitHub org; keep parent names, role names and policy numbers out of its public and customer-facing material and its legal documents
 
 ### Litecky Editing Services
 
-- Honor the co-ownership model recorded in the registry: either co-owner has full approval authority for subsidiary-internal changes
+- Litecky is a sole proprietorship that belongs to another person. It is not co-owned. The Guardian is its administrator, and the administrator decides: every Litecky decision comes to him
+- Never contact Litecky's owner, ask for her approval, or wait on it. What is hers to decide as the business owner the administrator takes to her himself
+- Litecky is a real boundary in both directions: do not read into, write to, review or merge in Litecky beyond what Litecky's own contract already allows
 - Treat cross-subsidiary automation as explicitly declined — the registry's `isolation: { cross_subsidiary_access: none }` entry applies to parent orchestration as well
-- External integrations touching Litecky Editing require explicit human-relay consent
+- External integrations touching Litecky Editing require the administrator's decision
+- The registry holds a place for an owner governance role. It is unassigned; assume nothing from it
 
 ### Seven Springs (sandbox)
 
-- The pedagogical-exception annotation in the Subsidiary Authority Specification §7.4 applies
-- Parent agents may use Seven Springs for demonstration purposes that would be contamination elsewhere
-- Production-bearing activity in Seven Springs would revoke the exception
+- No special rule applies. The pedagogical exception of earlier text excepted Seven Springs from identity isolation in agent-facing files, which ORG-001 version 2.0 retired
+- The registry and the Identity and Account Management Specification record Seven Springs' activation state; read them before acting there
 
 ### Jefahnierocks (personal/creative)
 
-- Treat as a full subsidiary under ORG-001 — isolation rules apply equally
+- Treat as a full subsidiary under ORG-001: the five real boundaries apply equally
 - Do not treat `jefahnierocks` as a relaxed extension of parent personal work; it has its own identity layer
 
 **Subsidiary-internal rules** (financial thresholds, council triggers, approval counts within the subsidiary's own governance, legal review requirements, etc.) are authored by each subsidiary in its own artifacts. Parent does not prescribe them. This section is parent-scope awareness of cross-entity boundaries, not subsidiary-scope governance.
@@ -279,7 +284,7 @@ Changes to agent governance require:
 
 ## Related Policies
 
-- **ORG-001**: Subsidiary Authority and Identity Isolation — entity-boundary rules for parent agents
+- **ORG-001**: Subsidiary Authority and Real Boundaries — entity-boundary rules for parent agents
 - **GOV-003**: Break-Glass Procedures
 - **GOV-004**: Team Authority Matrix
 - **SEC-003**: Least Privilege

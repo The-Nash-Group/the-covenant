@@ -1,10 +1,10 @@
 # Subsidiary Authority Specification
 
-**Version:** 1.0.3
+**Version:** 2.0.0
 **Status:** ACTIVE
-**Date:** 2026-05-02
-**Implements:** Principle 5 (Infrastructure as Code), Principle 9 (Zero Trust), Principle 10 (Least Privilege), Principle 15 (Three Circles of Trust)
-**Policies:** ORG-001 (Subsidiary Authority and Identity Isolation), AGT-001 (Agent Governance), GOV-003 (Break-Glass), SEC-005 (Machine Identity)
+**Date:** 2026-11-15
+**Implements:** Principle 5 (Infrastructure as Code), Principle 6 (No Committed Secrets), Principle 9 (Zero Trust), Principle 10 (Least Privilege), Principle 15 (Three Circles of Trust), Principle 16 (Living Law)
+**Policies:** ORG-001 (Subsidiary Authority and Real Boundaries), AGT-001 (Agent Governance), GOV-003 (Break-Glass), GOV-006 (Decision Quorum), SEC-005 (Machine Identity)
 
 ---
 
@@ -12,9 +12,9 @@
 
 Define how authority, identity, and session context are distributed across the three tiers of The Nash Group's organizational structure — parent, subsidiary, and project — independent of which subsidiary is being described.
 
-This specification does not duplicate ORG-001. ORG-001 defines the rule (the three invariants and the forbidden identifiers). AGT-001 defines agent boundary rules. SEC-005 defines machine identity boundaries. This specification fills the gap those policies leave: the operational ownership matrix, the onboarding and offboarding flow, the restatement workflow, the per-subsidiary current state, and the migration path from the pre-refinement structure to the three-tier model.
+This specification does not duplicate ORG-001. ORG-001 defines the rule: the five real boundaries, the two conditions, and what is not a boundary. AGT-001 defines agent boundary rules. SEC-005 defines machine identity boundaries. This specification fills the gap those policies leave: the operational ownership matrix, the onboarding and offboarding flow, how a subsidiary adopts a parent standard, the per-subsidiary record, and the router contract.
 
-> **Current-state note (2026-05-02):** The parent artifacts (ADR-007, ORG-001, this spec, and the directive under `.claude/orchestration/directives/`) are active. Downstream rewrites and publication steps are tracked as the Subsidiary Authority migration campaign. Some subsidiary shells are now aligned and some GitHub boundaries are created; this specification describes the target state while the per-subsidiary assessment in §7 records current state and remaining deltas.
+> **Current-state note (2026-11-15):** Version 2.0.0 brings this specification into agreement with ORG-001 version 2.0 (ADR-009). It does not amend the parent's operating standards, the router template, the registry, or any organization's own contract. Each of those is changed in its own repository by its own pull request, and until then still carries the earlier rule. Section numbers are those of version 1.0 so that earlier citations resolve; a section that replaces an earlier rule says so. §7 is a dated record and is marked stale where it is.
 
 ---
 
@@ -23,11 +23,13 @@ This specification does not duplicate ORG-001. ORG-001 defines the rule (the thr
 | Principle | How This Specification Implements It |
 |-----------|--------------------------------------|
 | **Principle 5: Infrastructure as Code** | Subsidiary structure, the registry, and the parent router are versioned artifacts under `.org/iam/federation/subsidiaries.yaml` and `.org/templates/organizations-router-claude-md.template`; no subsidiary structural state exists only as runtime configuration |
-| **Principle 9: Zero Trust** | Session context boundaries are verified by what an agent can read, not by what the agent is trusted to ignore; the router enforces traversal behavior structurally |
-| **Principle 10: Least Privilege** | A subsidiary-scoped agent reads only subsidiary-scoped files; parent content is invisible to it by construction |
-| **Principle 15: Three Circles of Trust** | Parent specs are L0 (authority), subsidiary restatement is L1 (adoption), project/dev-agent work is L2 (execution); the three tiers map directly |
-| **ORG-001: Subsidiary Authority** | This specification is the operational counterpart to ORG-001; ORG-001 defines invariants, this specification defines how they are realized per subsidiary |
-| **AGT-001: Agent Governance** | The agent boundary at the subsidiary edge is declared here and cross-referenced from AGT-001 |
+| **Principle 6: No Committed Secrets** | Credential values and legal-entity records stay out of tracked, agent-readable files (§6) |
+| **Principle 9: Zero Trust** | A boundary is kept where it can be checked: who holds a credential, who pays, where a record lives. A rule that nothing checks is named a declared control, not an enforced one |
+| **Principle 10: Least Privilege** | Each organization has its own machine identity and secret root, and values never cross |
+| **Principle 15: Three Circles of Trust** | Parent standards are L0 (authority), the subsidiary's own contract is L1 (adoption, by citation or restatement), project work is L2 (execution); the three tiers map directly |
+| **Principle 16: Living Law** | The text-separation rules of version 1.0 came from an earlier moment; this version changes them from operating experience |
+| **ORG-001: Subsidiary Authority** | This specification is the operational counterpart to ORG-001; ORG-001 defines the boundaries, this specification defines how they are realized per subsidiary |
+| **AGT-001: Agent Governance** | The agent boundary at the organization edge is declared here and cross-referenced from AGT-001 |
 
 ---
 
@@ -37,13 +39,15 @@ This specification does not duplicate ORG-001. ORG-001 defines the rule (the thr
 
 | Tier | Name | Authority | Location |
 |------|------|-----------|----------|
-| **L0** | Parent | Publishes specs, standards, principles; governs by exception; holds cross-entity concerns | `~/Organizations/the-nash-group/` |
-| **L1** | Subsidiary | Restates adopted specs on its own authority; owns its own governance artifacts, brand, voice, CI, seats; is the authority visible to its dev agents | `~/Organizations/<subsidiary>/` (shell) + subsidiary's own GitHub organization |
-| **L2** | Project / Dev Agent | Owns code, tests, project docs, build and deployment flow; sees only L1 identity | `~/Organizations/<subsidiary>/apps/<project>/` and corresponding subsidiary-org repo |
+| **L0** | Parent | Publishes standards, specs and principles; governs by exception; holds cross-entity concerns | `~/Organizations/the-nash-group/` |
+| **L1** | Subsidiary | Owns its own contract, governance artifacts, brand, voice, CI and seats. Its contract may cite a parent standard by version, and restates a rule only where it changes the rule | `~/Organizations/<subsidiary>/` (shell) + subsidiary's own GitHub organization |
+| **L2** | Project / Dev Agent | Owns code, tests, project docs, build and deployment flow, under its organization's contract | `~/Organizations/<subsidiary>/apps/<project>/` and corresponding subsidiary-org repo |
+
+Version 1.0 said a project "sees only L1 identity". That is retired for every organization except Litecky Editing Services: a subsidiary or project session may read parent files and must not write them (ORG-001).
 
 ### 1.2 What Each Tier Owns
 
-Authority is allocated per tier. No artifact is owned by more than one tier except where explicitly noted.
+Authority is allocated per tier. No artifact is owned by more than one tier except where explicitly noted. An artifact is authored only by sessions of the organization that owns it.
 
 **Parent (L0) owns:**
 
@@ -56,17 +60,17 @@ Authority is allocated per tier. No artifact is owned by more than one tier exce
 | Templates | `.org/templates/*` |
 | Shared infrastructure | `the-citadel` OpenTofu/IaC workspaces; exact layout is Citadel-owned |
 | Parent orchestration | `.claude/orchestration/` |
-| Subsidiary registry | `.org/iam/federation/subsidiaries.yaml` (Nash-scoped view) |
+| Subsidiary registry | `.org/iam/federation/subsidiaries.yaml` |
 | Cross-entity concerns | Billing label taxonomy, dependency governance tiers (L0/L1/L2 per Principle 15), audit requirements, break-glass procedures |
 
 **Subsidiary Authority (L1) owns:**
 
 | Artifact Class | Examples |
 |----------------|----------|
-| Subsidiary shell CLAUDE.md | `~/Organizations/<subsidiary>/CLAUDE.md` (authored in subsidiary's own voice) |
+| Subsidiary shell CLAUDE.md | `~/Organizations/<subsidiary>/CLAUDE.md` (authored by the subsidiary's own sessions) |
 | Subsidiary shell README.md | `~/Organizations/<subsidiary>/README.md` |
 | Subsidiary public metadata | `.subsidiary.yaml` or equivalent — routing-level fields only |
-| Restated policies | Subsidiary's own equivalents of parent specs it adopts |
+| Its own contract | Citations of parent standards by version; its own rules where it changes or adds to them |
 | Team structure | GitHub org teams, branch protection, CI/CD workflows within the subsidiary's GitHub org |
 | Brand and voice | Subsidiary's own identity, naming, terminology |
 | Subsidiary agents | Any dev-agent contracts, role definitions, and session-scoping rules specific to the subsidiary |
@@ -88,9 +92,11 @@ Some concerns legitimately span tiers. The spec names them explicitly to prevent
 | Concern | Owner | How It Crosses |
 |---------|-------|----------------|
 | The Citadel GitHub App automation identity | Parent (L0) by registration; installed in each subsidiary's GitHub org | SEC-005 defines the single-app, multi-installation pattern; parent holds the app, subsidiaries accept the installation |
-| Billing labels | Parent (L0) defines the taxonomy; subsidiaries (L1) apply to their own cloud resources | Taxonomy published as a Nash-authored standard; subsidiaries restate and apply |
+| Billing labels | Parent (L0) defines the taxonomy; subsidiaries (L1) apply to their own cloud resources | Taxonomy published as a Nash-authored standard; subsidiaries cite it, or restate it where they change it, and apply |
 | Cloudflare zones | Parent controls the transitional stewardship account (per the Cloudflare Ownership Transition spec); workspace root owns per-zone resources | Transitional; long-term goal is per-subsidiary Cloudflare account separation |
-| Audit and drift detection | Parent (L0) may read subsidiary repositories for audit; parent does not write to them except by break-glass | Read-only traversal across the boundary is permitted; write is not |
+| Reading, review and merge across organizations | A parent agent in a subsidiary's repository, and an agent of one subsidiary in another subsidiary's. Never in Litecky's | Under the merge rule of ORG-001: gates green on the exact head, and a recorded read by an agent that did not author it. Authoring stays with the owning organization's sessions. A subsidiary's agent may read parent files and comment on a parent pull request; it does not author, push to or merge in the parent's repositories. Break-glass under GOV-003 is unchanged |
+
+The last row replaces the version 1.0 row "Audit and drift detection", under which the parent could read a subsidiary's repositories for audit and could not write to them except by break-glass.
 
 ### 1.4 Semantic Ownership vs Operational Hosting
 
@@ -116,9 +122,17 @@ Transitional hosting must not be used to route subsidiary work through parent or
 
 ## 2. What Must Not Cross the Boundary
 
-### 2.1 Forbidden Identifiers in L1 and L2 Artifacts
+ORG-001 version 2.0 names five real boundaries: another person's interest or a separate legal entity; money; credentials and secret authority; customers' and third parties' data and legal-entity records; public identity. Nothing crosses one without the receiving organization's own record, and credentials never cross.
 
-Per ORG-001 Invariant 1, the following must not appear in any file a subsidiary-scoped agent reads during normal operation:
+This section holds the operational detail for the parts that version 1.0 covered here.
+
+### 2.1 Names in Public, Customer-Facing and Legal Material
+
+(Formerly "Forbidden Identifiers in L1 and L2 Artifacts".)
+
+Per ORG-001 Boundary 5, the following must not appear in a subsidiary's public and customer-facing material or in its legal documents, subject to the permitted cross-references of §2.2. They may appear in agent-facing files. The list is that of version 1.0; version 2.0.0 changes only where it applies.
+
+For Litecky Editing Services the version 1.0 rule stands: the list applies to every file a Litecky session reads during normal operation.
 
 | Category | Examples |
 |----------|----------|
@@ -128,40 +142,62 @@ Per ORG-001 Invariant 1, the following must not appear in any file a subsidiary-
 | Governance tier names | "Immortals", "Mentors", "Watchers" |
 | Principle numbers | "Principle 5", "Principle 9", direct references to `the-covenant/PRINCIPLES.md` |
 | ADR references | "ADR-001", "ADR-004", direct paths into `the-covenant/docs/architecture/` |
-| Parent policy IDs | SEC-xxx, GOV-xxx, INF-xxx, OPS-xxx, AGT-xxx, ORG-xxx, etc., when used as governing rules (subsidiaries cite their own restated policies) |
+| Parent policy IDs | SEC-xxx, GOV-xxx, INF-xxx, OPS-xxx, AGT-xxx, ORG-xxx, etc., when used as governing rules |
 | Parent-assigned subsidiary prefixes | Any two-letter code assigned by the parent registry (subsidiaries use their full name in their own artifacts) |
 | Parent directory references | Paths like `the-covenant/`, `the-citadel/`, `the-nexus/`, `the-shield/`, `the-tartan/` |
 
 ### 2.2 Permitted Cross-References
 
-Some cross-references are legitimate and do not constitute contamination:
+- **Legal documents** (operating agreements, tax filings, formation receipts) may name both entities where the document requires it. They carry legal-entity records, so they belong in paths that agents do not read (e.g., `business/` directory in the subsidiary).
+- **Public-facing press and marketing** may describe a subsidiary's relationship to its parent holding company; these artifacts should live in public-content paths (e.g., `public/` or `site/content/`).
+- **Agent-facing files** may carry any cross-reference, in every organization except Litecky.
+- **Records authored by parent sessions** may reference subsidiaries by name. They live in the parent's repositories, because a parent agent does not author in a subsidiary's.
+- **The parent router at `~/Organizations/CLAUDE.md`** names subsidiaries because its function is routing. See §8.
 
-- **Legal documents** (operating agreements, tax filings, formation receipts) may name both entities; they belong in paths not traversed by dev-agent sessions (e.g., `business/` directory in the subsidiary) and are excluded from identity-isolation audits.
-- **Public-facing press and marketing** may describe a subsidiary's relationship to its parent holding company; these artifacts should live in public-content paths (e.g., `public/` or `site/content/`) and should not be mixed into dev-agent context.
-- **Cross-entity audit records** authored by parent orchestration may reference subsidiaries by name; these live under `.claude/orchestration/` in the Nash repo, not inside subsidiary repos.
-- **The parent router at `~/Organizations/CLAUDE.md`** explicitly names subsidiaries because its function is routing. The router is Nash-authored, deployed from a template, and its content is narrow: it instructs sessions to traverse into their subsidiary's own CLAUDE.md.
+### 2.3 What a Subsidiary Session May Read and Must Not Write
 
-### 2.3 What Subsidiary Agents Must Not Read
+(Formerly "What Subsidiary Agents Must Not Read".)
 
-A session started inside a subsidiary must not traverse into:
+A session started inside a subsidiary may read, and must not write:
 
 - `~/Organizations/the-nash-group/` and any files within it
 - `.org/` within the Nash repo
 - `the-covenant/`, `the-citadel/`, `the-nexus/`, `the-shield/`, `the-tartan/` within the Nash repo
 - `.claude/orchestration/` within the Nash repo
-- The parent router at `~/Organizations/CLAUDE.md` is a special case — see §8
+- The parent router at `~/Organizations/CLAUDE.md`
 
-The Subsidiary Governance Standard (`.org/standards/subsidiary-governance.md`) defines the mechanics of enforcing this.
+"Write" is read conservatively, and this is the reading taken: a subsidiary session does not author, push to or merge in the parent's repositories. It may read and comment on a parent pull request.
+
+Reading does not reach what Boundaries 3 and 4 keep out of agent-readable files: credential values, customers' and third parties' data, and legal-entity records.
+
+A session started in Litecky keeps the version 1.0 rule. It does not traverse into any of these.
+
+The Subsidiary Governance Standard (`.org/standards/subsidiary-governance.md`) defines the mechanics.
 
 ---
 
-## 3. Restatement Workflow
+## 3. Adoption: Citation and Restatement
 
-When the parent publishes or updates a spec that applies to subsidiaries, each subsidiary adopts by restating. The workflow is asynchronous — parent does not block on subsidiary adoption.
+(Formerly "Restatement Workflow".)
 
-### 3.1 Restatement Cadence
+A subsidiary adopts a parent standard in its own contract, by its own session, in one of two ways:
 
-| Spec Change Type | Subsidiary Restatement Deadline |
+- **Citation.** It cites the standard by name and version. The cited version is the rule in that subsidiary until its own session changes the citation.
+- **Restatement.** Where it changes the rule, it writes its own rule and names the parent standard and version it departs from.
+
+The parent does not block on adoption and does not track it. A subsidiary's contract stays its own document in its own repository.
+
+For Litecky Editing Services the version 1.0 workflow stands, as §3.1 to §3.3 record it.
+
+### 3.1 Cadence
+
+(Formerly "Restatement Cadence".)
+
+There is no clock. A subsidiary's own session decides whether and when to cite a new version.
+
+The deadlines of version 1.0 are retired for every organization except Litecky. They are kept here because they stand for Litecky and so that citations of this section resolve:
+
+| Spec Change Type | Version 1.0 Restatement Deadline (Litecky only) |
 |------------------|--------------------------------|
 | New required spec | 90 days from parent publication to subsidiary's own restated policy being in effect |
 | Major revision (semantic change to a rule) | 60 days |
@@ -169,9 +205,17 @@ When the parent publishes or updates a spec that applies to subsidiaries, each s
 | Security-critical spec (SEC-xxx) | 30 days; parent may issue a Guardian directive compressing this further |
 | Break-glass or emergency (GOV-003) | Immediate; out-of-band coordination |
 
-### 3.2 Restatement Requirements
+Break-glass and emergency coordination under GOV-003 are unchanged for every organization.
 
-A restated policy must:
+### 3.2 Requirements
+
+(Formerly "Restatement Requirements".)
+
+A citation names the standard and its version.
+
+A restatement states the changed rule and names the parent standard and version it departs from. A subsidiary may add constraints of its own.
+
+The five requirements of version 1.0 are retired for every organization except Litecky. For Litecky a restated policy must still:
 
 1. Be authored in the subsidiary's own voice.
 2. Use the subsidiary's own policy identifier (if it uses IDs) or its own natural-language reference.
@@ -179,23 +223,31 @@ A restated policy must:
 4. Reference principles or rationale on the subsidiary's own authority (the subsidiary restates the *reasons* for the rule, not by quoting parent rationale).
 5. Record the parent spec version it was restated from, in a Nash-scoped metadata file (not in the subsidiary's dev-agent-facing artifact) so drift can be detected.
 
-### 3.3 Drift Detection
+### 3.3 Drift
 
-Parent orchestration maintains a restatement log under `.claude/orchestration/subsidiary-authority-migration/restatement-log.md`:
+(Formerly "Drift Detection".)
 
-- Each row: parent spec, parent version, subsidiary, subsidiary's restated policy identifier, restated-from version, last review date
-- Reviewed semi-annually per ORG-001 §Compliance Verification
-- Findings trigger PRs in the affected subsidiary's repo; parent may author, subsidiary must merge
+The parent runs no drift review for any organization, Litecky included: it does not read into Litecky to audit it. It keeps no restatement log, except Litecky's rows. Whether a cited version is behind the parent's current one is read from the two files.
+
+The existing log at `.claude/orchestration/subsidiary-authority-migration/restatement-log.md` is a parent record. This specification no longer requires it for any organization except Litecky; what becomes of its other rows is the parent's to record.
+
+For Litecky:
+
+- Each row, as in version 1.0: parent spec, parent version, subsidiary, subsidiary's restated policy identifier, restated-from version, last review date
+- The semi-annual parent review of version 1.0 is retired. The parent fills Litecky's rows only from what Litecky's own session reports
+- A finding is taken up in Litecky's own repository by its own session. The administrator decides it
 
 ### 3.4 What Happens When a Subsidiary Does Not Adopt
 
-A subsidiary may decline to adopt a parent spec if the spec is not compatible with its own operating model. Decline paths:
+A subsidiary may decline to adopt a parent standard if it is not compatible with its own operating model. It records the decline in its own contract. Decline paths:
 
-- **Functional decline**: subsidiary authors its own equivalent with different operational content (permitted; record in the restatement log with a decline annotation).
-- **Scope decline**: subsidiary asserts the spec does not apply to its domain (permitted; record in the restatement log; parent reviews at next audit cycle).
-- **Full decline**: subsidiary rejects the spec outright. This is a governance escalation; resolution happens at the parent through the same Covenant-level process that produced the spec.
+- **Functional decline**: subsidiary authors its own equivalent with different operational content (permitted).
+- **Scope decline**: subsidiary asserts the standard does not apply to its domain (permitted).
+- **Full decline**: subsidiary rejects the standard outright. This is a governance question for the Guardian.
 
-Decline does not erase the Invariant 1 identity-isolation rule — a subsidiary that declines to adopt a parent spec still cannot leak parent identity into its own artifacts.
+There is no parent-side decline log, except as the version 1.0 log stands for Litecky.
+
+A decline does not reach the five real boundaries. ORG-001 applies to every organization, whatever it cites.
 
 ---
 
@@ -203,11 +255,11 @@ Decline does not erase the Invariant 1 identity-isolation rule — a subsidiary 
 
 When a new subsidiary is added:
 
-1. **Parent registers** the subsidiary in `.org/iam/federation/subsidiaries.yaml` with: display name, legal entity type, GitHub org reference, owned domains, governance level at which the subsidiary operates by default, billing labels, `agent_isolation_required: true`.
-2. **Parent publishes** the migration packet template (already in `.claude/orchestration/subsidiary-authority-migration/`) as the subsidiary's starting point.
-3. **Subsidiary authors** its own CLAUDE.md, README.md, and public subsidiary metadata using the template skeleton. The subsidiary's voice is its own; parent reviews for isolation compliance only (not for voice or content).
+1. **Parent registers** the subsidiary in `.org/iam/federation/subsidiaries.yaml` with: display name, legal entity type, GitHub org reference, owned domains, governance level at which the subsidiary operates by default, billing labels. Version 1.0 also required `agent_isolation_required: true`. This specification no longer requires that field; the registry's own schema says whether it remains.
+2. **A parent session hands off** directly to the new subsidiary's session, naming the parent standards it may cite. The migration packet of version 1.0 is no longer required.
+3. **The subsidiary's own session authors** its CLAUDE.md, README.md, and public subsidiary metadata. It cites parent standards by version and restates only where it changes a rule. A parent agent does not author these files.
 4. **Subsidiary establishes or records** its GitHub organization boundary. If paid org features are justified, the subsidiary uses its own plan, team structure, branch protection, and CI. If paid features are deferred, the registry records semantic owner, current operational host, long-term home, and migration trigger under §1.4. Parent provides the Citadel automation GitHub App installation when the subsidiary boundary is active.
-5. **Parent verifies** isolation compliance: no Nash identifiers in subsidiary-scoped artifacts, sensitive metadata is stored correctly per §6, router at `~/Organizations/CLAUDE.md` correctly directs sessions into the new subsidiary's own CLAUDE.md.
+5. **The one check of the five real things** (ORG-001) is run for the new subsidiary: its own GitHub organization, domain and zone; its own secret root; one payer; sensitive metadata stored per §6; a public identity of its own. The router at `~/Organizations/CLAUDE.md` sends its sessions to its own contract.
 
 ## 5. Subsidiary Offboarding
 
@@ -221,6 +273,8 @@ When a subsidiary is retired or spun out:
 ---
 
 ## 6. Sensitive Metadata Placement
+
+This section is unchanged in version 2.0.0. Sessions may now read across organizations, so "an agent's default context chain" is read as any agent-readable file, as in ORG-001 version 2.0.
 
 Per ORG-001, subsidiary legal and financial metadata must not live in files discoverable through an agent's default context chain.
 
@@ -248,9 +302,15 @@ Migration is tracked per subsidiary in the Subsidiary Authority migration campai
 
 ## 7. Current-State Assessment by Subsidiary
 
-As of 2026-04-20, the state of each subsidiary against this specification:
+> **Staleness note (2026-11-15).** §7.1, §7.2 and §7.4 were last assessed on the dates they carry: 2026-04-20, with the Jefahnierocks rows updated to 2026-05-02. They are kept as a dated record, not as current state. The parent's restatement drift review for the second half of 2026 recorded, as finding F-C2, that rows here no longer matched what it read. Nothing in those three sections was re-read for version 2.0.0, and no new fact is stated in them. §7.3 is rewritten because the Guardian corrected Litecky's ownership.
+>
+> Version 2.0.0 also retires some of the targets these rows name. A target of "own voice, no Nash identifiers", or of a router that keeps parent naming out of a subsidiary session, is no longer a target for any organization except Litecky (ORG-001 version 2.0).
+
+As of 2026-04-20, the state of each subsidiary against version 1.0 of this specification:
 
 ### 7.1 Happy Patterns LLC
+
+**Stale.** Finding F-C2 records that the shell rewrite rows and the public metadata file row were contradicted by the subsidiary content that review read. The shell and router targets are retired. The same dated inspection appears in §6.2.
 
 | Aspect | Current | Target | Delta |
 |--------|---------|--------|-------|
@@ -265,6 +325,8 @@ As of 2026-04-20, the state of each subsidiary against this specification:
 
 ### 7.2 JefahnieRocks (Personal/Creative)
 
+**Dated.** Last updated 2026-05-02. Not re-read. The "own voice" rows are no longer targets.
+
 | Aspect | Current | Target | Delta |
 |--------|---------|--------|-------|
 | GitHub organization | `jefahnierocks` exists as the intended Free-tier boundary; paid Team-style features are deferred | Use paid org features only when collaboration, compliance, billing, or automation requires them | Track semantic ownership separately from current operational hosting |
@@ -277,13 +339,24 @@ As of 2026-04-20, the state of each subsidiary against this specification:
 
 ### 7.3 Litecky Editing Services
 
-| Aspect | Current | Target | Delta |
-|--------|---------|--------|-------|
-| GitHub organization | `litecky-editing` (own org) | Same | None |
-| Primary domain | TBD per ADR-004 | TBD | Subsidiary decision |
-| Subsidiary shell artifacts | Not yet assessed in this cycle | Authored in own voice | Deferred; subsidiary is co-owned with spouse and has its own governance-override rules per registry |
+Rewritten 2026-11-15 from the Guardian's correction of 2026-11-14. The correction supersedes every earlier record of Litecky's ownership, including the "co-owned" entry in the parent's registry and the Litecky paragraph of his answer on the decision issue named in ADR-009. His standing word is kept in the parent's `OWNER-DIRECTIONS.md`; check for the entry there. Personal names are not recorded in this repository. The parent's registry holds them.
+
+| Aspect | Record |
+|--------|--------|
+| Legal form | Sole proprietorship. It is not co-owned |
+| Owner | Its owner, a sole proprietor, who is another person |
+| Administrator | The estate's owner, as its administrator, with full authority over all technical and administrative decisions for Litecky |
+| Decisions | The administrator decides. For agents, every Litecky decision comes to him. No agent contacts the owner, asks for her approval, or waits on it. What is hers to decide as the business owner (her money, her clients, her legal records, her name) he takes to her himself and brings back the answer |
+| Owner governance role | A place is held open for it in the parent's registry. It is unassigned. Nothing may assume it is filled |
+| Boundary | Real, in both directions (ORG-001). Litecky is another person's business and a separate legal entity from the rest of the estate. Its records, credentials and client data stay separate. None of the version 2.0.0 retirements applies, except that of the audit series; the version 1.0 rules stand |
+| Check | The parent does not read into Litecky to audit it. Litecky's part of the one check of the five real things is run from inside Litecky by its own session, for its administrator, and reported value-blind |
+| GitHub organization | `litecky-editing` (own org) |
+| Primary domain | **Stale.** This row said "TBD per ADR-004". The parent's registry is the record of Litecky's domains |
+| Subsidiary shell artifacts | **Stale.** This row said "Not yet assessed in this cycle", and finding F-C2 records that as contradicted. The Identity and Account Management Specification records a Litecky-authored restatement dated 2026-07-13 as the one known to the parent. Not re-read here: no session from another organization reads into Litecky beyond what its own contract already allows |
 
 ### 7.4 Seven Springs (Sandbox)
+
+**Stale.** Finding F-C2 records that the organization slug is not `seven-springs`. The Identity and Account Management Specification gives the locator as `seven-springs-org` and records the entity as a dormant placeholder. The isolation row and its pedagogical exception are moot, because the rule they excepted is retired.
 
 | Aspect | Current | Target | Delta |
 |--------|---------|--------|-------|
@@ -295,7 +368,7 @@ As of 2026-04-20, the state of each subsidiary against this specification:
 
 ## 8. The Router Contract
 
-The parent router at `~/Organizations/CLAUDE.md` is the enforcement point for the spec-flow invariant (ORG-001 Invariant 3). It lives outside any git repo on disk but its canonical source is Nash-authored.
+The parent router at `~/Organizations/CLAUDE.md` sends a session to its own organization's contract. In version 1.0 it was the enforcement point for the rule that a subsidiary session must not read parent files. That rule is retired for every organization except Litecky. The router lives outside any git repo on disk but its canonical source is Nash-authored.
 
 ### 8.1 Canonical Source
 
@@ -307,12 +380,17 @@ The parent router at `~/Organizations/CLAUDE.md` is the enforcement point for th
 
 The router must:
 
-1. Explicitly instruct subsidiary-scoped sessions to read the subsidiary's own CLAUDE.md instead of the router itself.
-2. Contain no Nash-archetype names, Covenant principle numbers, or ADR references in the portion that a subsidiary-scoped session might encounter in fallback.
-3. Include a routing table that names subsidiaries by display name and points to their own CLAUDE.md paths, with no "inheritance" or "subsidiary-of" language.
-4. State that Nash-scoped sessions (cd'd into `~/Organizations/the-nash-group/`) may use the parent's context chain; subsidiary-scoped sessions must not.
+1. Send each session to its own organization's contract first.
+2. Include a routing table that names organizations by display name and points to their own CLAUDE.md paths.
+3. For a session started in Litecky, keep the version 1.0 instruction: read Litecky's own contract and do not traverse into parent files.
 
-The migration campaign produces the first authoritative router template and tracks deployment.
+The router must not:
+
+1. Tell a subsidiary session, other than Litecky's, that it may not read parent files.
+2. Tell any subsidiary session that it may author, push to or merge in the parent's repositories.
+3. Tell a session of another organization that it may read into, write to, review or merge in Litecky.
+
+Requirements 1 to 4 of version 1.0 are replaced by these. The router is an instruction file: it delivers context to a session and refuses nothing. The standing diff of the deployed router against its template on every template change is retired with the rest of the audit series (ORG-001, One Check of the Five Real Things).
 
 ---
 
@@ -320,12 +398,12 @@ The migration campaign produces the first authoritative router template and trac
 
 | Exception | Reason | Review Trigger |
 |-----------|--------|----------------|
-| Cross-entity audit artifacts under `.claude/orchestration/` | Parent audit of subsidiary compliance requires referencing both entities by name | Quarterly; confirm they remain in `.claude/orchestration/` and not in subsidiary paths |
-| Legal records inside subsidiary directories | Operating agreements, tax filings, formation receipts legally name both entities | Always; these must live in paths not traversed by dev-agent sessions (e.g., `business/`) |
-| `subsidiaries.yaml` registry | Parent's view of its subsidiaries is Nash-scoped | N/A — registry is not read by subsidiary agents |
+| Litecky Editing Services | Another person's business. None of the version 2.0.0 retirements applies, except that of the audit series; the version 1.0 rules stand | A change to Litecky's own contract, which the administrator decides |
+| Legal records inside subsidiary directories | Operating agreements, tax filings, formation receipts legally name both entities | Always; these must live in paths that agents do not read (e.g., `business/`) |
 | Structural single-Guardian approvals | Current single-natural-person path under GOV-006 may reference both entities in decision records; multiple accounts count once | No expiry or synthetic-council trigger; multi-human mode requires a later Covenant amendment based on distinct natural persons |
-| Seven Springs sandbox pedagogical references | Sandbox purpose permits mixed references for teaching | Annual; if Seven Springs becomes production-bearing, the exception is revoked |
 | Cloudflare stewardship account | Transitional parent control plane per the Cloudflare Ownership Transition spec | Per that spec's review cadence; long-term goal is per-subsidiary account separation |
+
+Three exceptions of version 1.0 are gone because the rule they excepted is retired: cross-entity audit artifacts under `.claude/orchestration/`, the registry not being read by subsidiary agents, and the Seven Springs sandbox pedagogical references. The second stands for Litecky.
 
 ---
 
@@ -333,11 +411,11 @@ The migration campaign produces the first authoritative router template and trac
 
 | Review | Frequency | Responsible |
 |--------|-----------|-------------|
-| Contamination scan across all subsidiaries | Quarterly | Parent orchestration |
-| Restatement drift review | Semi-annually | Parent orchestration |
-| Router integrity check | On every Nash-side template change | Parent orchestration |
-| Per-subsidiary isolation audit | Annually or upon subsidiary onboarding/major change | Parent audit |
+| One check of the five real things (ORG-001) | Set by the parent's operating standards | Parent orchestration |
+| Litecky's part of the one check | As its administrator decides. Run from inside Litecky and reported value-blind | Litecky's own session, for its administrator |
 | This specification's own review | Semi-annually, or upon Covenant-level amendment | Guardian |
+
+The check replaces, for every organization, Litecky included, the four reviews of version 1.0: the quarterly contamination scan, the semi-annual restatement drift review, the router integrity check on every template change, and the annual per-subsidiary isolation audit. Nothing mechanical runs the check or any of the reviews.
 
 ---
 
@@ -345,29 +423,35 @@ The migration campaign produces the first authoritative router template and trac
 
 - **Source Principles:**
   - [Principle 5: Infrastructure as Code](../../PRINCIPLES.md)
+  - [Principle 6: No Committed Secrets](../../PRINCIPLES.md)
   - [Principle 9: Zero Trust](../../PRINCIPLES.md)
   - [Principle 10: Least Privilege](../../PRINCIPLES.md)
   - [Principle 15: Three Circles of Trust](../../PRINCIPLES.md)
+  - [Principle 16: Living Law](../../PRINCIPLES.md)
 - **Related Policies:**
-  - [ORG-001: Subsidiary Authority and Identity Isolation](../org-001-subsidiary-authority.md) — Paired policy (the rule)
+  - [ORG-001: Subsidiary Authority and Real Boundaries](../org-001-subsidiary-authority.md) — Paired policy (the rule)
   - [AGT-001: Agent Governance](../agt-001-agent-governance.md) — Agent boundary rules
   - [GOV-003: Break-Glass Procedures](../gov-003-break-glass.md) — Emergency cross-entity writes
+  - [GOV-006: Council Decision Quorum](../gov-006-decision-quorum.md) — Structural single-Guardian mode
   - [SEC-005: Machine Identity](../sec-005-machine-identity.md) — Machine identity boundary
 - **Specifications:**
   - [Secrets Management Specification](./secrets-management.md) — Storage rules for sensitive subsidiary metadata
   - [Cloudflare Ownership Transition Specification](./cloudflare-ownership-transition.md) — Precedent for parent-held transitional control planes
 - **Architecture:**
   - [ADR-004: Federated Multi-Org Architecture](../../docs/architecture/004-federated-multi-org-architecture.md) — Established the multi-org structure
-  - [ADR-007: Subsidiary Authority and Identity Isolation](../../docs/architecture/007-subsidiary-authority-and-identity-isolation.md) — Decision record
+  - [ADR-007: Subsidiary Authority and Identity Isolation](../../docs/architecture/007-subsidiary-authority-and-identity-isolation.md) — Decision record for version 1.0; superseded in part by ADR-009
+  - [ADR-009: Real Boundaries Between Organizations](../../docs/architecture/009-real-boundaries-between-organizations.md) — Decision record for version 2.0.0
 - **Standards:**
-  - [Subsidiary Governance Standard](../../../.org/standards/subsidiary-governance.md) — Session-scoping mechanics
-  - [Agentic Workflow Standard](../../../.org/standards/agentic-workflow.md) — Three-tier references
+  - [Subsidiary Governance Standard](../../../.org/standards/subsidiary-governance.md) — Session routing mechanics
+  - [Agentic Workflow Standard](../../../.org/standards/agentic-workflow.md) — One-Human Operating Contract: the merge rule and the reserved list
+  - [Estate Agreements Standard](../../../.org/standards/estate-agreements.md) — Agreement terms between organizations
 - **Parent-owned implementation references:**
   - `.org/iam/federation/subsidiaries.yaml` — Subsidiary registry
   - `.org/templates/organizations-router-claude-md.template` — Router canonical source
-  - `.claude/orchestration/subsidiary-authority-migration/` — Migration campaign
+  - `.claude/orchestration/subsidiary-authority-migration/` — Migration campaign under version 1.0
+  - `OWNER-DIRECTIONS.md` — The Guardian's standing directions
 - **Directive:**
-  - `.claude/orchestration/directives/DIRECTIVE-2026-04-20-subsidiary-authority.md` — Binding parent operational directive
+  - `.claude/orchestration/directives/DIRECTIVE-2026-04-20-subsidiary-authority.md` — Parent operational directive issued under version 1.0; what becomes of it is the parent's to record
 
 ---
 
@@ -379,3 +463,5 @@ The migration campaign produces the first authoritative router template and trac
 | 2026-04-26 | Codex | v1.0.1 — Added semantic ownership vs operational hosting rule; recorded Happy Patterns ownership of `scopecam` and Jefahnierocks paid GitHub org deferral for personal projects. |
 | 2026-05-02 | Codex | v1.0.2 — Recorded the Jefahnierocks GitHub Free organization boundary as created, kept paid/team automation deferred, and updated the Jefahnierocks shell/public-metadata current-state rows after the local-authority cleanup. |
 | 2026-05-02 | Codex | v1.0.3 — Recorded the private Jefahnierocks shell repository publication and preserved child-project independence. |
+| 2026-08-29 | Guardian | Unversioned edit in the pull request that made single-Guardian mode structural: the single-Guardian rows of Known Exceptions and Review Cadence were reconciled to GOV-006. No version or changelog row was recorded then; it is recorded here. |
+| 2026-11-15 | Agent, recording the Guardian's decision | v2.0.0 — Brought into agreement with ORG-001 version 2.0 per ADR-009, decided by the Guardian under GOV-006 structural single-Guardian mode. §1: a subsidiary's contract may cite a parent standard by version; a parent agent, or an agent of another subsidiary, may read, review and merge in a subsidiary's repository under the merge rule, with authoring kept to the owning organization. §2: the name list applies only to public, customer-facing and legal material; a subsidiary session may read parent files and comment on a parent pull request, and does not author, push to or merge in the parent's repositories. §3: adoption by citation or restatement, with no clock and no parent-side log. §4: onboarding without a migration packet. §7.3: Litecky recorded by role, without personal names, as a sole proprietorship with an owner and an administrator, not co-owned; other §7 rows marked stale without new facts. §8: router requirements replaced. Review cadence replaced by one check of the five real things for every organization; Litecky's part is run from inside Litecky and reported value-blind. No other retirement applies to Litecky. §5 and §6 unchanged. |

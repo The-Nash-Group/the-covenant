@@ -5,11 +5,11 @@
 | Field | Value |
 |-------|-------|
 | **Date** | 2026-03-02 |
-| **Last Updated** | 2026-05-13 |
+| **Last Updated** | 2026-11-15 |
 | **Author** | Agent |
 | **Governance Level** | Covenant (2 Watchers + 2 Mentors, 72h debate) |
 | **Status** | Accepted |
-| **Related ADRs** | ADR-001, ADR-002, ADR-003, ADR-007 (refines §4) |
+| **Related ADRs** | ADR-001, ADR-002, ADR-003, ADR-007 (refines §4), ADR-009 (refines §4 again) |
 
 ## Context
 
@@ -52,7 +52,7 @@ Each legal/operational entity gets its own semantic authority boundary. GitHub p
 | `the-nash-group` | Parent holding company | Sole proprietorship | Parent GitHub org; shared controls only | thenash.group |
 | `happy-patterns-org` | Happy Patterns LLC | LLC | GitHub Team, two members; owns `scopecam` | happy-patterns.com (also owns happy-patterns.co) |
 | `jefahnierocks` | Personal/creative | Personal | Semantic owner for personal projects; paid org features deferred until justified | jefahnierocks.com |
-| `litecky-editing` | Professional editing | Sole proprietorship | Subsidiary boundary; activation follows co-owner governance | liteckyediting.com |
+| `litecky-editing` | Professional editing | Sole proprietorship | Subsidiary boundary; not co-owned; the administrator decides (ADR-009) | liteckyediting.com |
 | `seven-springs` | Sandbox/examples | None (synthetic) | Sandbox boundary with relaxed isolation | sevensprings.dev |
 
 ### 1.1 Semantic Ownership vs Operational Hosting
@@ -85,8 +85,8 @@ Current state as of 2026-05-12:
 - **SEC-005 machine identity** governs GitHub App, OIDC, and scoped provider
   token use.
 - **Authentik** is lab-only. It is not production identity, not repo-owned
-  runtime, and not the default answer for human SSO at the current two-human
-  operating scale.
+  runtime, and not the default answer for human SSO at the current operating
+  scale (one Guardian; ADR-009 records Litecky's owner and administrator).
 - **GitHub Enterprise SAML** remains unavailable and must not be assumed.
 
 Authentik may become a future broker only after evidence exists for host
@@ -114,10 +114,12 @@ alone:
 ### 4. Subsidiary Governance Model
 
 > **Refined by ADR-007 (2026-04-20):** The original formulation below described governance as inheritance. ADR-007 refines this to a restatement model: subsidiaries do not inherit parent rules by pointer; they restate functionally equivalent rules on their own authority, in their own voice, in their own artifacts. A subsidiary may add constraints beyond what the parent specifies, but must not describe its own dev-agent-facing rules as Nash-derived. See ADR-007 for the three invariants (identity isolation, authority restatement, spec flow).
+>
+> **Refined again by ADR-009 (2026-11-15):** ADR-009 retires those three invariants as rules about agent-facing text, for every organization except Litecky Editing Services. A subsidiary may cite a parent standard by version and restates a rule only where it changes the rule. A subsidiary session may read parent files and must not write them. See ADR-009 for the five real boundaries.
 
 | Governance Aspect | Parent (the-nash-group) | Subsidiaries |
 |-------------------|------------------------|--------------|
-| **Principles** | Defines all 16 | Restates equivalent rules on own authority; may add more |
+| **Principles** | Defines all 16 | Cites parent standards by version, or restates a rule where it changes it; may add more |
 | **Default governance** | Covenant (highest) | Stronghold (lowest) |
 | **Infrastructure changes** | Citadel level | Citadel level (the-citadel manages all orgs) |
 | **Product changes** | N/A | Stronghold (1 Mentor) |
@@ -137,7 +139,7 @@ alone:
 ### Positive
 
 1. **Clean entity separation**: Each legal entity has a named authority boundary, with paid hosting adopted where it creates operational value
-2. **Governance scales**: Parent publishes specs; subsidiaries restate equivalent rules on their own authority
+2. **Governance scales**: Parent publishes specs; subsidiaries cite them by version, or restate a rule where they change it
 3. **Staged platform spend**: Happy Patterns can use GitHub Team now while dormant or personal boundaries defer paid features until justified
 4. **Identity federation path**: A single-login experience across orgs remains a target once an evidence-backed broker is justified
 5. **Secrets centralization path**: Infisical or another approved backend can reduce secrets sprawl after repo/entity adoption evidence
@@ -172,6 +174,7 @@ alone:
 - [ADR-002: Governed Agentic Development](./002-governed-agentic-development.md)
 - [ADR-003: Cloudflare Governance Baseline](./003-establish-cloudflare-governance-baseline.md)
 - [ADR-007: Subsidiary Authority and Identity Isolation](./007-subsidiary-authority-and-identity-isolation.md) — refines §4 (restatement model)
+- [ADR-009: Real Boundaries Between Organizations](./009-real-boundaries-between-organizations.md) — refines §4 again (citation by version; five real boundaries)
 - [PRINCIPLES.md](../../PRINCIPLES.md) — 16 core principles
 - [GOVERNANCE.md](../../GOVERNANCE.md) — Decision authority matrix
 - [GitHub Docs: Getting started with GitHub Team](https://docs.github.com/en/get-started/onboarding/getting-started-with-github-team)
@@ -194,3 +197,4 @@ alone:
 | 2026-04-26 | Codex | Clarified staged GitHub plan adoption: Happy Patterns LLC is active on GitHub Team and owns `scopecam`; Jefahnierocks remains the semantic owner for personal projects while paid org hosting is deferred until justified. |
 | 2026-05-12 | Codex | Clarified Shield identity foundation: Authentik is lab-only, Shield is the identity-contract home, Google Workspace remains current human authority, GitHub is current substrate, and SEC-005 governs machine identity. |
 | 2026-05-13 | Codex | Qualified Infisical, Authentik, identity federation, secret centralization, and IaC coverage language so ADR-004 does not read as proof of current live enforcement beyond owning-repo evidence. |
+| 2026-11-15 | Agent, recording the Guardian's decision | Refined §4 in place per ADR-009: citation by version, with restatement only where a subsidiary changes a rule, replaces restatement-only language. Corrected the Litecky row of §1 (not co-owned; the administrator decides) and the "two-human operating scale" phrase of §2. The multi-org decision is unchanged. |

@@ -4,6 +4,8 @@
 
 **Accepted** 2026-05-17 by Guardian (jeffrey) under the then-documented Covenant-tier single-Guardian quorum exception (`STATUS.md §Governance Exceptions row 4` + `ADR-007 §Current-state note`). GOV-006 superseded the former synthetic-council restoration condition on 2026-08-29 with permanent structural single-Guardian mode. This does not rewrite the historical acceptance as independent review. Paired ratification: `the-covenant/policies/specs/identity-and-account-management.md` v0.1.0 → v0.2.0 (§7 Authority Topology added). See Changelog for ratification record.
 
+**Currentness note (2026-11-15):** ADR-009 and ORG-001 version 2.0 retired the restatement obligation and its cadence for every organization except Litecky Editing Services, and the contamination scan for every organization. Where this ADR says a subsidiary restates the topology, read: a subsidiary may cite it by version, and restates it only where it changes it. Where it cites the restatement cadence or the contamination-scan tradition, read ORG-001 version 2.0. The four domains and the pillar mapping are unchanged.
+
 ## Date
 
 2026-05-17
@@ -177,3 +179,4 @@ When the Guardian ratifies this ADR (and the paired IAM Spec amendment), record 
 |------|--------|---------|
 | 2026-05-17 | Agent | Initial DRAFT of ADR-008 — Policy Authority Topology. Articulates the four-domain decomposition (Identity, Resource, Permission-Binding, Runtime Enforcement) and maps each to an owning pillar (Shield, Citadel, Shield contracts consumed by Citadel implementations, runtime). Provider-agnostic; transitional and provider-specific content explicitly delegated to lower layers. Paired with identity-and-account-management.md v0.2.0 amendment for ratification. Awaiting Guardian sign-off under the single-Guardian quorum exception. |
 | 2026-05-17 | Guardian (jeffrey) | **Proposed → Accepted.** Ratified under the Covenant-tier single-Guardian quorum exception (`STATUS.md §Governance Exceptions row 4` + `ADR-007 §Current-state note`). The record then anticipated full-quorum restoration at FU-1; GOV-006 superseded that future condition on 2026-08-29. Paired ratification: `identity-and-account-management.md` v0.1.0 → v0.2.0 (§7 Authority Topology added). Downstream work — transitional-spec amendments and subsidiary restatement where relevant — proceeds under this ratification. |
+| 2026-11-15 | Agent, recording the Guardian's decision | Added a currentness note under Status: ADR-009 and ORG-001 version 2.0 govern where this ADR mentions subsidiary restatement, its cadence or contamination scans. The topology decision is unchanged. |
