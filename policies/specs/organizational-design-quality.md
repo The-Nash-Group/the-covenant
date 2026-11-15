@@ -9,6 +9,8 @@
 **Related Policies:** INF-001, SEC-001, SEC-002, SEC-003, SEC-004, SEC-005, OPS-001, OPS-002, OPS-004, OPS-005, OPS-010, DOC-001, DEP-001, DEP-002, GOV-002, GOV-003, GOV-007, GOV-010, AGT-001, ORG-001
 **Related Specifications:** Subsidiary Authority, Secrets Management, Cloudflare Ownership Transition, GitHub Machine Identity, IAM Specification
 
+> **Currentness note (2026-11-15):** This draft was written against ORG-001 version 1.0. ORG-001 version 2.0 (ADR-009) retired the rules that §4 and §15 restate: that a subsidiary-scoped agent must not read this specification, that adoption is by restatement only, that a human relays the task, and that the parent keeps a restatement log. For every organization except Litecky Editing Services, ORG-001 version 2.0 governs where the two differ: a subsidiary session may read this specification, and a subsidiary may cite it by version and restates it only where it changes it. The draft's text is not otherwise revised here.
+
 ---
 
 ## 1. Metadata
@@ -583,3 +585,4 @@ When a project graduates to a higher risk class, changes semantic owner, moves o
 | Date | Author | Summary |
 |---|---|---|
 | 2026-04-29 | Codex | Initial draft anchor specification for organizational design quality; defines authority tiers, risk classes, maturity levels, review gates, evidence requirements, domain gap backlog, and subsidiary restatement model without creating a new formal policy ID. |
+| 2026-11-15 | Agent, recording the Guardian's decision | Added a currentness note: ORG-001 version 2.0 (ADR-009) governs where §4 and §15 restate rules it retired. No version or status change; the draft's text is not otherwise revised. |

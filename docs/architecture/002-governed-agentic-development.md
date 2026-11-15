@@ -5,11 +5,11 @@
 | Field | Value |
 |-------|-------|
 | **Date** | 2025-11-23 |
-| **Last Updated** | 2026-05-13 |
+| **Last Updated** | 2026-11-15 |
 | **Author** | Agent (The Architect) |
 | **Governance Level** | Covenant (2 Watchers + 2 Mentors, 72h debate) |
 | **Status** | Proposed |
-| **Related ADRs** | ADR-001, ADR-004, ADR-005, ADR-007 |
+| **Related ADRs** | ADR-001, ADR-004, ADR-005, ADR-007, ADR-009 |
 
 > **Current-state note (2026-05-13):** This ADR remains **Proposed**. The
 > Synthetic Council, SDR requirement, and Iron Gate workflow below are target
@@ -69,7 +69,7 @@ The target Synthetic Council applies to **Covenant and Citadel-level changes**
 across all Nash Group repositories. However:
 
 * **Stronghold-level changes** in subsidiary orgs (`happy-patterns-org`, `jefahnierocks`, `litecky-editing`, `seven-springs`) may bypass the Council per governance level.
-* Subsidiaries restate adopted parent specs on their own authority and can add their own constraints.
+* Subsidiaries keep their own contracts. They may cite a parent standard by version, restate a rule only where they change it (ADR-009), and can add their own constraints.
 * the-citadel manages active subsidiary GitHub and Cloudflare controls through OpenTofu/IaC per readiness and placement rules — infrastructure changes always require Citadel governance regardless of which org they affect.
 
 ### 5. The Workflow
@@ -128,3 +128,4 @@ This is the target workflow, not the current live merge gate:
 | 2026-04-26 | Codex | Aligned subsidiary scoping with ADR-005 and ADR-007: restatement replaces inheritance language, `happy-patterns-org` is the active Happy Patterns org, and OpenTofu/IaC replaces current Terraform wording. |
 | 2026-05-12 | Codex | Reframed identity-based signing around Shield contracts, Google Workspace current human authority, SEC-005 machine identity, and manifest/provenance-bound agent identity; Authentik remains lab-only unless future triggers justify production adoption. |
 | 2026-05-13 | Codex | Added policy-status qualifiers so the proposed Synthetic Council, SDR, Sigstore/Rekor, and merge-gate language reads as target governance mechanics rather than current live enforcement. |
+| 2026-11-15 | Agent, recording the Guardian's decision | Aligned subsidiary scoping with ADR-009: citation by version, with restatement only where a subsidiary changes a rule, replaces restatement-only language. The ADR remains Proposed; nothing else is changed. |

@@ -5,11 +5,11 @@
 | Field | Value |
 |-------|-------|
 | **Date** | 2026-04-20 |
-| **Last Updated** | 2026-08-29 |
+| **Last Updated** | 2026-11-15 |
 | **Author** | Agent |
 | **Governance Level** | Covenant (2 Watchers + 2 Mentors, 72h debate) |
-| **Status** | Accepted |
-| **Related ADRs** | ADR-001, ADR-002, ADR-004 (amended in place) |
+| **Status** | Accepted; superseded in part by ADR-009 (2026-11-15) |
+| **Related ADRs** | ADR-001, ADR-002, ADR-004 (amended in place), ADR-009 (supersedes §2 and part of §4) |
 | **Supersedes** | Inheritance-by-pointer language in ADR-004 §4 |
 
 > **Current-state note (updated 2026-08-29):** This ADR was accepted through
@@ -17,6 +17,17 @@
 > single-natural-person path a permanent structural operating mode with no
 > synthetic-council restoration trigger. That later rule does not rewrite the
 > historical acceptance event as independent review.
+
+> **Superseded in part (2026-11-15):** [ADR-009](./009-real-boundaries-between-organizations.md)
+> retires the three invariants of §2 as rules about agent-facing text, and the
+> session-scoping purpose of §4, for every organization except Litecky Editing
+> Services. It replaces them with five real boundaries. A subsidiary session
+> may read parent files and must not write them; a subsidiary may cite a parent
+> standard by version; the name rule is kept only for public and
+> customer-facing material and legal documents. The three tiers (§1), what each
+> tier owns (§3), the transitional hosting rule (§3.1) and sensitive metadata
+> placement (§5) stand. The text below is kept as the record of the 2026-04-20
+> decision. For the rule in force read ADR-009 and ORG-001 version 2.0.
 
 ## Context
 
@@ -69,6 +80,8 @@ We adopt a **three-tier authority model** with strict identity isolation at the 
 | **Project / Dev Agent** (e.g., scopecam) | Its own code, tests, PR process | Code, project docs, AGENTS.md as needed | Sees only subsidiary identity |
 
 ### 2. Three Invariants
+
+> **Superseded in part by ADR-009 (2026-11-15).** These three stand only for Litecky Editing Services. For every other organization see ADR-009 §3.
 
 These are enforceable rules that subordinate specs and standards must implement:
 
@@ -191,8 +204,9 @@ Phases 1–3 are parent-repo work. Phase 4 is the parent's handoff to subsidiari
 - [ADR-004: Federated Multi-Org Architecture](./004-federated-multi-org-architecture.md) — amended in place 2026-04-20
 - [PRINCIPLES.md](../../PRINCIPLES.md) — 16 core principles
 - [GOVERNANCE.md](../../GOVERNANCE.md) — Decision authority matrix
-- [ORG-001: Subsidiary Authority and Identity Isolation](../../policies/org-001-subsidiary-authority.md) — published 2026-04-20
-- [Subsidiary Authority Specification](../../policies/specs/subsidiary-authority.md) — ACTIVE v1.0.3 (2026-05-02)
+- [ADR-009: Real Boundaries Between Organizations](./009-real-boundaries-between-organizations.md) — supersedes §2 and part of §4 (2026-11-15)
+- [ORG-001: Subsidiary Authority and Real Boundaries](../../policies/org-001-subsidiary-authority.md) — published 2026-04-20 as "Subsidiary Authority and Identity Isolation"; version 2.0 (2026-11-15)
+- [Subsidiary Authority Specification](../../policies/specs/subsidiary-authority.md) — ACTIVE v2.0.0 (2026-11-15)
 
 ---
 
@@ -205,3 +219,5 @@ Phases 1–3 are parent-repo work. Phase 4 is the parent's handoff to subsidiari
 | 2026-04-20 | Agent | Initial creation — establishes three-tier authority model, three invariants (identity isolation, authority restatement, spec flow), sensitive metadata placement rule; supersedes inheritance-by-pointer language in ADR-004 §4 (amended in place same date) |
 | 2026-04-26 | Codex | Added the transitional hosting rule: Happy Patterns LLC owns `scopecam` under its paid Team org, while Jefahnierocks remains semantic owner for personal projects whose paid org hosting is deferred until justified. |
 | 2026-05-02 | Agent | Removed "to be created in Phase 1" labels in §References — ORG-001 is published (2026-04-20) and the Subsidiary Authority Specification is ACTIVE at v1.0.3 (2026-05-02). |
+| 2026-08-29 | Guardian | Current-state note reconciled to GOV-006 structural single-Guardian mode. No changelog row was recorded then; it is recorded here. |
+| 2026-11-15 | Agent, recording the Guardian's decision | Marked superseded in part by ADR-009: the three invariants of §2 and the session-scoping purpose of §4 are retired for every organization except Litecky Editing Services. The three tiers, tier ownership, the transitional hosting rule and sensitive metadata placement stand. The original text is kept as the record of the 2026-04-20 decision. |

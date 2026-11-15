@@ -5,11 +5,11 @@
 | Field | Value |
 |-------|-------|
 | **Date** | 2025-10-30 |
-| **Last Updated** | 2026-05-12 |
+| **Last Updated** | 2026-11-15 |
 | **Author** | The Watchers, The Mentors |
 | **Governance Level** | Covenant (2 Watchers + 2 Mentors, 72h debate) |
 | **Status** | Accepted |
-| **Related ADRs** | ADR-003, ADR-004, ADR-005, ADR-007 |
+| **Related ADRs** | ADR-003, ADR-004, ADR-005, ADR-007, ADR-009 |
 
 ## Context
 
@@ -94,13 +94,13 @@ The Nash Group is a holding company with subsidiaries that are separate legal an
 | `the-nash-group` | Parent holding company | Governance, infrastructure, shared tooling | Parent GitHub org |
 | `happy-patterns-org` | Happy Patterns LLC | Production products, including `scopecam` | GitHub Team, two members |
 | `jefahnierocks` | Personal/creative | Personal projects | Semantic owner; paid org features deferred until justified |
-| `litecky-editing` | Professional editing | Spouse's editing business | Subsidiary boundary; co-owner governance |
+| `litecky-editing` | Professional editing | Spouse's editing business | Subsidiary boundary; not co-owned; the administrator decides (ADR-009) |
 | `seven-springs` | Sandbox | Synthetic sandbox/examples | Relaxed sandbox boundary |
 
 **Key architectural points**:
 
 - GitHub Enterprise is deferred; GitHub Team is used where collaboration justifies it, and paid org features are deferred where the practical need has not arrived (see ADR-004)
-- Governance restatement: subsidiaries restate adopted parent specs on their own authority; they do not inherit parent text by pointer
+- Governance adoption: each subsidiary keeps its own contract; it may cite a parent standard by version and restates a rule only where it changes the rule (ADR-007 as superseded in part by ADR-009)
 - the-citadel manages active GitHub and Cloudflare controls through OpenTofu/IaC per subsidiary readiness and explicit ownership placement
 - Identity foundation via Shield contracts rather than assuming GitHub Enterprise SAML or production Authentik before evidence exists
 
@@ -176,3 +176,4 @@ Post-implementation, the Organizational Consistency Audit (2026-03-01) validated
 | 2026-04-05 | Agent | Corrected local path vs GitHub slug language for the infrastructure repo and aligned the architecture record with the current parent standards. |
 | 2026-04-26 | Codex | Aligned multi-org context with ADR-004/ADR-007: Happy Patterns LLC is active on GitHub Team and owns `scopecam`; Jefahnierocks remains semantic owner for personal projects while paid org features are deferred until justified. |
 | 2026-05-12 | Codex | Clarified policy-home layering: Covenant owns principles, governance, and constitutional invariants; Shield owns identity-contract direction; provider-specific and workflow-specific policy detail belongs in parent standards, Citadel, Nexus, Shield, or subsidiary/project restatement as applicable. |
+| 2026-11-15 | Agent, recording the Guardian's decision | Aligned the multi-org context with ADR-009: Litecky Editing Services is not co-owned and the administrator decides; a subsidiary may cite a parent standard by version and restates a rule only where it changes it. The three-pillar decision is unchanged. |
