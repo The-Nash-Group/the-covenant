@@ -14,9 +14,10 @@
 
 > **How this was decided.** This is a Covenant-tier change. Under GOV-006,
 > structural single-Guardian mode, a Covenant decision is one recorded decision
-> of the one natural-person Guardian. That decision is his answer on issue 368
-> of the parent repository, `The-Nash-Group/the-nash-group`, given on
-> 2026-11-15 UTC. The pull request that carries this record is the publication
+> of the one natural-person Guardian. That decision is his answer to issue 368
+> of the parent repository, `The-Nash-Group/the-nash-group`, given in a parent
+> session on 2026-11-14 local time (2026-11-15 UTC) and recorded on the issue in
+> his words. The pull request that carries this record is the publication
 > surface that GOV-002 asks for, and its merge is his own. No Council reviewed
 > it and no independent human review occurred. Under GOV-002 the 72-hour and
 > one-week periods are deliberation defaults in this mode, not elapsed-time
@@ -46,7 +47,7 @@ ADR-007 gave three reasons for the text boundary. Each is answered here, not dis
 
 The issue records these as not established. The decision does not depend on them.
 
-- Who the members of Happy Patterns LLC are, and whether citing a parent rule instead of rewriting it has any legal effect for an LLC. The LLC's contract stays its own document and its records stay in its own store, so neither question has to be answered first.
+- Two questions about Happy Patterns LLC that the issue names. The LLC's contract stays its own document and its records stay in its own store, so neither has to be answered first.
 - What each organization's own contract files say. The inventory read the parent's side only.
 
 Litecky's legal form was recorded as unverified when the issue was written. The Guardian has since stated it (Decision §6).
@@ -96,7 +97,7 @@ Six rules protected only separation of text between the Guardian's own agents.
 
 ### 5. One Change to an Existing Rule
 
-A parent agent may read, review and merge in a subsidiary's repository, and an agent of one subsidiary may do the same in another subsidiary's, under the merge rule: gates green on the exact head, and a recorded read by an agent that did not author it. Authoring stays with the owning organization's sessions. Parent agents do not author in a subsidiary's repository.
+A parent agent may read, review and merge in a subsidiary's repository, and an agent of one subsidiary may do the same in another subsidiary's, under the merge rule of the parent's Agentic Workflow Standard, section One-Human Operating Contract. Authoring stays with the owning organization's sessions. Parent agents do not author in a subsidiary's repository.
 
 A subsidiary session does not merge in the parent's repositories. That follows from the first condition (§7, reading 2).
 
@@ -104,7 +105,7 @@ This does not apply to Litecky.
 
 ### 6. Litecky Editing Services
 
-The Guardian corrected the record on 2026-11-14, after his answer on the issue. The correction supersedes the paragraph of that answer about Litecky, and every earlier record, including the parent registry's "co-owned" entry.
+The Guardian corrected the record minutes after that answer, on the same day. The correction supersedes the paragraph of that answer about Litecky, and every earlier record, including the parent registry's "co-owned" entry.
 
 - Litecky Editing Services is a sole proprietorship. It belongs to its owner, who is another person. It is not co-owned.
 - The Guardian is its administrator, with full authority over all technical and administrative decisions for Litecky.
@@ -113,15 +114,16 @@ The Guardian corrected the record on 2026-11-14, after his answer on the issue. 
 - Litecky stays a real boundary: it is a separate legal entity and another person's business. Its records, credentials and client data stay separate from the rest of the estate.
 - The registry keeps a place for an owner governance role, unassigned. He intends to involve her later. Nothing may assume it now.
 
-The Subsidiary Authority Specification §7.3 holds the record, by role. Personal names are kept in the parent's registry, not in this repository.
+The Subsidiary Authority Specification §7.3 holds the record, by role. This record names no person. Names belong in the parent's registry.
 
 ### 7. Readings Taken
 
-Three places in the decision needed a reading. Each is stated so that the Guardian can correct it in one sentence.
+Four places in the decision needed a reading. Each is stated so that the Guardian can correct it in one sentence.
 
 1. **"In both directions."** None of the retirements in §3, and not the change in §5, applies to Litecky, except the retirement of the audits (reading 3). No session from another organization reads into, writes to, reviews or merges in Litecky beyond what Litecky's own contract already allows. Litecky's sessions keep their present rules. This is the conservative reading.
-2. **"Not write."** It is read conservatively. A subsidiary session may read the parent's files, and may read and comment on a parent pull request. It does not author, push to or merge in the parent's repositories. Parent sessions, and sessions of the other organizations among themselves, may read, review and merge across organizations under the merge rule, except in Litecky.
+2. **"Not write."** It is read conservatively. A subsidiary session may read the parent's files, and may read and review a parent pull request. It does not author, push to or merge in the parent's repositories. Parent sessions, and sessions of the other organizations among themselves, may read, review and merge across organizations under the merge rule, except in Litecky.
 3. **The audits, for Litecky.** A real boundary in both directions means the parent does not read into Litecky to audit it. So the audit series is retired for every organization, Litecky included. Litecky's part of the one check is run from inside Litecky by its own session, for its administrator, and reported value-blind.
+4. **The list.** The table in §3 states the six rules more fully than the table on the issue. Two differences are readings: the router diff on each template change is counted with the audit series and retired with it, and the name rule is kept for legal documents as well as public and customer-facing material.
 
 ## Consequences
 
@@ -161,6 +163,7 @@ GOV-006 asks that a decision in structural single-Guardian mode record five thin
    - Litecky's own contract and reserved list are not edited.
    - Recording Litecky's owner does not make her a Guardian and does not activate multi-human Council mode. No record shows that she has accepted governance authority in this estate, and nothing may assume it.
    - Independent human review remains unavailable under GOV-006. The read by an agent that did not author a change, which the merge rule asks for, is not independent human review.
+   - AGT-001 still names a Synthetic Council debate, a Council verdict and a 72-hour period for Covenant decisions, and a test in Seven Springs before a change to agent governance. None took place. GOV-002 and GOV-006 govern this decision; AGT-001's older text is not amended here.
 5. **No independent human review.** This decision had none.
 
 ## Compliance
@@ -207,3 +210,4 @@ Until each of these merges, that file still carries the earlier rule. This recor
 | Date | Author | Summary |
 |------|--------|---------|
 | 2026-11-15 | Agent, recording the Guardian's decision | Initial creation. Records the Guardian's decision on parent issue 368 under GOV-006 structural single-Guardian mode: a boundary is real only where it separates one of five things; six text-only rules are retired or cut back, the audit series for every organization; a parent agent, or an agent of another subsidiary, may read, review and merge in a subsidiary's repository under the merge rule, and a subsidiary session does not author, push to or merge in the parent's repositories; Litecky Editing Services is another person's sole proprietorship that the Guardian administers and stays a real boundary in both directions. Supersedes ADR-007 §2 and the session-scoping purpose of §4 in part. No independent human review. |
+| 2026-11-15 | Agent, after a read by an agent that did not write the change | Wording corrected, with no change to the decision. Where and when the decision was given is stated exactly. A fourth reading is added, on the list of retired rules. The record now says what AGT-001 still names for such a decision and that none of it took place. Two open questions the issue names are referred to and not restated. The merge rule is cited from the parent's standard. Reading 2 follows a later ruling: a subsidiary session may review a parent pull request, where the reading said comment. The record names no person. |

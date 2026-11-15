@@ -205,8 +205,8 @@ Phases 1–3 are parent-repo work. Phase 4 is the parent's handoff to subsidiari
 - [PRINCIPLES.md](../../PRINCIPLES.md) — 16 core principles
 - [GOVERNANCE.md](../../GOVERNANCE.md) — Decision authority matrix
 - [ADR-009: Real Boundaries Between Organizations](./009-real-boundaries-between-organizations.md) — supersedes §2 and part of §4 (2026-11-15)
-- [ORG-001: Subsidiary Authority and Real Boundaries](../../policies/org-001-subsidiary-authority.md) — published 2026-04-20 as "Subsidiary Authority and Identity Isolation"; version 2.0 (2026-11-15)
-- [Subsidiary Authority Specification](../../policies/specs/subsidiary-authority.md) — ACTIVE v2.0.0 (2026-11-15)
+- [ORG-001: Subsidiary Authority and Real Boundaries](../../policies/org-001-subsidiary-authority.md) — published 2026-04-20 as "Subsidiary Authority and Identity Isolation"; version 2.0.1 (2026-11-15)
+- [Subsidiary Authority Specification](../../policies/specs/subsidiary-authority.md) — ACTIVE v2.0.1 (2026-11-15)
 
 ---
 
@@ -221,3 +221,4 @@ Phases 1–3 are parent-repo work. Phase 4 is the parent's handoff to subsidiari
 | 2026-05-02 | Agent | Removed "to be created in Phase 1" labels in §References — ORG-001 is published (2026-04-20) and the Subsidiary Authority Specification is ACTIVE at v1.0.3 (2026-05-02). |
 | 2026-08-29 | Guardian | Current-state note reconciled to GOV-006 structural single-Guardian mode. No changelog row was recorded then; it is recorded here. |
 | 2026-11-15 | Agent, recording the Guardian's decision | Marked superseded in part by ADR-009: the three invariants of §2 and the session-scoping purpose of §4 are retired for every organization except Litecky Editing Services. The three tiers, tier ownership, the transitional hosting rule and sensitive metadata placement stand. The original text is kept as the record of the 2026-04-20 decision. |
+| 2026-11-15 | Agent, after a read by an agent that did not write the change | References updated to the current versions of ORG-001 and the Subsidiary Authority Specification. Nothing else is changed. |

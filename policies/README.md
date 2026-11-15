@@ -80,7 +80,7 @@ admission, or subsidiary/project-local restatements.
 - **[AGT-004: Enforcement Checklist](./agt-004-enforcement-checklist.md)** - Master verification checklist for Citadel enforcement
 
 ### Organizational Authority (ORG)
-- **[ORG-001: Subsidiary Authority and Real Boundaries](./org-001-subsidiary-authority.md)** (v2.0) - The five real boundaries between organizations, what is not a boundary, and Litecky Editing Services as a real boundary in both directions; formerly "Subsidiary Authority and Identity Isolation"
+- **[ORG-001: Subsidiary Authority and Real Boundaries](./org-001-subsidiary-authority.md)** (v2.0.1) - The five real boundaries between organizations, what is not a boundary, and Litecky Editing Services as a real boundary in both directions; formerly "Subsidiary Authority and Identity Isolation"
 
 ### Specifications
 - **[Cloudflare Ownership Transition](./specs/cloudflare-ownership-transition.md)** (ACCEPTED v1.1.0) - Transitional stewardship and placement rules for Cloudflare resources; provider-specific sections should be classified for parent-standard or Citadel home.
@@ -88,7 +88,7 @@ admission, or subsidiary/project-local restatements.
 - **[Identity and Account Management](./specs/identity-and-account-management.md)** (v0.2.1; §§1-6 DRAFT — Accepted for Validation since 2026-05-03; §7 ratified 2026-05-17 via ADR-008; §1 family-home sovereignty + §6.F resource classification added 2026-05-25) - Multi-entity identity contract plus the accepted policy authority topology; durable invariants remain here while identity-contract detail moves to Shield or parent standards.
 - **[IAM Specification](./specs/iam-specification.md)** (PARTIALLY HISTORICAL — REWRITE PENDING) - Pre-ADR-005 IAM architecture reference.
 - **[Secrets Management](./specs/secrets-management.md)** (ACTIVE v1.3.0) - Secret classification, lifecycle, ownership, distribution, and rotation model; provider-neutral invariants remain here while backend-specific bindings belong to owning implementation layers.
-- **[Subsidiary Authority](./specs/subsidiary-authority.md)** (ACTIVE v2.0.0) - Operational model for parent, subsidiary, and project authority boundaries.
+- **[Subsidiary Authority](./specs/subsidiary-authority.md)** (ACTIVE v2.0.1) - Operational model for parent, subsidiary, and project authority boundaries.
 - **[Organizational Design Quality](./specs/organizational-design-quality.md)** (DRAFT v0.1.0) - Anchor quality bar for control-surface classification, ownership, review, evidence, and subsidiary restatement; not active policy.
 
 > **Note**: GOV-009 was intentionally reserved for future use. The policy ID gap between GOV-008 and GOV-010 is deliberate.

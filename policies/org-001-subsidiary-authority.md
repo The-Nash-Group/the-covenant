@@ -2,7 +2,7 @@
 
 **Policy ID:** ORG-001
 **Category:** Organizational Structure
-**Version:** 2.0
+**Version:** 2.0.1
 **Effective Date:** 2026-04-20
 **Last Updated:** 2026-11-15
 
@@ -99,7 +99,7 @@ Nothing crosses a real boundary without the receiving organization's own record:
 
 These are the six rules of version 1.0, and of the parent's standards beside it, that protected only separation of text. Items 1 to 4 and 6 are retired or cut back for every organization except Litecky Editing Services. Item 5 is retired for every organization, Litecky included.
 
-1. **Reading.** A subsidiary session may read parent files, and may read and comment on a parent pull request. It **must not** write them: it does not author, push to or merge in the parent's repositories. This is the reading taken of "not write", and it is the conservative one. Any session may read any organization's standards and the Guardian's directions.
+1. **Reading.** A subsidiary session may read parent files, and may read and review a parent pull request. It **must not** write them: it does not author, push to or merge in the parent's repositories. This is the reading taken of "not write", and it is the conservative one. Any session may read any organization's standards and the Guardian's directions, except that no session of another organization reads into Litecky beyond what Litecky's own contract already allows, and Litecky's sessions keep their present rule about parent files.
 2. **Names in agent-facing files.** Parent names, role names and policy numbers may appear in a subsidiary's agent-facing files. The rule against them is kept only as Boundary 5 states it.
 3. **Adoption.** A subsidiary may cite a parent standard by version. It restates a rule only where it changes the rule. There is no clock and no parent-side log of who adopted what.
 4. **Hand-off.** Sessions hand off to each other directly. A record is kept only across a real boundary.
@@ -108,9 +108,9 @@ These are the six rules of version 1.0, and of the parent's standards beside it,
 
 ### Review and Merge Across Organizations
 
-A parent agent may read, review and merge in a subsidiary's repository, and an agent of one subsidiary may do the same in another subsidiary's, under the merge rule: the repository's gates green on the exact head being merged, and a recorded read of that head by an agent that did not author it. The owning repository's own contract may ask for more.
+A parent agent may read, review and merge in a subsidiary's repository, and an agent of one subsidiary may do the same in another subsidiary's, under the merge rule. The merge rule is the one in the parent's Agentic Workflow Standard, section One-Human Operating Contract, and is not restated here. The owning repository's own contract may ask for more.
 
-A subsidiary agent does not merge in the parent's repositories. There it may read, and may comment on a pull request.
+A subsidiary agent may read a parent pull request and review it, recording the review on it as a comment, and that review can be the recorded read by a non-author that the merge rule asks for; it does not author, push to or merge in the parent's repositories.
 
 Authoring stays with the owning organization's sessions. A parent agent does not author in a subsidiary's repository. A subsidiary agent does not author in or push to the parent's repositories, and does not author in another subsidiary's.
 
@@ -122,12 +122,12 @@ None of this applies to Litecky Editing Services.
 
 ## Litecky Editing Services
 
-Litecky Editing Services is a sole proprietorship. It belongs to its owner, who is another person. It is not co-owned. The Guardian is its administrator, with full authority over all technical and administrative decisions for Litecky. The Subsidiary Authority Specification §7.3 holds the record, by role. Personal names are kept in the parent's registry, not in this repository.
+Litecky Editing Services is a sole proprietorship. It belongs to its owner, who is another person. It is not co-owned. The Guardian is its administrator, with full authority over all technical and administrative decisions for Litecky. The Subsidiary Authority Specification §7.3 holds the record, by role. This record names no person. Names belong in the parent's registry.
 
 - **The administrator decides.** For agents, every Litecky decision comes to the administrator.
 - No agent contacts Litecky's owner, asks for her approval, or waits on it.
 - What is hers to decide as the business owner (her money, her clients, her legal records, her name) the administrator takes to her himself and brings back the answer.
-- The parent's registry keeps a place for an owner governance role. It is unassigned. Nothing may assume it is filled.
+- The parent's registry is to keep a place for an owner governance role, unassigned. Nothing may assume it is filled.
 - Litecky is a real boundary: it is another person's business and a separate legal entity from the rest of the estate. Its records, credentials and client data stay separate.
 
 **The reading taken of "in both directions".** None of the retirements in this version applies to Litecky, except that of the audit series. No session from another organization reads into, writes to, reviews or merges in Litecky beyond what Litecky's own contract already allows. Litecky's sessions keep their present rules, including their rule about parent files. The rules of version 1.0 stand for Litecky as they stood. This is the conservative reading.
@@ -148,7 +148,7 @@ One check replaces the audit series of version 1.0. For each organization it ask
 
 This policy sets what the check asks. The parent's operating standards own its procedure, its schedule and its record. Until they define one, the check exists only as this list, and nothing runs it.
 
-Litecky's part of the check is run from inside Litecky, by Litecky's own session, for its administrator. It is reported value-blind: the report says how each of the five questions came out and carries no record, credential, client data or file content out of Litecky. No session from another organization reads into Litecky to run it.
+Litecky's part of the check is run from inside Litecky, by Litecky's own session, for its administrator. It is reported value-blind: the report says how each of the five questions came out and carries no record, credential, client data or file content out of Litecky. Where the report goes to the parent, its administrator carries it. No session from another organization reads into Litecky to run it.
 
 ## Implementation Boundary
 
@@ -170,13 +170,17 @@ Nothing mechanical in this repository enforces any rule in this policy. Each rul
 | Legal-entity records out of agent-readable files | Nothing specific to these record classes | A search of tracked files, in the one check |
 | Parent names, role names and policy numbers out of public, customer-facing and legal material | Nothing | A read of that material, in the one check |
 | A record on the receiving side for what crosses a real boundary | Nothing | The receiving organization's own record |
+| Each organization keeps its own GitHub organization, domain and zone | Nothing in this repository | The provider's own records: the organization on the code host, the domain's registration, and the zone |
+| An agreement between two of the Guardian's own organizations keeps its terms: the cost owner and the data classes | Nothing | The agreement's record under the parent's Estate Agreements Standard |
+| Litecky's part of the check is reported value-blind | Nothing | The report itself: how each of the five questions came out, and nothing else. Where the report goes to the parent, its administrator carries it |
+| The owner governance role for Litecky is unassigned | Nothing | Litecky's entry in the parent's registry, which is to hold that place |
 
 What a session may do follows from where it starts:
 
 | Session started in | Reads | Authors | Reviews and merges |
 |--------------------|-------|---------|--------------------|
 | The parent | Parent files; any subsidiary's repository except Litecky's | Parent repositories only | Parent repositories, and any subsidiary's repository except Litecky's, under the merge rule |
-| A subsidiary other than Litecky, at its shell or in a project | Its own files; parent files, and parent pull requests, on which it may comment; any other subsidiary's repository except Litecky's | Its own organization's repositories only | Its own repositories, and any other subsidiary's except Litecky's, under the merge rule. Never the parent's |
+| A subsidiary other than Litecky, at its shell or in a project | Its own files; parent files, and parent pull requests, which it may review; any other subsidiary's repository except Litecky's | Its own organization's repositories only | Its own repositories, and any other subsidiary's except Litecky's, under the merge rule. In the parent's it may review and does not merge |
 | Litecky | As Litecky's own contract says. Its present rules stand | Litecky's repositories only | As Litecky's own contract says |
 
 The router at `~/Organizations/CLAUDE.md` sends a session to its own organization's contract. Its canonical form is maintained as `.org/templates/organizations-router-claude-md.template` in the parent's repository and deployed to that path. The Subsidiary Authority Specification §8 states what it must and must not say.
@@ -194,14 +198,14 @@ The router at `~/Organizations/CLAUDE.md` sends a session to its own organizatio
 
 ## Sensitive Metadata Placement
 
-This section stays as it was in version 1.0, except for the cross-reference in its last sentence. Sessions may now read across organizations, so "an agent's default context chain" is read as any agent-readable file, which is how the decision states the rule.
+This section stays as it was in version 1.0, except for its last paragraph. Sessions may now read across organizations, so "an agent's default context chain" is read as any agent-readable file, which is how the decision states the rule.
 
 Subsidiary legal and financial metadata — EIN, entity numbers, formation receipts, bank account details, tax filing deadlines, physical addresses — **must not** be placed in files discoverable through an agent's default context chain. Subsidiaries must:
 
 - Maintain a public operational metadata file (e.g., `.subsidiary.yaml` or equivalent) containing only routing-level fields: display name, parent relationship indicator, governance level (per the subsidiary's own restatement), owned domains, GitHub org reference, billing labels.
 - Store legal and financial metadata in the subsidiary's approved secrets authority. On the managed Guardian workstation, local reads use 1Password (`op read`); runtime and CI reads use the repo's approved managed backend (currently Infisical for remote, provider-agnostic per SEC-005 and the Secrets Management Specification).
 
-This rule is enforced by secrets policy, not by repo structure. A subsidiary's public metadata file falls under Boundary 5 where it is public; a subsidiary's private legal record is governed by the Secrets Management Specification.
+This rule is carried by secrets policy, not by repo structure; nothing in this repository enforces it. A subsidiary's public metadata file falls under Boundary 5 where it is public; a subsidiary's private legal record is governed by the Secrets Management Specification.
 
 ## Multi-Organization Strategy
 
@@ -257,7 +261,7 @@ Version 1.0 is this file as it stood at commit `d19b79a` of this repository. Its
 | Exception: parent agents may read subsidiary repositories for audit; no parent write except by explicit cross-entity approval | A parent agent may read, review and merge in a subsidiary's repository under the merge rule, and does not author there. None of it applies in Litecky, which the parent does not read into even to audit |
 | Exception: the registry is not read by subsidiary-scoped agents | Retired with Invariant 3. Stands for Litecky's sessions |
 | Exceptions: Guardian-approved cross-entity coordination artifacts and cross-entity audit artifacts live at the parent, never inside a subsidiary repository | No longer exceptions, because an agent-facing file may name both organizations. Billing, legal and security matters cross Boundaries 2 to 4 and need the receiving organization's own record. Stand for Litecky |
-| Sensitive Metadata Placement | Unchanged |
+| Sensitive Metadata Placement | Unchanged as a rule |
 | Multi-Organization Strategy | Unchanged, except that Litecky is recorded as a sole proprietorship with an owner and an administrator, not as co-owned |
 | Not in version 1.0: two-sided acceptance of an agreement between organizations (the parent's Estate Agreements Standard) | The terms stay; the acceptance ceremony goes. Stands with Litecky |
 
@@ -296,3 +300,4 @@ Version 1.0 is this file as it stood at commit `d19b79a` of this repository. Its
 - **2026-04-20** (1.0) — Initial creation establishing the three invariants (identity isolation, authority restatement, spec flow) per ADR-007; implements Principles 5, 9, 10, 15; pairs with the Subsidiary Authority Specification and the Subsidiary Governance Standard.
 - **2026-08-29** (1.0, unversioned edit) — The Known Exceptions row for single-Guardian approvals was reconciled to GOV-006 in the pull request that made single-Guardian mode structural. No date or version was recorded then; it is recorded here.
 - **2026-11-15** (2.0) — Amended to the five real boundaries per ADR-009, on the Guardian's decision under GOV-006 structural single-Guardian mode. Retired the three invariants as rules about agent-facing text, the restatement clock and hand-carried relay for every organization except Litecky Editing Services, and the audit series for every organization. Allowed a parent agent, and an agent of another subsidiary, to read, review and merge in a subsidiary's repository under the merge rule, with authoring kept to the owning organization's sessions; a subsidiary session reads parent files and does not author, push to or merge there. Recorded Litecky as another person's sole proprietorship that the Guardian administers. Restated that separate organizations, domains and zones, separate secret roots, one payer each, and legal-entity records out of agent-readable files stay as they are. Retitled; implements Principles 5, 6, 9, 10, 15, 16.
+- **2026-11-15** (2.0.1) — Wording corrected after a read of version 2.0 by an agent that did not write the change. One rule follows a ruling made after version 2.0: a subsidiary session may review a parent pull request, where version 2.0 said comment, and that review can be the recorded read by a non-author; it still does not author, push to or merge there. No other rule changes. The record names no person. The registry's place for an owner governance role is stated as to be kept. The merge rule is cited from the parent's standard and no longer restated. The Litecky exception to reading is stated in the sentence it limits. Where Litecky's report goes to the parent, its administrator carries it. Readback rows are added for the separate organization, domain and zone, for agreement terms, for the value-blind report and for the unassigned role. The sensitive-metadata rule is described as carried by secrets policy, not enforced here.
