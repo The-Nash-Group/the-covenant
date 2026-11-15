@@ -5,7 +5,7 @@
 **Date:** 2026-05-03 (v0.1.0)
 **Last Updated:** 2026-08-29 (v0.3.0 prospectively ratified; permanent natural-person/account distinction; no ACTIVE promotion or runtime activation)
 **Implements:** Principle 3 (Required Reviews), Principle 5 (Infrastructure as Code), Principle 9 (Zero Trust), Principle 10 (Least Privilege), Principle 11 (Measure Everything), Principle 15 (Three Circles of Trust), Principle 16 (Living Law)
-**Policies:** SEC-005 (Machine Identity), ORG-001 (Subsidiary Authority and Identity Isolation), GOV-002 (Amendment Process), GOV-003 (Break-Glass), GOV-006 (Decision Quorum), GOV-007 (Review Cycles)
+**Policies:** SEC-005 (Machine Identity), ORG-001 (Subsidiary Authority and Real Boundaries), GOV-002 (Amendment Process), GOV-003 (Break-Glass), GOV-006 (Decision Quorum), GOV-007 (Review Cycles)
 **Specs:** Secrets Management Specification v1.3.0
 **Defers to (broader scope, PARTIALLY HISTORICAL — REWRITE PENDING):** `iam-specification.md`
 
@@ -63,8 +63,8 @@ Each entity has a defined relationship with each provider. The following table r
 | `nash-group` | shared parent account; scoped token | shared parent project; scoped credential | `The-Nash-Group` org | `Dev` vault (shared) | parent workspace |
 | `jefahnierocks` | shared (transitional per `cloudflare-ownership-transition.md`); scoped token | shared parent (transitional); scoped credential | `jefahnierocks` Free org | `Dev` vault (shared) | per-subsidiary workspace OR continue 1Password (Jefahnierocks-decision) |
 | `happy-patterns` | shared interim; **separate account at `scopecam` activation trigger** | per-LLC at activation | `happy-patterns-org` Teams | `Dev` vault → per-LLC vault when activation triggers | per-LLC workspace at activation |
-| `litecky-editing` | shared interim; **separate account at next deployment** | per-LLC at activation | `litecky-editing` org | `Dev` vault → per-LLC vault at activation | per-LLC workspace at activation |
-| `seven-springs` | shared (pedagogical exception per Subsidiary Authority Spec §7.4); no live resources | n/a | `seven-springs-org` Free | n/a | n/a |
+| `litecky-editing` | shared interim; **separate account at next deployment** | per-entity at activation | `litecky-editing` org | `Dev` vault → per-entity vault at activation | per-entity workspace at activation |
+| `seven-springs` | shared; no live resources | n/a | `seven-springs-org` Free | n/a | n/a |
 
 **Rule:** Account separation pressure is *owner-driven* (LLC formation, customer transactions, regulated-data classification, revenue), not parent-driven. The parent does not initiate per-entity account moves; it provides the contract, the placement rule (`cloudflare-ownership-transition.md`), and the implementation slice when the entity owner is ready.
 
@@ -564,7 +564,7 @@ ACTIVE-promotion checklist above.
 ## References
 
 - **SEC-005 — Machine Identity** — `../sec-005-machine-identity.md` (machine identity types this spec extends to multi-entity)
-- **ORG-001 — Subsidiary Authority and Identity Isolation** — `../org-001-subsidiary-authority.md` (entity boundary rules)
+- **ORG-001 — Subsidiary Authority and Real Boundaries** — `../org-001-subsidiary-authority.md` (entity boundary rules)
 - **GOV-002 — Covenant Amendment Process** — `../gov-002-amendment-process.md` (proposal, debate, Council review, and proclamation phases)
 - **GOV-006 — Council Decision Quorum** — `../gov-006-decision-quorum.md` (natural-person independence and structural single-Guardian mode)
 - **GOV-007 — Governance Review Cycles** — `../gov-007-review-cycles.md` (quarterly membership and permission review)
@@ -596,3 +596,4 @@ ACTIVE-promotion checklist above.
 | 2026-07-14 | Codex (proposal) | **v0.2.1 → v0.3.0 PROPOSED.** Adds the exception-scoped `nash-operator` human GitHub principal binding (`verlyn13` author/operator; `happy-patterns` parent-PR approval-only), separates account/principal/seat/credential/role, preserves the full Covenant authority matrix, and defines quarterly reassessment plus explicit sunset triggers. Reconciles value-blind parent-visible facts for Happy Patterns, Litecky, and dormant Seven Springs; adds Mechanism G separating GitHub App `organization_administration` permission from installation repository selection. Opens the governed 72-hour debate only: no ratification, ACTIVE promotion, subsidiary restatement, provider/App/account/credential mutation, or runtime activation. |
 | 2026-08-29 | Guardian | **v0.3.0 prospectively ratified as DRAFT — Accepted for Validation under GOV-006 structural single-Guardian mode.** The decision recognizes `verlyn13` and `happy-patterns` as two account bindings of one natural-person principal; technical approval is operator continuity, not independent review or quorum. It removes the binding's synthetic-council dependency, review clock, and sunset. The premature 2026-07-14 merge remains procedurally invalid at that time and is not cured retroactively. No ACTIVE promotion, subsidiary restatement, provider/App/account/credential mutation, identity activation, or runtime action is authorized. |
 | 2026-11-15 | Agent, recording the Guardian's correction | **Factual correction; no version or status change.** The "Out of scope" sentence that described a "2-human scale" with a Litecky co-owner is corrected to the administrator model recorded in ADR-009 and the Subsidiary Authority Specification §7.3: Litecky Editing Services is a sole proprietorship that is not co-owned, and the Guardian is its administrator. At two further places a given name is replaced by the role "Litecky's owner"; the account and principal those lines describe are unchanged. Nothing else in this specification is changed, including its references to restatement and contamination scans. No ACTIVE promotion and no credential, principal, vault, provider or runtime change. |
+| 2026-11-15 | Agent, after the independent read | **Factual correction; no version or status change.** ORG-001 is cited by its current title at two places. In the provider table, the Litecky Editing Services row reads "per-entity" where it read "per-LLC", because that business is a sole proprietorship, and the Seven Springs row no longer cites a pedagogical exception that the Subsidiary Authority Specification marks as moot. No account, vault, credential, principal or placement is changed. |

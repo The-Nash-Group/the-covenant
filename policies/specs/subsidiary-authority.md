@@ -1,6 +1,6 @@
 # Subsidiary Authority Specification
 
-**Version:** 2.0.0
+**Version:** 2.0.1
 **Status:** ACTIVE
 **Date:** 2026-11-15
 **Implements:** Principle 5 (Infrastructure as Code), Principle 6 (No Committed Secrets), Principle 9 (Zero Trust), Principle 10 (Least Privilege), Principle 15 (Three Circles of Trust), Principle 16 (Living Law)
@@ -94,7 +94,7 @@ Some concerns legitimately span tiers. The spec names them explicitly to prevent
 | The Citadel GitHub App automation identity | Parent (L0) by registration; installed in each subsidiary's GitHub org | SEC-005 defines the single-app, multi-installation pattern; parent holds the app, subsidiaries accept the installation |
 | Billing labels | Parent (L0) defines the taxonomy; subsidiaries (L1) apply to their own cloud resources | Taxonomy published as a Nash-authored standard; subsidiaries cite it, or restate it where they change it, and apply |
 | Cloudflare zones | Parent controls the transitional stewardship account (per the Cloudflare Ownership Transition spec); workspace root owns per-zone resources | Transitional; long-term goal is per-subsidiary Cloudflare account separation |
-| Reading, review and merge across organizations | A parent agent in a subsidiary's repository, and an agent of one subsidiary in another subsidiary's. Never in Litecky's | Under the merge rule of ORG-001: gates green on the exact head, and a recorded read by an agent that did not author it. Authoring stays with the owning organization's sessions. A subsidiary's agent may read parent files and comment on a parent pull request; it does not author, push to or merge in the parent's repositories. Break-glass under GOV-003 is unchanged |
+| Reading, review and merge across organizations | A parent agent in a subsidiary's repository, and an agent of one subsidiary in another subsidiary's. Never in Litecky's | Under the merge rule, which ORG-001 cites from the parent's Agentic Workflow Standard, section One-Human Operating Contract. Authoring stays with the owning organization's sessions. A subsidiary's agent may read parent files and comment on a parent pull request; it does not author, push to or merge in the parent's repositories. Break-glass under GOV-003 is unchanged |
 
 The last row replaces the version 1.0 row "Audit and drift detection", under which the parent could read a subsidiary's repositories for audit and could not write to them except by break-glass.
 
@@ -234,7 +234,7 @@ The existing log at `.claude/orchestration/subsidiary-authority-migration/restat
 For Litecky:
 
 - Each row, as in version 1.0: parent spec, parent version, subsidiary, subsidiary's restated policy identifier, restated-from version, last review date
-- The semi-annual parent review of version 1.0 is retired. The parent fills Litecky's rows only from what Litecky's own session reports
+- The semi-annual parent review of version 1.0 is retired. The parent fills Litecky's rows only from what Litecky's own session reports, carried to the parent by its administrator
 - A finding is taken up in Litecky's own repository by its own session. The administrator decides it
 
 ### 3.4 What Happens When a Subsidiary Does Not Adopt
@@ -339,7 +339,7 @@ As of 2026-04-20, the state of each subsidiary against version 1.0 of this speci
 
 ### 7.3 Litecky Editing Services
 
-Rewritten 2026-11-15 from the Guardian's correction of 2026-11-14. The correction supersedes every earlier record of Litecky's ownership, including the "co-owned" entry in the parent's registry and the Litecky paragraph of his answer on the decision issue named in ADR-009. His standing word is kept in the parent's `OWNER-DIRECTIONS.md`; check for the entry there. Personal names are not recorded in this repository. The parent's registry holds them.
+Rewritten 2026-11-15 from the Guardian's correction of 2026-11-14. The correction supersedes every earlier record of Litecky's ownership, including the "co-owned" entry in the parent's registry and the Litecky paragraph of his answer on the decision issue named in ADR-009. His standing word is kept in the parent's `OWNER-DIRECTIONS.md`; check for the entry there. This record names no person. Names belong in the parent's registry.
 
 | Aspect | Record |
 |--------|--------|
@@ -347,9 +347,9 @@ Rewritten 2026-11-15 from the Guardian's correction of 2026-11-14. The correctio
 | Owner | Its owner, a sole proprietor, who is another person |
 | Administrator | The estate's owner, as its administrator, with full authority over all technical and administrative decisions for Litecky |
 | Decisions | The administrator decides. For agents, every Litecky decision comes to him. No agent contacts the owner, asks for her approval, or waits on it. What is hers to decide as the business owner (her money, her clients, her legal records, her name) he takes to her himself and brings back the answer |
-| Owner governance role | A place is held open for it in the parent's registry. It is unassigned. Nothing may assume it is filled |
+| Owner governance role | The parent's registry is to keep a place for an owner governance role, unassigned. Nothing may assume it is filled |
 | Boundary | Real, in both directions (ORG-001). Litecky is another person's business and a separate legal entity from the rest of the estate. Its records, credentials and client data stay separate. None of the version 2.0.0 retirements applies, except that of the audit series; the version 1.0 rules stand |
-| Check | The parent does not read into Litecky to audit it. Litecky's part of the one check of the five real things is run from inside Litecky by its own session, for its administrator, and reported value-blind |
+| Check | The parent does not read into Litecky to audit it. Litecky's part of the one check of the five real things is run from inside Litecky by its own session, for its administrator, and reported value-blind. Its administrator carries the report to the parent |
 | GitHub organization | `litecky-editing` (own org) |
 | Primary domain | **Stale.** This row said "TBD per ADR-004". The parent's registry is the record of Litecky's domains |
 | Subsidiary shell artifacts | **Stale.** This row said "Not yet assessed in this cycle", and finding F-C2 records that as contradicted. The Identity and Account Management Specification records a Litecky-authored restatement dated 2026-07-13 as the one known to the parent. Not re-read here: no session from another organization reads into Litecky beyond what its own contract already allows |
@@ -465,3 +465,4 @@ The check replaces, for every organization, Litecky included, the four reviews o
 | 2026-05-02 | Codex | v1.0.3 — Recorded the private Jefahnierocks shell repository publication and preserved child-project independence. |
 | 2026-08-29 | Guardian | Unversioned edit in the pull request that made single-Guardian mode structural: the single-Guardian rows of Known Exceptions and Review Cadence were reconciled to GOV-006. No version or changelog row was recorded then; it is recorded here. |
 | 2026-11-15 | Agent, recording the Guardian's decision | v2.0.0 — Brought into agreement with ORG-001 version 2.0 per ADR-009, decided by the Guardian under GOV-006 structural single-Guardian mode. §1: a subsidiary's contract may cite a parent standard by version; a parent agent, or an agent of another subsidiary, may read, review and merge in a subsidiary's repository under the merge rule, with authoring kept to the owning organization. §2: the name list applies only to public, customer-facing and legal material; a subsidiary session may read parent files and comment on a parent pull request, and does not author, push to or merge in the parent's repositories. §3: adoption by citation or restatement, with no clock and no parent-side log. §4: onboarding without a migration packet. §7.3: Litecky recorded by role, without personal names, as a sole proprietorship with an owner and an administrator, not co-owned; other §7 rows marked stale without new facts. §8: router requirements replaced. Review cadence replaced by one check of the five real things for every organization; Litecky's part is run from inside Litecky and reported value-blind. No other retirement applies to Litecky. §5 and §6 unchanged. |
+| 2026-11-15 | Agent, after the independent read | v2.0.1 — Wording corrected, with no change of rule. §1.3 cites the merge rule from the parent's standard and no longer restates it. §3.3 and §7.3 say that Litecky's report reaches the parent carried by its administrator. §7.3 states that the record names no person and that the parent's registry is to keep a place for an owner governance role. |

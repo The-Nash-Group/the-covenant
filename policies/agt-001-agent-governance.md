@@ -19,7 +19,7 @@ This policy applies to:
 - All automated agents operating on behalf of The Nash Group (parent-scope / L0 agents)
 - AI systems with access to parent organizational resources
 - Synthetic Council proceedings
-- **Cross-entity parent orchestration** — parent agents that act adjacent to subsidiary operations (e.g., spanning multiple subsidiary repos, publishing migration guidance, auditing subsidiary compliance)
+- **Cross-entity parent orchestration** — parent agents that act adjacent to subsidiary operations (e.g., spanning multiple subsidiary repos, reviewing or merging a subsidiary's pull request, running the check of the five real things)
 
 This policy **does not** apply to subsidiary-scope agents (L1 and L2). Per ORG-001, subsidiary agents operate under subsidiary authority — each subsidiary defines its own agent governance, within the minimum contract for product-agents in `governance/agent-roles.yaml`. Parent does not prescribe subsidiary agent behavior beyond that minimum contract.
 
@@ -82,7 +82,7 @@ Adversarial debate improves decision quality but cannot replace human judgment o
 ### Principle AGT-5: Agents Respect Entity Boundaries
 
 **The Law**
-Parent-scope agents must not author in a subsidiary's repository (except break-glass per GOV-003). They may read a subsidiary's repository, and may review and merge there under the merge rule of ORG-001: the repository's gates green on the exact head being merged, and a recorded read of that head by an agent that did not author it. They hand off to a subsidiary's session directly, and a record is kept only across one of the five real boundaries of ORG-001.
+Parent-scope agents must not author in a subsidiary's repository (except break-glass per GOV-003). They may read a subsidiary's repository, and may review and merge there under the merge rule that ORG-001 cites from the parent's Agentic Workflow Standard, section One-Human Operating Contract. They hand off to a subsidiary's session directly, and a record is kept only across one of the five real boundaries of ORG-001.
 
 None of this applies to Litecky Editing Services. No parent-scope agent reads into, writes to, reviews or merges in Litecky beyond what Litecky's own contract already allows.
 
@@ -91,7 +91,7 @@ A boundary is worth an agent's care where it separates something real: another p
 
 **Enforcement**
 - Parent agents author only in parent repositories. Nothing mechanical refuses otherwise: the parent's Agentic Workflow Standard records that sessions act through one GitHub login. The readback is the authoring session named on the pull request and the review record on it
-- A merge in a subsidiary's repository carries both conditions of the merge rule on the pull request
+- A merge in a subsidiary's repository carries, on the pull request, the record that the merge rule asks for
 - Credential values never cross between organizations and agents hold no provider credential (ORG-001 Boundary 3; SEC-005 is unchanged)
 - Contamination findings are no longer tracked for any organization. The parent does not read into Litecky to audit it; Litecky's part of the check of the five real things is run from inside Litecky by its own session and reported value-blind
 - Break-glass cross-entity writes are logged and reconciled per GOV-003 within 24 hours
@@ -194,7 +194,7 @@ The subsidiary registry at `.org/iam/federation/subsidiaries.yaml` records each 
 - Litecky is a real boundary in both directions: do not read into, write to, review or merge in Litecky beyond what Litecky's own contract already allows
 - Treat cross-subsidiary automation as explicitly declined — the registry's `isolation: { cross_subsidiary_access: none }` entry applies to parent orchestration as well
 - External integrations touching Litecky Editing require the administrator's decision
-- The registry holds a place for an owner governance role. It is unassigned; assume nothing from it
+- The parent's registry is to keep a place for an owner governance role, unassigned; assume nothing from it
 
 ### Seven Springs (sandbox)
 
@@ -294,7 +294,7 @@ Changes to agent governance require:
 ## Related Specifications
 
 - **Subsidiary Authority Specification** (`policies/specs/subsidiary-authority.md`) — Operational model for the three-tier authority structure; per-subsidiary current-state assessment
-- **Subsidiary Governance Standard** (`.org/standards/subsidiary-governance.md`) — Session-scoping mechanics and contamination detection
+- **Subsidiary Governance Standard** (`.org/standards/subsidiary-governance.md`) — Session routing mechanics
 
 ---
 
