@@ -5,7 +5,7 @@
 | Field | Value |
 |-------|-------|
 | **Date** | 2025-11-23 |
-| **Last Updated** | 2026-11-15 |
+| **Last Updated** | 2026-11-23 |
 | **Author** | Agent (The Architect) |
 | **Governance Level** | Covenant (2 Watchers + 2 Mentors, 72h debate) |
 | **Status** | Proposed |
@@ -97,7 +97,7 @@ This is the target workflow, not the current live merge gate:
 
 * **Latency**: The debate process adds time (minutes) to the feedback loop.
 * **Cost**: Increased token usage for multi-turn debates.
-* **Complexity**: Requires maintenance of identity contracts, secret-authority metadata, and Sigstore/OIDC infrastructure; Authentik remains lab-only unless a future trigger justifies production adoption.
+* **Complexity**: Requires maintenance of identity contracts, secret-authority metadata, and Sigstore/OIDC infrastructure; Authentik was retired on 2026-08-26 as a candidate production identity provider, and its research is kept as design input.
 * **Rebuild Required**: Synthetic Council package must be rebuilt from scratch (FU-1).
 
 ## Compliance
@@ -105,7 +105,7 @@ This is the target workflow, not the current live merge gate:
 * **GOV-001**: Supports "Living Principles" by formalizing the amendment process.
 * **SEC-001**: Targets "Zero Trust" by requiring cryptographic proof for governed actions once SDR verification is wired.
 * **INF-001**: Targets "Infrastructure as Code" by treating governance decisions as code artifacts once the workflow is implemented.
-* **Principle #9**: Zero Trust — identity-based access requires explicit authentication, authorization, provenance, and evidence; Authentik is not production enforcement today.
+* **Principle #9**: Zero Trust — identity-based access requires explicit authentication, authorization, provenance, and evidence; no human-SSO broker is part of enforcement (Authentik was retired on 2026-08-26).
 * **Principle #10**: Least Privilege — per-org OAuth scoping limits blast radius.
 
 ## References
@@ -129,3 +129,4 @@ This is the target workflow, not the current live merge gate:
 | 2026-05-12 | Codex | Reframed identity-based signing around Shield contracts, Google Workspace current human authority, SEC-005 machine identity, and manifest/provenance-bound agent identity; Authentik remains lab-only unless future triggers justify production adoption. |
 | 2026-05-13 | Codex | Added policy-status qualifiers so the proposed Synthetic Council, SDR, Sigstore/Rekor, and merge-gate language reads as target governance mechanics rather than current live enforcement. |
 | 2026-11-15 | Agent, recording the Guardian's decision | Aligned subsidiary scoping with ADR-009: citation by version, with restatement only where a subsidiary changes a rule, replaces restatement-only language. The ADR remains Proposed; nothing else is changed. |
+| 2026-11-23 | Agent, recording the Guardian's decision on Covenant #22 | Replaced the two "Authentik remains lab-only" / "not production enforcement today" statements with the 2026-08-26 retirement of POC 3 (Authentik); the research is kept as design input. No other line of this ADR changes; it remains Proposed. |
