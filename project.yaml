@@ -8,8 +8,9 @@ canonical: the-nash-group
 peers: []
 status:
   posture: published-artifact
-  local_phase: "mixed-status constitutional policy corpus; live IAM spec v0.2.1 DRAFT-accepted-for-validation; active, transitional, and partially historical materials remain explicitly labeled by their owning indexes"
-  as_of: "2026-08-25"
+  operational_state: maintained
+  local_phase: "Mixed-status constitutional source corpus; IAM v0.3.0 prospectively ratified 2026-08-29 under structural single-Guardian mode, still DRAFT — Accepted for Validation. No ACTIVE promotion or runtime activation; active, transitional and partially historical materials retain their owning status labels. Source reconciliation only; dated capability claims below are not renewed."
+  as_of: "2026-11-23"
 authority:
   status_of_record: policies/README.md
 presentation:

@@ -24,6 +24,12 @@ admission, or subsidiary/project-local restatements.
 
 ## Policy Categories
 
+Source index reconciled on 2026-11-23 (prepared 2026-10-04) for the project
+inventory under Principle 13 (Code Without Docs is Incomplete). The IAM entry
+below reflects the specification's existing August 29 ratification; this
+correction creates no new policy, ACTIVE promotion, runtime acceptance or
+renewed capability claim.
+
 ### Source Control (SC)
 - **[SC-001: Linear Git History](./sc-001-linear-history.md)** - Main branch must maintain linear, clean history
 - **[SC-002: Conventional Commits](./sc-002-conventional-commits.md)** - All commits follow conventional format, clear PR titles
@@ -85,7 +91,7 @@ admission, or subsidiary/project-local restatements.
 ### Specifications
 - **[Cloudflare Ownership Transition](./specs/cloudflare-ownership-transition.md)** (ACCEPTED v1.1.0) - Transitional stewardship and placement rules for Cloudflare resources; provider-specific sections should be classified for parent-standard or Citadel home.
 - **[GitHub Machine Identity](./specs/github-machine-identity.md)** - GitHub App architecture and credential lifecycle for machine identities; provider-specific sections should be classified for Shield/Citadel home.
-- **[Identity and Account Management](./specs/identity-and-account-management.md)** (v0.2.1; §§1-6 DRAFT — Accepted for Validation since 2026-05-03; §7 ratified 2026-05-17 via ADR-008; §1 family-home sovereignty + §6.F resource classification added 2026-05-25) - Multi-entity identity contract plus the accepted policy authority topology; durable invariants remain here while identity-contract detail moves to Shield or parent standards.
+- **[Identity and Account Management](./specs/identity-and-account-management.md)** (v0.3.0 prospectively ratified 2026-08-29 under GOV-006 structural single-Guardian mode; remains DRAFT — Accepted for Validation, with no ACTIVE promotion or runtime activation) - Multi-entity identity contract plus the accepted policy authority topology; durable invariants remain here while identity-contract detail moves to Shield or parent standards. The disposition does not retroactively cure the premature PR #11 merge.
 - **[IAM Specification](./specs/iam-specification.md)** (PARTIALLY HISTORICAL — REWRITE PENDING) - Pre-ADR-005 IAM architecture reference.
 - **[Secrets Management](./specs/secrets-management.md)** (ACTIVE v1.3.0) - Secret classification, lifecycle, ownership, distribution, and rotation model; provider-neutral invariants remain here while backend-specific bindings belong to owning implementation layers.
 - **[Subsidiary Authority](./specs/subsidiary-authority.md)** (ACTIVE v2.0.1) - Operational model for parent, subsidiary, and project authority boundaries.
