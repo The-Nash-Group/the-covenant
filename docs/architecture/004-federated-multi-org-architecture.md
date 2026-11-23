@@ -5,7 +5,7 @@
 | Field | Value |
 |-------|-------|
 | **Date** | 2026-03-02 |
-| **Last Updated** | 2026-11-15 |
+| **Last Updated** | 2026-11-23 |
 | **Author** | Agent |
 | **Governance Level** | Covenant (2 Watchers + 2 Mentors, 72h debate) |
 | **Status** | Accepted |
@@ -41,7 +41,7 @@ We need identity federation and entity separation with staged platform spend.
 
 ## Decision
 
-We adopt a **federated multi-org architecture** with staged identity controls to bridge the gap between low-cost GitHub organization boundaries and enterprise-grade identity management. Authentik remains a possible future broker, but current production identity formation is Shield-contract-first and evidence-gated.
+We adopt a **federated multi-org architecture** with staged identity controls to bridge the gap between low-cost GitHub organization boundaries and enterprise-grade identity management. No human-SSO broker is planned (Authentik was retired on 2026-08-26); current production identity formation is Shield-contract-first and evidence-gated.
 
 ### 1. Multi-Org GitHub Structure
 
@@ -77,22 +77,25 @@ classes, registry shape, authorization-decision contracts, secret-authority
 metadata contracts, and restatement packet shape before any identity runtime is
 implemented.
 
-Current state as of 2026-05-12:
+Current state (as of 2026-05-12; the Authentik entry as of 2026-08-26):
 
 - **Google Workspace** is the current human identity authority.
 - **GitHub** is the current operating substrate, not the permanent identity
   control plane.
 - **SEC-005 machine identity** governs GitHub App, OIDC, and scoped provider
   token use.
-- **Authentik** is lab-only. It is not production identity, not repo-owned
-  runtime, and not the default answer for human SSO at the current operating
-  scale (one Guardian; ADR-009 records Litecky's owner and administrator).
+- **Authentik** was retired on 2026-08-26 as a candidate production identity
+  provider (POC 3); its research is kept as design input. Human SSO is out of
+  scope at the current operating scale (one Guardian; ADR-009 records
+  Litecky's owner and administrator).
 - **GitHub Enterprise SAML** remains unavailable and must not be assumed.
 
-Authentik may become a future broker only after evidence exists for host
-placement, ownership, backup/restore, Docker/socket policy, Cloudflare/Tunnel or
-Access design, break-glass recovery, secret custody, and an actual user,
-contractor, or compliance trigger.
+Human SSO is reconsidered, without presupposing a product, only if a human-SSO
+consumer appears: another human participant, an external contractor who needs
+federated access, or a compliance obligation that names SSO. A broker chosen
+then still needs evidence for host placement, ownership, backup/restore,
+Docker/socket policy, Cloudflare/Tunnel or Access design, break-glass recovery,
+and secret custody.
 
 ### 3. Infisical for Secrets Management
 
@@ -131,7 +134,7 @@ alone:
 |--------|-------|---------|-------|
 | `thenash.group` | Parent | Organizational identity | Cloudflare-managed |
 | `happy-patterns.com` | Happy Patterns LLC | Primary product domain | Landing page pending; `happy-patterns.co` also owned as secondary |
-| `jefahnierocks.com` | Personal | Personal/creative projects | Hosts Infisical service evidence; Authentik remains lab-only, not production identity |
+| `jefahnierocks.com` | Personal | Personal/creative projects | Hosts Infisical service evidence; Authentik (POC 3) was retired on 2026-08-26 |
 | Future subsidiary domains | Per entity | As needed | Follow Cloudflare governance (ADR-003) |
 
 ## Consequences
@@ -141,7 +144,7 @@ alone:
 1. **Clean entity separation**: Each legal entity has a named authority boundary, with paid hosting adopted where it creates operational value
 2. **Governance scales**: Parent publishes specs; subsidiaries cite them by version, or restate a rule where they change it
 3. **Staged platform spend**: Happy Patterns can use GitHub Team now while dormant or personal boundaries defer paid features until justified
-4. **Identity federation path**: A single-login experience across orgs remains a target once an evidence-backed broker is justified
+4. **Identity federation path kept open**: The multi-org structure does not preclude a single-login experience across orgs; human SSO is out of scope and is reconsidered, without presupposing a product, only if a human-SSO consumer appears (see §2)
 5. **Secrets centralization path**: Infisical or another approved backend can reduce secrets sprawl after repo/entity adoption evidence
 6. **IaC coverage path**: the-citadel manages the OpenTofu/IaC control plane where resources are codified; live-provider claims still require current evidence
 
@@ -157,14 +160,14 @@ alone:
 
 1. **Per-org billing**: Each org manages its own billing relationship (appropriate for separate legal entities)
 2. **OpenTofu multi-provider**: Adds ~20 lines of provider config per org, manageable for 5 orgs
-3. **Identity-broker learning curve**: One-time setup cost if a future broker such as Authentik becomes justified
+3. **Identity-broker learning curve**: One-time setup cost if a human-SSO broker ever becomes justified
 4. **Plan upgrades are operational decisions**: Upgrading a subsidiary's GitHub plan is a governance and budget decision, not a change to semantic ownership
 
 ## Compliance
 
 - **Principle #1** (Sacred Timeline / SSoT): Google Workspace is the single source of truth for identity
 - **Principle #5** (Infrastructure as Code): Org configurations in Citadel scope are managed via OpenTofu/IaC in the-citadel
-- **Principle #9** (Zero Trust): identity controls require explicit authentication, authorization, and audit evidence; Authentik is not production enforcement today
+- **Principle #9** (Zero Trust): identity controls require explicit authentication, authorization, and audit evidence; Authentik, retired on 2026-08-26, is not part of enforcement
 - **Principle #10** (Least Privilege): Per-org OAuth and per-backend scoping are target mechanisms for limiting blast radius where adopted and evidenced
 - **Principle #16** (Living Law): This architecture evolved from experience — single-org was tried, found wanting, and replaced
 
@@ -198,3 +201,4 @@ alone:
 | 2026-05-12 | Codex | Clarified Shield identity foundation: Authentik is lab-only, Shield is the identity-contract home, Google Workspace remains current human authority, GitHub is current substrate, and SEC-005 governs machine identity. |
 | 2026-05-13 | Codex | Qualified Infisical, Authentik, identity federation, secret centralization, and IaC coverage language so ADR-004 does not read as proof of current live enforcement beyond owning-repo evidence. |
 | 2026-11-15 | Agent, recording the Guardian's decision | Refined §4 in place per ADR-009: citation by version, with restatement only where a subsidiary changes a rule, replaces restatement-only language. Corrected the Litecky row of §1 (not co-owned; the administrator decides) and the "two-human operating scale" phrase of §2. The multi-org decision is unchanged. |
+| 2026-11-23 | Agent, recording the Guardian's decision on Covenant #22 | Recorded the 2026-08-26 retirement of POC 3 (Authentik) in place of "lab-only": human SSO is out of scope and is reconsidered, without presupposing a product, only if a human-SSO consumer appears; a broker chosen then still needs the same evidence. The Decision summary, the §2 list (whose heading now dates its Authentik entry), the domain table, Positive consequence 4, Neutral consequence 3 and the Principle #9 line no longer present Authentik or a broker as pending. |
