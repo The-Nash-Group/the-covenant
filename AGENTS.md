@@ -1,4 +1,23 @@
 # AI Assistant Context - The Covenant
+
+## Start here
+
+A new session in this repository, whichever agent runs it, starts from these, in this order.
+Nothing is held in a session's memory.
+
+1. `OWNER-DIRECTIONS.md` in `The-Nash-Group/the-nash-group`: the owner's standing word. Check
+   that its entries are valid (One-Human Operating Contract, "The owner's word").
+2. The One-Human Operating Contract in `.org/standards/agentic-workflow.md` in
+   `The-Nash-Group/the-nash-group`, and the standards its Resume Protocol names; then this file.
+3. The owner index: issue 387 in `The-Nash-Group/the-nash-group`.
+4. This lane's state issue: issue 20 in this repository.
+
+Read tracked files from the default branch after `git fetch origin`; the primary checkout may be
+on an old branch. A session ends by writing its state to that issue. Every human role this file
+names (owner, operator, Guardian, approver, Watcher, Mentor) is the one owner. Litecky Editing
+Services belongs to another person: the owner is its administrator, every Litecky decision comes
+to him, and no agent contacts that person.
+
 *The Philosophical Heart of The Nash Group*
 
 > **IMPORTANT**: This repository has no technical enforcement power. It defines philosophy and governance. Implementation happens in `the-citadel`.
@@ -88,12 +107,12 @@
 |---------------|-------------------|---------------|
 | **Stronghold** (Single repo) | 1 Mentor | None |
 | **Citadel** (Infrastructure) | 1 Mentor + 1 Watcher | None |
-| **Covenant** (Principles/Governance) | 2 Watchers + 2 Mentors | 72 hours minimum |
+| **Covenant** (Principles/Governance) | One recorded decision of the Guardian under GOV-006 structural single-Guardian mode | Deliberation default only (GOV-002); not an elapsed-time gate |
 
 **YOU MUST** ensure Covenant changes follow "The Ritual of Amendment":
 1. The Proposal - Create branch, document change, reference rationale
-2. The Debate Period - Minimum 72 hours, all Immortals may comment
-3. The Council Review - Quorum of 4 members, consensus required
+2. The Deliberation - The proposal and its evidence are reviewable; in single-Guardian mode the 72-hour and one-week periods are defaults, not gates (GOV-002)
+3. The Decision - The Guardian records the decision and that no independent human review occurred (GOV-006)
 4. The Proclamation - Announcement and implementation issue creation
 
 ## The 16 Core Principles (Abbreviated)
@@ -140,8 +159,8 @@ git commit -m "docs: propose principle change for [reason]"
 git push origin proposal/my-principle-change
 
 # 6. In PR: Reference existing principles, provide rationale
-# 7. Wait minimum 72 hours for debate
-# 8. Requires 2 Watchers + 2 Mentors approval
+# 7. Deliberation default only; not an elapsed-time gate (GOV-002)
+# 8. The Guardian records the decision; no independent human review occurred (GOV-006)
 ```
 
 ### Creating an Architecture Decision Record
@@ -201,9 +220,9 @@ ADRs are **living documents** — they should reflect current architectural trut
 - **HUMAN_MANDATE.md** - The five Guardian roles and Human/Machine Creed
 - **CONTRIBUTING.md** - How to propose changes
 - **REFERENCE/** - Historical context and legacy configurations
-- **docs/architecture/** - Architecture Decision Records (ADRs); ADR-007 (2026-04-20) defines the three-tier authority model that refines ADR-004 §4; ADR-008 (2026-05-17) defines the policy authority topology for Identity, Resource, Permission-Binding, and Runtime Enforcement domains.
-- **policies/org-001-subsidiary-authority.md** - Subsidiary authority and identity isolation policy (the three invariants: identity isolation, authority restatement, spec flow)
-- **policies/specs/** - Constitutional and transitional specifications (subsidiary-authority, secrets-management, github-machine-identity, cloudflare-ownership-transition, identity-and-account-management (v0.2.1 — the LIVE IAM contract), iam-specification (v1.1.0 PARTIALLY HISTORICAL — do not treat as current), organizational-design-quality). Provider-specific and workflow-specific sections are candidates for parent-standard, Shield, Citadel, Nexus, or subsidiary restatement homes.
+- **docs/architecture/** - Architecture Decision Records (ADRs); ADR-007 (2026-04-20) defines the three-tier authority model that refines ADR-004 §4; ADR-008 (2026-05-17) defines the policy authority topology for Identity, Resource, Permission-Binding, and Runtime Enforcement domains; ADR-009 (2026-11-15) names the five real boundaries between organizations and supersedes ADR-007's three invariants in part.
+- **policies/org-001-subsidiary-authority.md** - Subsidiary authority and real boundaries policy, version 2.0 (five real boundaries; a subsidiary session may read parent files and must not write them; Litecky Editing Services is a real boundary in both directions)
+- **policies/specs/** - Constitutional and transitional specifications (subsidiary-authority, secrets-management, github-machine-identity, cloudflare-ownership-transition, identity-and-account-management (v0.3.0 prospectively ratified 2026-08-29 under GOV-006; DRAFT — Accepted for Validation, not ACTIVE or runtime activation), iam-specification (v1.1.0 PARTIALLY HISTORICAL — do not treat as current), organizational-design-quality). Provider-specific and workflow-specific sections are candidates for parent-standard, Shield, Citadel, Nexus, or subsidiary restatement homes.
 
 ## Constraints & Guidelines
 
@@ -220,7 +239,7 @@ ADRs are **living documents** — they should reflect current architectural trut
 
 **NEVER**:
 - Add GitHub Actions workflows to this repo (philosophy, not automation)
-- Merge PRs without proper debate period (72h minimum for Covenant changes)
+- Merge a Covenant change before the Guardian's recorded decision (GOV-002, GOV-006)
 - Let ADRs become stale (propose updates to the Guardian when facts change)
 - Modify ADRs without Guardian approval (these are governance documents)
 - Propose principles that can't be enforced in code
