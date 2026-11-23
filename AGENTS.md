@@ -221,8 +221,8 @@ ADRs are **living documents** — they should reflect current architectural trut
 - **CONTRIBUTING.md** - How to propose changes
 - **REFERENCE/** - Historical context and legacy configurations
 - **docs/architecture/** - Architecture Decision Records (ADRs); ADR-007 (2026-04-20) defines the three-tier authority model that refines ADR-004 §4; ADR-008 (2026-05-17) defines the policy authority topology for Identity, Resource, Permission-Binding, and Runtime Enforcement domains; ADR-009 (2026-11-15) names the five real boundaries between organizations and supersedes ADR-007's three invariants in part.
-- **policies/org-001-subsidiary-authority.md** - Subsidiary authority and real boundaries policy, version 2.0 (five real boundaries; a subsidiary session may read parent files and must not write them; Litecky Editing Services is a real boundary in both directions)
-- **policies/specs/** - Constitutional and transitional specifications (subsidiary-authority, secrets-management, github-machine-identity, cloudflare-ownership-transition, identity-and-account-management (v0.3.0 prospectively ratified 2026-08-29 under GOV-006; DRAFT — Accepted for Validation, not ACTIVE or runtime activation), iam-specification (v1.1.0 PARTIALLY HISTORICAL — do not treat as current), organizational-design-quality). Provider-specific and workflow-specific sections are candidates for parent-standard, Shield, Citadel, Nexus, or subsidiary restatement homes.
+- **policies/org-001-subsidiary-authority.md** - Subsidiary authority and real boundaries policy (read its version at the source; five real boundaries; a subsidiary session may read parent files and must not write them; Litecky Editing Services is a real boundary in both directions)
+- **policies/specs/** - Constitutional and transitional specifications (subsidiary-authority, secrets-management, github-machine-identity, cloudflare-ownership-transition, identity-and-account-management (the current IAM contract; DRAFT — Accepted for Validation, not ACTIVE or runtime activation; read its version at the source), iam-specification (v1.1.0 PARTIALLY HISTORICAL — do not treat as current), organizational-design-quality). Provider-specific and workflow-specific sections are candidates for parent-standard, Shield, Citadel, Nexus, or subsidiary restatement homes.
 
 ## Constraints & Guidelines
 
@@ -319,4 +319,4 @@ See `../AGENTS.md` for full organizational context and the three-pillar architec
 
 **Remember**: The Covenant without the Citadel is mere words. The Citadel without the Covenant is mere machinery. Together, they are civilization.
 
-*Last Updated: 2026-06-28*
+*Last Updated: 2026-11-23*
