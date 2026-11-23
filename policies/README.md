@@ -26,9 +26,9 @@ admission, or subsidiary/project-local restatements.
 
 Source index reconciled on 2026-11-23 (prepared 2026-10-04) for the project
 inventory under Principle 13 (Code Without Docs is Incomplete). The IAM entry
-below reflects the specification's existing August 29 ratification; this
-correction creates no new policy, ACTIVE promotion, runtime acceptance or
-renewed capability claim.
+below reflects the specification's August 29 ratification and its v0.3.1
+amendment (Covenant #22); the index itself creates no new policy, ACTIVE
+promotion, runtime acceptance or renewed capability claim.
 
 ### Source Control (SC)
 - **[SC-001: Linear Git History](./sc-001-linear-history.md)** - Main branch must maintain linear, clean history

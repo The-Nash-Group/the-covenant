@@ -105,7 +105,7 @@ This is the target workflow, not the current live merge gate:
 * **GOV-001**: Supports "Living Principles" by formalizing the amendment process.
 * **SEC-001**: Targets "Zero Trust" by requiring cryptographic proof for governed actions once SDR verification is wired.
 * **INF-001**: Targets "Infrastructure as Code" by treating governance decisions as code artifacts once the workflow is implemented.
-* **Principle #9**: Zero Trust — identity-based access requires explicit authentication, authorization, provenance, and evidence; no human-SSO broker is part of enforcement (Authentik was retired on 2026-08-26).
+* **Principle #9**: Zero Trust — identity-based access requires explicit authentication, authorization, provenance, and evidence; Authentik, retired on 2026-08-26, is not part of enforcement.
 * **Principle #10**: Least Privilege — per-org OAuth scoping limits blast radius.
 
 ## References
