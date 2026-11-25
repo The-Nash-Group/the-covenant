@@ -2,22 +2,25 @@ repos:
   - repo: local
     hooks:
       - id: validate-structure
-        name: Validate Repository Structure
-        entry: bash -c 'if [ -f "../.org/tooling/validators/validate-repo-structure.sh" ]; then ../.org/tooling/validators/validate-repo-structure.sh .; fi'
+        name: Check structure when parent tooling is available
+        entry: scripts/run-parent-validator.sh validate-repo-structure.sh
         language: system
         pass_filenames: false
+        verbose: true
 
       - id: validate-naming
-        name: Validate Naming Conventions
-        entry: bash -c 'if [ -f "../.org/tooling/validators/validate-naming.sh" ]; then ../.org/tooling/validators/validate-naming.sh .; fi'
+        name: Check naming when parent tooling is available
+        entry: scripts/run-parent-validator.sh validate-naming.sh
         language: system
         pass_filenames: false
+        verbose: true
 
       - id: check-secrets
-        name: Check for Secrets
-        entry: bash -c 'if [ -f "../.org/tooling/validators/check-secrets.sh" ]; then ../.org/tooling/validators/check-secrets.sh .; fi'
+        name: Check secrets when parent tooling is available
+        entry: scripts/run-parent-validator.sh check-secrets.sh
         language: system
         pass_filenames: false
+        verbose: true
 
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.5.0
