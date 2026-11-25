@@ -3,19 +3,19 @@ repos:
     hooks:
       - id: validate-structure
         name: Validate Repository Structure
-        entry: bash -c 'if [ -f "../.org/tooling/validators/validate-repo-structure.sh" ]; then ../.org/tooling/validators/validate-repo-structure.sh .; fi'
+        entry: ../.org/tooling/validators/validate-repo-structure.sh .
         language: system
         pass_filenames: false
 
       - id: validate-naming
         name: Validate Naming Conventions
-        entry: bash -c 'if [ -f "../.org/tooling/validators/validate-naming.sh" ]; then ../.org/tooling/validators/validate-naming.sh .; fi'
+        entry: ../.org/tooling/validators/validate-naming.sh .
         language: system
         pass_filenames: false
 
       - id: check-secrets
         name: Check for Secrets
-        entry: bash -c 'if [ -f "../.org/tooling/validators/check-secrets.sh" ]; then ../.org/tooling/validators/check-secrets.sh .; fi'
+        entry: ../.org/tooling/validators/check-secrets.sh .
         language: system
         pass_filenames: false
 
