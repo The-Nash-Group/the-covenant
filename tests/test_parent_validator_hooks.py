@@ -9,9 +9,9 @@ import unittest
 
 ROOT = Path(__file__).resolve().parents[1]
 VALIDATORS = {
-    "Validate Repository Structure": "validate-repo-structure.sh",
-    "Validate Naming Conventions": "validate-naming.sh",
-    "Check for Secrets": "check-secrets.sh",
+    "Check structure when parent tooling is available": "validate-repo-structure.sh",
+    "Check naming when parent tooling is available": "validate-naming.sh",
+    "Check secrets when parent tooling is available": "check-secrets.sh",
 }
 
 
@@ -23,7 +23,10 @@ class ParentValidatorHooks(unittest.TestCase):
             source.mkdir()
             subprocess.run(["git", "init", "--quiet"], cwd=source, check=True)
             shutil.copyfile(ROOT / ".pre-commit-config.yaml", source / ".pre-commit-config.yaml")
-            subprocess.run(["git", "add", ".pre-commit-config.yaml"], cwd=source, check=True)
+            wrapper = Path("scripts", "run-parent-validator.sh")
+            (source / wrapper.parent).mkdir()
+            shutil.copy2(ROOT / wrapper, source / wrapper)
+            subprocess.run(["git", "add", ".pre-commit-config.yaml", str(wrapper)], cwd=source, check=True)
             subprocess.run([
                 "git", "-c", "user.name=Hook Fixture", "-c", "user.email=fixture@example.invalid",
                 "-c", "commit.gpgsign=false", "-c", "core.hooksPath=/dev/null",
@@ -38,7 +41,7 @@ class ParentValidatorHooks(unittest.TestCase):
 
             log = temp / "calls"
             tools = outside / ".org" / "tooling" / "validators"
-            for case, exit_code in (("missing", 1), ("passing", 0), ("failing", 1)):
+            for case, exit_code in (("missing", 0), ("passing", 0), ("failing", 1)):
                 with self.subTest(case=case):
                     if case == "passing":
                         tools.mkdir(parents=True)
@@ -58,17 +61,20 @@ class ParentValidatorHooks(unittest.TestCase):
                         stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True,
                     )
                     self.assertEqual(result.returncode, exit_code, result.stdout)
-                    status = "Passed" if case == "passing" else "Failed"
+                    status = "Failed" if case == "failing" else "Passed"
                     for hook, script in VALIDATORS.items():
                         self.assertRegex(result.stdout, rf"(?m)^{hook}\.+{status}$")
                         if case == "missing":
-                            self.assertIn(script, result.stdout)
+                            self.assertIn(f"SKIPPED: missing parent validator ../.org/tooling/validators/{script}",
+                                          result.stdout)
+                    self.assertEqual(result.stdout.count("SKIPPED: missing parent validator"), 3 if case == "missing" else 0)
                     if case == "failing":
                         self.assertEqual(result.stdout.count("exit code: 27"), 3, result.stdout)
                     calls = log.read_text(encoding="utf-8").splitlines()
                     expected = [] if case == "missing" else [f"{script} 1 ." for script in VALIDATORS.values()]
                     self.assertCountEqual(calls, expected)
-                    print(f"{case}: three hooks {status}, pre-commit exit {result.returncode}")
+                    observed = "reported SKIPPED" if case == "missing" else status
+                    print(f"{case}: three hooks {observed}, pre-commit exit {result.returncode}")
 
 
 if __name__ == "__main__":
